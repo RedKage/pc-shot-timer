@@ -1,0 +1,13 @@
+﻿<Application x:Class="PCShotTimer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:pcShotTimer="clr-namespace:PCShotTimer">
+
+    <Application.Resources>
+        <system:Int32 x:Key="Mono">1</system:Int32>
+        <system:Int32 x:Key="Stereo">2</system:Int32>
+        <pcShotTimer:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
+    </Application.Resources>
+
+</Application>

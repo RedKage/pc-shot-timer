@@ -1,0 +1,17 @@
+D:\Copy\Public\PCShotTimer\PCShotTimer\bin\x86\Release\PCShotTimer.exe.config
+D:\Copy\Public\PCShotTimer\PCShotTimer\bin\x86\Release\PCShotTimer.exe
+D:\Copy\Public\PCShotTimer\PCShotTimer\bin\x86\Release\PCShotTimer.pdb
+D:\Copy\Public\PCShotTimer\PCShotTimer\bin\x86\Release\NAudio.dll
+D:\Copy\Public\PCShotTimer\PCShotTimer\bin\x86\Release\NAudio.xml
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\MainWindow.baml
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\OptionsWindow.baml
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\MainWindow.g.cs
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\OptionsWindow.g.cs
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\App.g.cs
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\PCShotTimer_Content.g.cs
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\PCShotTimer_MarkupCompile.cache
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\PCShotTimer.g.resources
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\PCShotTimer.Properties.Resources.resources
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\PCShotTimer.csproj.GenerateResource.Cache
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\PCShotTimer.exe
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Release\PCShotTimer.pdb

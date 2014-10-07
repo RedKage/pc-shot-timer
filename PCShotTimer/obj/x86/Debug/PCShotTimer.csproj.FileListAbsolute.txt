@@ -1,0 +1,4 @@
+D:\Copy\Public\PCShotTimer\PCShotTimer\bin\x86\Debug\PCShotTimer.exe.config
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Debug\App.g.cs
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Debug\PCShotTimer_Content.g.cs
+D:\Copy\Public\PCShotTimer\PCShotTimer\obj\x86\Debug\PCShotTimer_MarkupCompile.cache
