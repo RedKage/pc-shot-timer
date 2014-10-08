@@ -189,6 +189,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="copying.txt" />
+    <Resource Include="Icon.png" />
+    <Resource Include="Logo_256.png" />
     <Content Include="sounds\ReadyStandby_01.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
