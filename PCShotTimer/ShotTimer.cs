@@ -7,6 +7,7 @@ using System.Media;
 using System.Threading;
 using System.Timers;
 using System.Windows.Threading;
+using NAudio;
 using NAudio.Wave;
 using PCShotTimer.openshottimer;
 using Timer = System.Timers.Timer;
@@ -19,7 +20,7 @@ namespace PCShotTimer
     ///     - Analyzing mic input to detect shots fired
     ///     - TODO Implementing PAR loops
     /// </summary>
-    public class ShotTimer : INotifyPropertyChanged
+    public class ShotTimer : INotifyPropertyChanged, IDisposable
     {
         #region Constants
 
@@ -53,6 +54,9 @@ namespace PCShotTimer
         ///     object).
         /// </summary>
         protected DispatcherTimer _dispatcherTimer = new DispatcherTimer();
+
+        /// <summary>The _options used by the timer.</summary>
+        protected OptionsData _options;
 
         /// <summary>The random delay Timer.</summary>
         protected Timer _randomDelay = null;
@@ -98,9 +102,6 @@ namespace PCShotTimer
         /// <summary>Total time elapsed since the Shot timer has been started.</summary>
         public string TimeElapsed { get; set; }
 
-        /// <summary>Gets or sets the Options used by the timer.</summary>
-        public OptionsData Options { get; set; }
-
         /// <summary>PropertyChanged event used by TimeElapsed to nofity any binding that the value has changed.</summary>
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
@@ -111,12 +112,12 @@ namespace PCShotTimer
         /// <summary>
         ///     Initializes a new instance of ShotTimerClass.
         /// </summary>
-        /// <param name="options">Options used by this timer.</param>
+        /// <param name="options">_options used by this timer.</param>
         /// <param name="shotFiredEvent">Mehtod to call when a shot has been detected.</param>
         /// <param name="waveIn">The Wave in device that will be used to capture sound.</param>
         public ShotTimer(OptionsData options, EventHandler shotFiredEvent, WaveInEvent waveIn)
         {
-            Options = options;
+            _options = options;
             ShotFired = shotFiredEvent;
             SoundsDirectory = App.AppDirectory + "\\" + SOUNDS_DIRECORY_NAME;
             TimeElapsed = DEFAULT_TIMER_VALUE;
@@ -153,11 +154,19 @@ namespace PCShotTimer
             _waveIn.DataAvailable += ReadingAvailableAudioData;
 
             // Create the shot detector: here we use a simple noise spike detector.
-            _shotDetector = new AmplitudeSpikeShotDetector(Options.InputSampleRate, Options.InputSampleBits,
-                Options.DetectorSensitivity);
+            _shotDetector = new AmplitudeSpikeShotDetector(_options.InputSampleRate, _options.InputSampleBits,
+                _options.DetectorSensitivity);
 
             // Capture the audio in
-            _waveIn.StartRecording();
+            try
+            {
+                _waveIn.StartRecording();
+            }
+            catch (MmException exception)
+            {
+                throw new ApplicationException(
+                    String.Format("The device {0} cannot be openned... it seems.", _options.SelectedDeviceId), exception);
+            }
         }
 
         #endregion
@@ -227,6 +236,15 @@ namespace PCShotTimer
                 : String.Format("{0:00}:{1:00}:{2:000}", timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds);
         }
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            _soundPlayer.Dispose();
+            _randomDelay.Dispose();
+        }
+
         #endregion
 
         #region Internal Methods   
@@ -241,7 +259,7 @@ namespace PCShotTimer
             if (_stopRequested)
                 return;
 
-            if (Options.SoundPlayReadyStandby)
+            if (_options.SoundPlayReadyStandby)
             {
                 // Play Ready sound
                 var randomSound = _random.Next(0, _readyStandySound.Count);
@@ -264,14 +282,14 @@ namespace PCShotTimer
                 return;
 
             // Default is min delay
-            var delayMs = Options.GeneralRandomStartDelayMin*1000;
+            var delayMs = _options.GeneralRandomStartDelayMin*1000;
 
             // Random delay
-            if (Options.GeneralRandomDelay)
+            if (_options.GeneralRandomDelay)
             {
                 // For example between 0.6;4.3 ---> becomes 60;430
-                var min = Convert.ToInt32(Options.GeneralRandomStartDelayMin*100);
-                var max = Convert.ToInt32(Options.GeneralRandomStartDelayMax*100);
+                var min = Convert.ToInt32(_options.GeneralRandomStartDelayMin*100);
+                var max = Convert.ToInt32(_options.GeneralRandomStartDelayMax*100);
 
                 // Let's say random number chosen is --> 223
                 var delay = _random.Next(min, max);

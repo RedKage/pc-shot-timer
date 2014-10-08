@@ -3,9 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pcShotTimer="clr-namespace:PCShotTimer"
     x:Class="PCShotTimer.OptionsWindow"
     mc:Ignorable="d"
-    Title="Options" Height="400" Width="550" WindowStyle="ToolWindow" Icon="Icon.ico"
+    Title="Options" Height="400" Width="550" WindowStyle="ToolWindow" Icon="resources/Icon.ico"
     WindowStartupLocation="CenterScreen" Closing="Window_Closing" Background="#FFC8C8C8" ResizeMode="NoResize"
     Topmost="True">
 
@@ -20,7 +21,8 @@
                 <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
             </TabControl.Effect>
             <TabItem Header="General" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     IsSelected="True" Margin="3,3,-7.6,-21.4" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5">
+                     IsSelected="True" Margin="3,3,-7.6,-21.4" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5"
+                     Width="90">
                 <Grid Background="#FFE5E5E5">
                     <GroupBox Header="Beep delay" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
@@ -63,14 +65,23 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Input" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     Margin="3,21.4,-7.6,-39.8" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5">
+                     Margin="3,21.4,-7.6,-39.8" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5" Width="90">
                 <Grid Background="#FFE5E5E5">
                     <GroupBox Header="Audio input" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
+                            <!-- Device -->
+                            <Label Content="Device" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                   RenderTransformOrigin="0.853,3.328" Margin="10,10,0,0" />
+                            <ComboBox x:Name="CbxInputDevice" HorizontalAlignment="Left" Margin="98,10,0,0"
+                                      VerticalAlignment="Top" Width="306"
+                                      SelectedIndex="{Binding Path=Options.SelectedDeviceId, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                                      ItemsSource="{Binding Path=(pcShotTimer:App.InputDevices), Mode=OneWay, Source={x:Static Application.Current}}"
+                                      SelectionChanged="CbxInputDevice_SelectionChanged" />
+
                             <!-- Sample rate -->
                             <Label Content="Sample rate" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                   RenderTransformOrigin="0.853,3.328" Margin="10,10,0,0" />
-                            <ComboBox HorizontalAlignment="Left" Margin="89,12,0,0" VerticalAlignment="Top" Width="101"
+                                   RenderTransformOrigin="0.853,3.328" Margin="10,35,0,0" />
+                            <ComboBox HorizontalAlignment="Left" Margin="98,37,0,0" VerticalAlignment="Top" Width="104"
                                       IsEditable="False" IsReadOnly="True" SelectedIndex="0"
                                       SelectedValue="{Binding Path=Options.InputSampleRate, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                       SelectedValuePath="Content">
@@ -87,8 +98,8 @@
 
                             <!-- Bit depth -->
                             <Label Content="Bit depth" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                   RenderTransformOrigin="0.853,3.328" Margin="10,41,0,0" />
-                            <ComboBox HorizontalAlignment="Left" Margin="89,43,0,0" VerticalAlignment="Top" Width="101"
+                                   RenderTransformOrigin="0.853,3.328" Margin="10,64,0,0" />
+                            <ComboBox HorizontalAlignment="Left" Margin="98,64,0,0" VerticalAlignment="Top" Width="104"
                                       ToolTip="Currently, only 16bit samples are supported by the sound detector."
                                       IsEditable="False" IsReadOnly="True" SelectedIndex="0"
                                       SelectedValue="{Binding Options.InputSampleBits, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
@@ -106,19 +117,20 @@
 
                             <!-- Channel -->
                             <Label Content="Channels" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                   RenderTransformOrigin="0.853,3.328" Margin="10,72,0,0" />
+                                   RenderTransformOrigin="0.853,3.328" Margin="10,86,0,0" />
                             <RadioButton GroupName="Channel" Content="Mono" HorizontalAlignment="Left"
-                                         Margin="89,77,0,0" VerticalAlignment="Top"
-                                         IsChecked="{Binding Options.InputChannels, ConverterParameter={StaticResource Mono}, Converter={StaticResource RadioButtonCheckedConverter}, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" />
+                                         Margin="98,91,0,0" VerticalAlignment="Top"
+                                         IsChecked="{Binding Options.InputChannels, ConverterParameter={StaticResource Mono}, Converter={StaticResource RadioButtonCheckedConverter}, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                                         RenderTransformOrigin="0.556,3.088" />
                             <RadioButton GroupName="Channel" Content="Stereo" HorizontalAlignment="Left"
-                                         Margin="140,77,0,0" VerticalAlignment="Top"
+                                         Margin="146,91,0,0" VerticalAlignment="Top"
                                          IsChecked="{Binding Options.InputChannels, ConverterParameter={StaticResource Stereo}, Converter={StaticResource RadioButtonCheckedConverter}, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" />
                         </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Sounds" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     Margin="3,39.8,-7.6,-58.2" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5">
+                     Margin="3,39.8,-7.6,-58.2" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5" Width="90">
                 <Grid Background="#FFE5E5E5">
                     <GroupBox Header="Sound" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
@@ -130,7 +142,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Detector" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     Margin="3,58.2,-7.8,-77.6" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5">
+                     Margin="3,58.2,-7.8,-77.6" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5" Width="90">
                 <Grid Background="#FFE5E5E5">
                     <GroupBox Header="Shot detector" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>

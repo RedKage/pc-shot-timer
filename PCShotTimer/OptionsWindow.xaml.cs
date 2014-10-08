@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+using NAudio.CoreAudioApi;
 
 namespace PCShotTimer
 {
@@ -65,6 +67,21 @@ namespace PCShotTimer
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        /// <summary>
+        ///     Triggered when the input audio device has changed.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event</param>
+        private void CbxInputDevice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var device = e.AddedItems[0] as MMDevice;
+            if (null == device)
+                return;
+
+            var id = CbxInputDevice.SelectedIndex;
+            App.Info(@"New audio input device selected: {0}:{1}", id, device);
         }
 
         #endregion

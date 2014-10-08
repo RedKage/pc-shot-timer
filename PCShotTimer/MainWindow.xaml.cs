@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using NAudio.Wave;
+using PCShotTimer.openshottimer;
 
 namespace PCShotTimer
 {
@@ -26,6 +27,9 @@ namespace PCShotTimer
         /// <summary>The options window.</summary>
         private OptionsWindow _optionsWindow;
 
+        /// <summary>The previous program options. Used in case of error/exception requiring reverting the options.</summary>
+        private OptionsData _previousOptions;
+
         /// <summary>Shot timer.</summary>
         private ShotTimer _shotTimer;
 
@@ -43,8 +47,8 @@ namespace PCShotTimer
         {
             InitializeComponent();
 
-            // Load the defaults params
-            _options = new OptionsData(App.AppDirectory + "\\" + App.DefaultConfigFileName);
+            // Load the defaults params         
+            _options = new OptionsData(App.DefaultConfig);
 
             // Init in a new thread for faster startup
             var thread = new Thread(Initialize);
@@ -66,27 +70,17 @@ namespace PCShotTimer
                 {
                     Clear();
 
-                    // Detecting sound input device
-                    var waveIn = new WaveInEvent();
-                    var waveInDevices = WaveIn.DeviceCount;
-                    for (var waveInDevice = 0; waveInDevice < waveInDevices; waveInDevice++)
+                    // Initializes the audio input device
+                    var waveIn = new WaveInEvent
                     {
-                        var deviceInfo = WaveIn.GetCapabilities(waveInDevice);
-                        Console.AppendText(String.Format("{0}Device {1}: {2}, {3} channels",
-                            (waveInDevice == 0 ? "" : "\n"),
-                            waveInDevice, deviceInfo.ProductName, deviceInfo.Channels));
-
-                        // TODO we take the first one. Not good.
-                        if (0 != waveInDevice)
-                            continue;
-
-                        // Initializes the audio input device
-                        waveIn.BufferMilliseconds = 100;
-                        waveIn.DeviceNumber = waveInDevice;
-                        waveIn.NumberOfBuffers = 3;
-                        waveIn.WaveFormat = new WaveFormat(_options.InputSampleRate, _options.InputSampleBits,
-                            _options.InputChannels);
-                    }
+                        DeviceNumber = _options.SelectedDeviceId,
+                        BufferMilliseconds = 100,
+                        NumberOfBuffers = 3,
+                        WaveFormat = new WaveFormat(
+                            _options.InputSampleRate,
+                            _options.InputSampleBits,
+                            _options.InputChannels)
+                    };
 
                     // Loading animations from XAML
                     _ledGreenBlinking = (Storyboard) Resources["GreenLedBlinking"];
@@ -100,11 +94,26 @@ namespace PCShotTimer
 
                     // Create the options window
                     _optionsWindow = new OptionsWindow(_options);
-                    _optionsWindow.UpdateLayout();
                 }));
             }
-            catch
+            catch (ApplicationException exception)
             {
+                var message = String.Format("{0}\nReverting to previous settings.", exception.Message);
+
+                // We can stop the bleeding!
+                App.DialogWarning(message);
+
+                // Revert the previous config
+                _options = _previousOptions;
+
+                // Try again
+                var thread = new Thread(Initialize);
+                thread.Start();
+            }
+            catch (Exception)
+            {
+                // Let's crash that party
+                App.Error("Unknown error from Initialize()");
                 throw;
             }
         }
@@ -129,7 +138,8 @@ namespace PCShotTimer
         /// </summary>
         protected void Exit()
         {
-            _shotTimer.Stop();
+            if (null != _shotTimer)
+                _shotTimer.Stop();
             Application.Current.Shutdown(0);
         }
 
@@ -254,14 +264,14 @@ namespace PCShotTimer
         private void ButtonOptions_Click(object sender, RoutedEventArgs e)
         {
             // Backup the config
-            var oldOptions = _options.Clone();
+            _previousOptions = _options.Clone();
             var rc = _optionsWindow.ShowDialog();
 
             // Null = cancel; false = OK
             if (null == rc)
             {
                 // Restore the old options when canceled
-                _options = oldOptions;
+                _options = _previousOptions;
             }
 
             // Options changed, so gotta reload everything man
@@ -285,7 +295,8 @@ namespace PCShotTimer
         /// <param name="e">Event</param>
         private void WinMainWindow_Closing(object sender, CancelEventArgs e)
         {
-            _shotTimer.Stop();
+            if (null != _shotTimer)
+                _shotTimer.Stop();
         }
 
         /// <summary>

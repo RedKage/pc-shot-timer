@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         Title="Shot Timer" Height="525.2" Width="710" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
-        Icon="Icon.ico" Closing="WinMainWindow_Closing" Closed="WinMainWindow_Closed">
+        Icon="resources/Icon.ico" Closing="WinMainWindow_Closing" Closed="WinMainWindow_Closed">
 
     <Window.Resources>
         <Storyboard x:Key="GreenLedBlinking" RepeatBehavior="Forever">

@@ -72,7 +72,7 @@
     <StartupObject>PCShotTimer.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>resources\Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -91,7 +91,6 @@
       <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -189,9 +188,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="copying.txt" />
-    <Resource Include="Icon.png" />
-    <Resource Include="Logo_256.png" />
+    <Content Include="copying.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="resources\Icon.png" />
+    <Resource Include="resources\Logo_256.png" />
+    <EmbeddedResource Include="resources\defaultconfig.xml" />
+    <Resource Include="resources\copying.png" />
     <Content Include="sounds\ReadyStandby_01.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -213,7 +216,7 @@
     <Content Include="sounds\ReadyStandby_07.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Icon.ico" />
+    <Resource Include="resources\Icon.ico" />
     <Resource Include="fonts\LCDMonoWinTT\LICENSE.TXT" />
     <Resource Include="fonts\LCDMonoWinTT\README.TXT" />
     <Resource Include="samples\9_shots_bigendian.raw" />

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Xml.Serialization;
 
 namespace PCShotTimer
@@ -10,6 +11,7 @@ namespace PCShotTimer
     [XmlRoot("Options")]
     public class OptionsData : INotifyPropertyChanged
     {
+        /// <summary>PropertyChangedEventHandler</summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         #region Properties
@@ -53,6 +55,9 @@ namespace PCShotTimer
         [XmlElement("SoundPlayReadyStandby")]
         public bool SoundPlayReadyStandby { get; set; }
 
+        /// <summary>Gets or sets the current selected input device ID.</summary>
+        public int SelectedDeviceId { get; set; }
+
         #endregion
 
         #region Constructors
@@ -83,6 +88,16 @@ namespace PCShotTimer
             Update(options);
         }
 
+        /// <summary>
+        ///     Initializes a new instance of OptionsData, loading options from a stream.
+        /// </summary>
+        /// <param name="xmlStream">The XML stream containing the options to put into that new instance.</param>
+        public OptionsData(Stream xmlStream)
+        {
+            var options = Load(xmlStream);
+            Update(options);
+        }
+
         #endregion
 
         #region Public methods
@@ -107,12 +122,18 @@ namespace PCShotTimer
         /// <returns>A OptionData object.</returns>
         public static OptionsData Load(string xmlPath)
         {
-            OptionsData loadedOptionsData;
+            return Load(new StreamReader(xmlPath).BaseStream);
+        }
+
+        /// <summary>
+        ///     Load options from a XML stream.
+        /// </summary>
+        /// <param name="xmlStream">The XML file stream containing the options to load.</param>
+        /// <returns>A OptionData object.</returns>
+        public static OptionsData Load(Stream xmlStream)
+        {
             var serializer = new XmlSerializer(typeof (OptionsData));
-            using (var reader = new StreamReader(xmlPath))
-            {
-                loadedOptionsData = (OptionsData) serializer.Deserialize(reader);
-            }
+            var loadedOptionsData = (OptionsData) serializer.Deserialize(xmlStream);
             return loadedOptionsData;
         }
 
