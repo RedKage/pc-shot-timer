@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("PCShotTimer")]
 [assembly: AssemblyDescription("Shot Timer for PC")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Tactical Freak")]
+[assembly: AssemblyCompany("FreakinTac. Inc. Corp.")]
 [assembly: AssemblyProduct("PCShotTimer")]
 [assembly: AssemblyCopyright("Tactical Freak 2014")]
 [assembly: AssemblyTrademark("Tactical Freak")]
@@ -53,6 +53,6 @@ using System.Windows;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.3")]
-[assembly: AssemblyFileVersion("1.0.0.3")]
+[assembly: AssemblyVersion("1.0.0.4")]
+[assembly: AssemblyFileVersion("1.0.0.4")]
 [assembly: NeutralResourcesLanguage("en-US")]

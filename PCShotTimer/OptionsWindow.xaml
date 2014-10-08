@@ -6,7 +6,7 @@
     xmlns:pcShotTimer="clr-namespace:PCShotTimer"
     x:Class="PCShotTimer.OptionsWindow"
     mc:Ignorable="d"
-    Title="Options" Height="400" Width="550" WindowStyle="ToolWindow" Icon="resources/Icon.ico"
+    Title="Options" Height="400" Width="570" WindowStyle="ToolWindow" Icon="resources/Icon.ico"
     WindowStartupLocation="CenterScreen" Closing="Window_Closing" Background="#FFC8C8C8" ResizeMode="NoResize"
     Topmost="True">
 
@@ -16,14 +16,63 @@
 
     <Grid>
         <TabControl x:Name="TabOptions" TabStripPlacement="Left" BorderBrush="{x:Null}" Background="{x:Null}"
-                    VerticalContentAlignment="Center" UseLayoutRounding="False">
+                    VerticalContentAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Right" Width="583.6">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Panel" BorderThickness="1,1,0,1" BorderBrush="#FFE5E5E5" CornerRadius="4,0,0,4">
+                                    <ContentPresenter
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    ContentSource="Header"
+                                    Margin="10,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.FontSize" Value="14"/>
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Margin" Value="0,3,0,0"/>
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Width" Value="100"/>
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Height" Value="50"/>
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.HorizontalAlignment" Value="Right"/>
+                                        <Setter TargetName="Panel" Property="Border.Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush EndPoint="0,0" StartPoint="1,0">
+                                                    <GradientStop Color="#FF999999" Offset="1"/>
+                                                    <GradientStop Color="#FFE5E5E5"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Margin" Value="0,3,0,0"/>
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.FontSize" Value="14"/>
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Width" Value="90"/>
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Height" Value="50"/>
+                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.HorizontalAlignment" Value="Right"/>
+                                        <Setter TargetName="Panel" Property="Border.Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush EndPoint="0,0" StartPoint="1,0">
+                                                    <GradientStop Color="#FFBBBBBB" Offset="1"/>
+                                                    <GradientStop Color="#FFE5E5E5"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+
             <TabControl.Effect>
                 <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
             </TabControl.Effect>
             <TabItem Header="General" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     IsSelected="True" Margin="3,3,-7.6,-21.4" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5"
-                     Width="90">
-                <Grid Background="#FFE5E5E5">
+                     IsSelected="True" FontWeight="Bold" Cursor="Hand" Margin="26,0,-27.2,-0.2">
+                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right">
                     <GroupBox Header="Beep delay" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
                             <!-- Random delay -->
@@ -32,10 +81,10 @@
                                       IsChecked="{Binding Path=Options.GeneralRandomDelay, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
 
                             <!-- Minimum delay -->
-                            <Label Content="Minimum delay" HorizontalAlignment="Left" Margin="8,37,0,0"
+                            <Label Content="Minimum delay" HorizontalAlignment="Left" Margin="10,30,0,0"
                                    VerticalAlignment="Top" />
-                            <Slider x:Name="SldRandomDelayMin" HorizontalAlignment="Left" Margin="109,36,0,0"
-                                    VerticalAlignment="Top" Width="256" TickPlacement="Both" Cursor="Hand"
+                            <Slider x:Name="SldRandomDelayMin" HorizontalAlignment="Left" Margin="109,29,0,0"
+                                    VerticalAlignment="Top" Width="255" TickPlacement="Both" Cursor="Hand"
                                     Minimum="0.5" Maximum="10"
                                     Value="{Binding Path=Options.GeneralRandomStartDelayMin, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                     IsSnapToTickEnabled="True"
@@ -44,13 +93,13 @@
                                      Text="{Binding Value, ElementName=SldRandomDelayMin, StringFormat={}{0:0.0}}"
                                      HorizontalAlignment="Left" VerticalAlignment="Top"
                                      VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                                     Margin="370,36,0,0" />
+                                     Margin="372,29,0,0" />
 
                             <!-- Maximum delay -->
-                            <Label Content="Maximum delay" HorizontalAlignment="Left" Margin="8,64,0,0"
+                            <Label Content="Maximum delay" HorizontalAlignment="Left" Margin="10,58,0,0"
                                    VerticalAlignment="Top" />
-                            <Slider x:Name="SldRandomDelayMax" HorizontalAlignment="Left" Margin="109,63,0,0"
-                                    VerticalAlignment="Top" Width="256" TickPlacement="Both" Minimum="0.5"
+                            <Slider x:Name="SldRandomDelayMax" HorizontalAlignment="Left" Margin="109,55,0,0"
+                                    VerticalAlignment="Top" Width="255" TickPlacement="Both" Minimum="0.5"
                                     Cursor="Hand" Maximum="10"
                                     Value="{Binding Path=Options.GeneralRandomStartDelayMax, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                     IsSnapToTickEnabled="True"
@@ -59,28 +108,28 @@
                                      Text="{Binding Path=Value, ElementName=SldRandomDelayMax, StringFormat={}{0:0.0}}"
                                      HorizontalAlignment="Left" VerticalAlignment="Top"
                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                     Margin="370,64,0,0" />
+                                     Margin="372,56,0,0" />
                         </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Input" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     Margin="3,21.4,-7.6,-39.8" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5" Width="90">
-                <Grid Background="#FFE5E5E5">
+                     FontWeight="Bold" Cursor="Hand" Margin="26,0.2,-27.2,-0.4">
+                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right">
                     <GroupBox Header="Audio input" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
                             <!-- Device -->
                             <Label Content="Device" HorizontalAlignment="Left" VerticalAlignment="Top"
                                    RenderTransformOrigin="0.853,3.328" Margin="10,10,0,0" />
                             <ComboBox x:Name="CbxInputDevice" HorizontalAlignment="Left" Margin="98,10,0,0"
-                                      VerticalAlignment="Top" Width="306"
+                                      VerticalAlignment="Top" Width="314"
                                       SelectedIndex="{Binding Path=Options.SelectedDeviceId, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                       ItemsSource="{Binding Path=(pcShotTimer:App.InputDevices), Mode=OneWay, Source={x:Static Application.Current}}"
                                       SelectionChanged="CbxInputDevice_SelectionChanged" />
 
                             <!-- Sample rate -->
                             <Label Content="Sample rate" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                   RenderTransformOrigin="0.853,3.328" Margin="10,35,0,0" />
+                                   RenderTransformOrigin="0.853,3.328" Margin="10,37,0,0" />
                             <ComboBox HorizontalAlignment="Left" Margin="98,37,0,0" VerticalAlignment="Top" Width="104"
                                       IsEditable="False" IsReadOnly="True" SelectedIndex="0"
                                       SelectedValue="{Binding Path=Options.InputSampleRate, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
@@ -98,7 +147,7 @@
 
                             <!-- Bit depth -->
                             <Label Content="Bit depth" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                   RenderTransformOrigin="0.853,3.328" Margin="10,64,0,0" />
+                                   RenderTransformOrigin="0.853,3.328" Margin="10,62,0,0" />
                             <ComboBox HorizontalAlignment="Left" Margin="98,64,0,0" VerticalAlignment="Top" Width="104"
                                       ToolTip="Currently, only 16bit samples are supported by the sound detector."
                                       IsEditable="False" IsReadOnly="True" SelectedIndex="0"
@@ -130,8 +179,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Sounds" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     Margin="3,39.8,-7.6,-58.2" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5" Width="90">
-                <Grid Background="#FFE5E5E5">
+                      FontWeight="Bold" Cursor="Hand" Margin="26,0.4,-27.2,0.4">
+                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right">
                     <GroupBox Header="Sound" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
                             <CheckBox Content="Play Ready/Standy sounds" HorizontalAlignment="Left" Margin="10,10,0,0"
@@ -142,15 +191,15 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Detector" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     Margin="3,58.2,-7.8,-77.6" FontWeight="Bold" Cursor="Hand" Background="#FFE5E5E5" Width="90">
-                <Grid Background="#FFE5E5E5">
+                      FontWeight="Bold" Cursor="Hand" Margin="26,-0.4,-27.2,0.2">
+                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right">
                     <GroupBox Header="Shot detector" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
                             <!-- Detector sensitivity -->
-                            <Label Content="Sensitivity" HorizontalAlignment="Left" Margin="10,10,0,0"
-                                   VerticalAlignment="Top" Grid.ColumnSpan="3" />
+                            <Label Content="Sensitivity" HorizontalAlignment="Left" Margin="10,11,0,0"
+                                   VerticalAlignment="Top" />
                             <Slider x:Name="SldDetectorSensitivity" HorizontalAlignment="Left" Margin="89,10,0,0"
-                                    VerticalAlignment="Top" Width="284" TickPlacement="Both" Cursor="Hand" Minimum="1"
+                                    VerticalAlignment="Top" Width="287" TickPlacement="Both" Cursor="Hand" Minimum="1"
                                     Maximum="100"
                                     Value="{Binding Path=Options.DetectorSensitivity, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                     IsSnapToTickEnabled="True" SmallChange="1" TickFrequency="5" />
@@ -158,7 +207,7 @@
                                      Text="{Binding Value, ElementName=SldDetectorSensitivity, StringFormat={}{0:0}}"
                                      HorizontalAlignment="Left" VerticalAlignment="Top"
                                      VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                                     Margin="378,10,0,0" />
+                                     Margin="381,10,0,0" />
 
                         </Grid>
                     </GroupBox>
