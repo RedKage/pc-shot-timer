@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 using System.Xml.Serialization;
 
 namespace PCShotTimer
@@ -9,11 +7,8 @@ namespace PCShotTimer
     ///     Container for the options.
     /// </summary>
     [XmlRoot("Options")]
-    public class OptionsData : INotifyPropertyChanged
+    public class OptionsData
     {
-        /// <summary>PropertyChangedEventHandler</summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
         #region Properties
 
         /// <summary>Gets or sets wether the beep shall have a random delay after pressing Start.</summary>
