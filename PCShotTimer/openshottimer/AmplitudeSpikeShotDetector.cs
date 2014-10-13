@@ -91,7 +91,20 @@ namespace PCShotTimer.openshottimer
                 var samplesAboveThreshold = 0;
                 while (reader.BaseStream.Position != reader.BaseStream.Length)
                 {
-                    var rawSample = reader.ReadInt16();
+                    short rawSample;
+
+                    // TODO I had a 2 crashes there while messing with the sample rate. Now can't reproduce.
+                    // Weird cuz Position was same as reader.BaseStream.Length in the debugger.
+                    // So yeah it was like impossible to crash there, shoulda exited the while.
+                    // Guess that the stream can get affected somehow from outside that loop then wtf?
+                    try
+                    {
+                        rawSample = reader.ReadInt16();
+                    }
+                    catch (EndOfStreamException)
+                    {
+                        break;
+                    }
 
                     // Can't Abs of -32768 because that will output +32768 which is outta range for a short:
                     // it's max value is +32767 (it's one short, yeah...)
