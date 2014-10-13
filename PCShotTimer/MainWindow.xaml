@@ -3,27 +3,72 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-        Title="Shot Timer" Height="525.2" Width="710" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
+        Title="Shot Timer" Height="470" Width="710" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
         Icon="resources/Icon.ico" Closing="WinMainWindow_Closing" Closed="WinMainWindow_Closed">
 
     <Window.Resources>
+        <!-- Green LED blinking animation -->
         <Storyboard x:Key="GreenLedBlinking" RepeatBehavior="Forever">
-            <DoubleAnimation Storyboard.TargetName="LedGreen"
-                             Storyboard.TargetProperty="Opacity"
-                             From="0.3"
-                             To="1.0"
-                             AutoReverse="True"
-                             Duration="0:0:0.5" />
+            <DoubleAnimation
+                Storyboard.TargetName="LedGreen"
+                Storyboard.TargetProperty="Opacity"
+                From="0.3"
+                To="1.0"
+                AutoReverse="True"
+                Duration="0:0:0.5" />
         </Storyboard>
 
+        <!-- Big ass timer blinking -->
         <Storyboard x:Key="TimerBlinking" RepeatBehavior="Forever">
-            <DoubleAnimation Storyboard.TargetName="TxtBoxTotalTime"
-                             Storyboard.TargetProperty="Foreground.Opacity"
-                             From="0.6"
-                             To="1.0"
-                             AutoReverse="True"
-                             Duration="0:0:0.5" />
+            <DoubleAnimation
+                Storyboard.TargetName="TxtBoxTotalTime"
+                Storyboard.TargetProperty="Foreground.Opacity"
+                From="0.6"
+                To="1.0"
+                AutoReverse="True"
+                Duration="0:0:0.5" />
         </Storyboard>
+
+        <!-- Buttons style to remove the WPF default 'animated' mouse over effect -->
+        <Style x:Key="MyButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="Border" 
+                            BorderBrush="Black"
+                            BorderThickness="2"
+                            CornerRadius="3"
+                            HorizontalAlignment="Right"
+                            Width="116"
+                            Height="60"
+                            Cursor="Hand">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                TextBlock.FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
+                                TextBlock.FontSize="22"
+                                TextBlock.FontWeight="Bold"/>
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFAAAAAA" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
+                            </Border.Effect>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderThickness" Value="3" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Window.Effect>
@@ -39,7 +84,7 @@
 
     <Grid x:Name="GridMain">
 
-        <!-- Big Timer -->
+        <!-- Big (ass) Timer -->
         <TextBox x:Name="TxtBoxTotalTime" HorizontalAlignment="Left" Height="85" Margin="10,10,0,0" TextWrapping="Wrap"
                  Text="{Binding Path=TimeElapsed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  VerticalAlignment="Top" Width="552.239" TextAlignment="Center" FontSize="72"
@@ -47,7 +92,7 @@
                  BorderThickness="2" BorderBrush="Black" d:DataContext="{d:DesignData}" IsUndoEnabled="False"
                  IsTabStop="False" IsHitTestVisible="False" Focusable="False" AllowDrop="False">
             <TextBox.Effect>
-                <DropShadowEffect RenderingBias="Quality" />
+                <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
             </TextBox.Effect>
             <TextBox.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -72,11 +117,11 @@
         </Ellipse>
 
         <!-- ListView -->
-        <ListView x:Name="LstViewShots" HorizontalAlignment="Left" Height="300" Margin="10,105,0,0"
-                  VerticalAlignment="Top" Width="552.239" BorderBrush="Black" BorderThickness="2"
+        <ListView x:Name="LstViewShots" HorizontalAlignment="Left" Height="322" Margin="10,105,0,0"
+                  VerticalAlignment="Top" Width="552" BorderBrush="Black" BorderThickness="2"
                   d:DataContext="{d:DesignInstance}">
             <ListView.Effect>
-                <DropShadowEffect />
+                <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
             </ListView.Effect>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -93,89 +138,28 @@
         </ListView>
 
         <!-- START -->
-        <Button x:Name="BtnStart" Content="Start" HorizontalAlignment="Right" Margin="0,105,13.6,0"
-                VerticalAlignment="Top" Width="116.4" Height="60" IsDefault="True" Click="ButtonStart_Click"
-                FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont" FontSize="22" BorderBrush="Black"
-                FontWeight="Bold" Cursor="Hand" BorderThickness="3">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFAAAAAA" Offset="0" />
-                    <GradientStop Color="White" Offset="1" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
-            </Button.Effect>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnStart" Content="Start" HorizontalAlignment="Right" Margin="0,105,10,0"
+                VerticalAlignment="Top" IsDefault="True" Click="ButtonStart_Click">
         </Button>
 
         <!-- STOP -->
-        <Button x:Name="BtnStop" Content="Stop" HorizontalAlignment="Right" Margin="0,185,13.6,0"
-                VerticalAlignment="Top" Width="116.4" Height="60" IsDefault="True" Click="ButtonStop_Click"
-                FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont" FontSize="22" IsEnabled="False"
-                BorderBrush="Black" FontWeight="Bold" Cursor="Hand">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFAAAAAA" Offset="0" />
-                    <GradientStop Color="White" Offset="1" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
-            </Button.Effect>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnStop" Content="Stop" HorizontalAlignment="Right" Margin="0,171,10,0"
+                VerticalAlignment="Top" Click="ButtonStop_Click">
         </Button>
 
         <!-- CLEAR -->
-        <Button x:Name="BtnClear" Content="Clear" HorizontalAlignment="Right" Margin="0,265,13.6,0"
-                VerticalAlignment="Top" Width="116.4" Height="60" IsDefault="True" Click="ButtonClear_Click"
-                FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont" FontSize="22" BorderBrush="Black"
-                IsEnabled="False" FontWeight="Bold" Cursor="Hand">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFAAAAAA" Offset="0" />
-                    <GradientStop Color="White" Offset="1" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
-            </Button.Effect>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnClear" Content="Clear" HorizontalAlignment="Right" Margin="0,237,10,0"
+                VerticalAlignment="Top"  Click="ButtonClear_Click">
         </Button>
 
         <!-- OPTIONS -->
-        <Button x:Name="BtnOption" Content="Options" HorizontalAlignment="Right" Margin="0,345,13.6,0"
-                VerticalAlignment="Top" Width="116.4" Height="60" IsDefault="True" Click="ButtonOptions_Click"
-                FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont" FontSize="22" BorderBrush="Black"
-                FontWeight="Bold" Cursor="Hand">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFAAAAAA" Offset="0" />
-                    <GradientStop Color="White" Offset="1" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
-            </Button.Effect>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnOption" Content="Options" HorizontalAlignment="Right" Margin="0,302,10,0"
+                VerticalAlignment="Top" Click="ButtonOptions_Click">
         </Button>
 
         <!-- EXIT -->
-        <Button x:Name="BtnExit" Content="Exit" HorizontalAlignment="Right" Margin="0,0,14,15"
-                VerticalAlignment="Bottom" Width="116" Height="50" IsDefault="True" Click="ButtonExit_Click"
-                FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont" FontSize="22" BorderBrush="Black"
-                FontWeight="Bold" Cursor="Hand">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFAAAAAA" Offset="0" />
-                    <GradientStop Color="White" Offset="1" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
-            </Button.Effect>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnExit" Content="Exit" HorizontalAlignment="Right" Margin="0,367,10,0"
+                VerticalAlignment="Top" Click="ButtonExit_Click">
         </Button>
-
-
-        <!-- Console -->
-        <TextBox x:Name="Console" HorizontalAlignment="Left" Height="53" Margin="10,0,0,12.2" TextWrapping="Wrap"
-                 VerticalAlignment="Bottom" Width="552" VerticalScrollBarVisibility="Visible" />
-
     </Grid>
 </Window>

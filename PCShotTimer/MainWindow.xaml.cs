@@ -135,7 +135,6 @@ namespace PCShotTimer
         protected void Clear()
         {
             LstViewShots.Items.Clear();
-            Console.Clear();
             TxtBoxTotalTime.Text = ShotTimer.DEFAULT_TIMER_VALUE;
             BtnClear.IsEnabled = false;
             if (null != _shotTimer)
@@ -173,10 +172,7 @@ namespace PCShotTimer
                     var shotTime = ShotTimer.HumanReadableMs(shot.Time);
                     var shotSplit = ShotTimer.HumanReadableMs(shot.Split);
 
-                    // Print in console
-                    Console.AppendText(String.Format("\n* Shot {0} detected @ {1}. Split={2}", shotNumber, shotTime,
-                        shotSplit));
-                    Console.ScrollToEnd();
+                    App.Info(String.Format("Shot {0} detected @ {1}. Split={2}", shotNumber, shotTime, shotSplit));
 
                     // Create a row
                     LstViewShots.Items.Add(new {Id = shotNumber, Time = shotTime, Split = shotSplit});
