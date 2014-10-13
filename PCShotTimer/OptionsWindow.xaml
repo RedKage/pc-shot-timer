@@ -22,35 +22,32 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TabItem">
-                                <Border Name="Panel" BorderThickness="1,1,0,1" BorderBrush="#FFE5E5E5" CornerRadius="4,0,0,4">
+                                <Border
+                                    Name="Panel"
+                                    BorderThickness="1,1,0,1"
+                                    BorderBrush="#FFE5E5E5"
+                                    CornerRadius="4,0,0,4"
+                                    Width="90"
+                                    Height="50"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,3,0,0">
                                     <ContentPresenter
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    ContentSource="Header"
-                                    Margin="10,2"/>
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        TextBlock.FontSize="14"
+                                        />
+                                    <Border.Background>
+                                        <LinearGradientBrush EndPoint="0,0" StartPoint="1,0">
+                                            <GradientStop Color="#FF999999" Offset="1"/>
+                                            <GradientStop Color="#FFE5E5E5"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.FontSize" Value="14"/>
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Margin" Value="0,3,0,0"/>
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Width" Value="100"/>
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Height" Value="50"/>
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.HorizontalAlignment" Value="Right"/>
-                                        <Setter TargetName="Panel" Property="Border.Background">
-                                            <Setter.Value>
-                                                <LinearGradientBrush EndPoint="0,0" StartPoint="1,0">
-                                                    <GradientStop Color="#FF999999" Offset="1"/>
-                                                    <GradientStop Color="#FFE5E5E5"/>
-                                                </LinearGradientBrush>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="False">
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Margin" Value="0,3,0,0"/>
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.FontSize" Value="14"/>
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Width" Value="90"/>
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.Height" Value="50"/>
-                                        <Setter TargetName="Panel" Property="HeaderedItemsControl.HorizontalAlignment" Value="Right"/>
+                                        <Setter TargetName="Panel" Property="TextBlock.FontSize" Value="15"/>
+                                        <Setter TargetName="Panel" Property="TextBlock.Width" Value="100"/>
                                         <Setter TargetName="Panel" Property="Border.Background">
                                             <Setter.Value>
                                                 <LinearGradientBrush EndPoint="0,0" StartPoint="1,0">
