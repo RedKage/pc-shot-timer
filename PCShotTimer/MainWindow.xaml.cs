@@ -7,7 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using NAudio.Wave;
-using PCShotTimer.openshottimer;
 
 namespace PCShotTimer
 {
@@ -64,12 +63,18 @@ namespace PCShotTimer
         /// </summary>
         protected void Initialize()
         {
-            try
+            Dispatcher.Invoke((Action) (() =>
             {
-                Dispatcher.Invoke((Action) (() =>
+                try
                 {
                     Clear();
 
+                    // Check input devices
+                    if (WaveInEvent.DeviceCount == 0)
+                    {
+                        throw new Exception("No input device found. Can't continue.");
+                    }
+                    
                     // Initializes the audio input device
                     var waveIn = new WaveInEvent
                     {
@@ -94,28 +99,27 @@ namespace PCShotTimer
 
                     // Create the options window
                     _optionsWindow = new OptionsWindow(_options);
-                }));
-            }
-            catch (ApplicationException exception)
-            {
-                var message = String.Format("{0}\nReverting to previous settings.", exception.Message);
+                }
+                catch (ApplicationException exception)
+                {
+                    var message = String.Format("{0}\nReverting to previous settings.", exception.Message);
 
-                // We can stop the bleeding!
-                App.DialogWarning(message);
+                    // We can stop the bleeding!
+                    App.DialogWarning(message);
 
-                // Revert the previous config
-                _options = _previousOptions;
+                    // Revert the previous config
+                    _options = _previousOptions;
 
-                // Try again
-                var thread = new Thread(Initialize);
-                thread.Start();
-            }
-            catch (Exception)
-            {
-                // Let's crash that party
-                App.Error("Unknown error from Initialize()");
-                throw;
-            }
+                    // Try again
+                    var thread = new Thread(Initialize);
+                    thread.Start();
+                }
+                catch (Exception e)
+                {
+                    // Let's crash that party
+                    App.FatalError(e);
+                }
+            }));
         }
 
         /// <summary>

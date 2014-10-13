@@ -73,18 +73,6 @@ namespace PCShotTimer
         #region Internal methods
 
         /// <summary>
-        ///     Fatal error msgbox and exits.
-        /// </summary>
-        /// <param name="exception">The exception responsible.</param>
-        private void FatalError(Exception exception)
-        {
-            Error(exception.Message);
-            Debug(exception.StackTrace);
-            MessageBox.Show(exception.Message, "Fatal error", MessageBoxButton.OK, MessageBoxImage.Stop);
-            Shutdown(1);
-        }
-
-        /// <summary>
         ///     Get the available audio input devices.
         ///     Thought that would be trivial shit, but this wasn't.
         ///     - We use NAudio to record the audio
@@ -161,6 +149,18 @@ namespace PCShotTimer
         {
             Info(message);
             MessageBox.Show(message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        /// <summary>
+        ///     Fatal error msgbox and exits.
+        /// </summary>
+        /// <param name="exception">The exception responsible.</param>
+        public static void FatalError(Exception exception)
+        {
+            Error(exception.Message);
+            Debug(exception.StackTrace);
+            MessageBox.Show(exception.Message, "Fatal error", MessageBoxButton.OK, MessageBoxImage.Stop);
+            Current.Shutdown(1);
         }
 
         /// <summary>

@@ -127,8 +127,9 @@ namespace PCShotTimer
             {
                 Process.GetCurrentProcess().ProcessorAffinity = new IntPtr(2);
             }
-            catch
+            catch(Exception e)
             {
+                App.Error("Setting processor affinity failed: {0}", e.Message);
             }
 
             // Finds all the ReadyStandy sounds
