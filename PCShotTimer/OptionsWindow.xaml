@@ -71,8 +71,8 @@
                 <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
             </TabControl.Effect>
             <TabItem Header="General" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     IsSelected="True" FontWeight="Bold" Cursor="Hand" Margin="26,0,-27.2,-0.2">
-                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right">
+                     IsSelected="True" FontWeight="Bold" Margin="28,-2,-29.2,1.8" Cursor="Hand">
+                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
                     <GroupBox Header="Beep delay" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
                             <!-- Random delay -->
@@ -100,7 +100,7 @@
                                    VerticalAlignment="Top" />
                             <Slider x:Name="SldRandomDelayMax" HorizontalAlignment="Left" Margin="109,55,0,0"
                                     VerticalAlignment="Top" Width="255" TickPlacement="Both" Minimum="0.5"
-                                    Cursor="Hand" Maximum="10"
+                                    Maximum="10"
                                     Value="{Binding Path=Options.GeneralRandomStartDelayMax, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                     IsSnapToTickEnabled="True"
                                     Ticks="0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10" />
@@ -114,8 +114,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Input" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                     FontWeight="Bold" Cursor="Hand" Margin="26,0.2,-27.2,-0.4">
-                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right">
+                     FontWeight="Bold" Margin="28,-1.8,-29.2,1.6" Cursor="Hand">
+                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
                     <GroupBox Header="Audio input" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
                             <!-- Device -->
@@ -179,8 +179,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Sounds" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                      FontWeight="Bold" Cursor="Hand" Margin="26,0.4,-27.2,0.4">
-                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right">
+                      FontWeight="Bold" Margin="28,-1.6,-29.2,2.4" Cursor="Hand">
+                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
                     <GroupBox Header="Sound" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
                             <CheckBox Content="Play Ready/Standy sounds" HorizontalAlignment="Left" Margin="10,10,0,0"
@@ -191,15 +191,15 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Detector" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                      FontWeight="Bold" Cursor="Hand" Margin="26,-0.4,-27.2,0.2">
-                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right">
+                      FontWeight="Bold" Margin="28,-2.4,-29.2,2.2" Cursor="Hand">
+                <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
                     <GroupBox Header="Shot detector" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
                             <!-- Detector sensitivity -->
                             <Label Content="Sensitivity" HorizontalAlignment="Left" Margin="10,11,0,0"
                                    VerticalAlignment="Top" />
                             <Slider x:Name="SldDetectorSensitivity" HorizontalAlignment="Left" Margin="89,10,0,0"
-                                    VerticalAlignment="Top" Width="287" TickPlacement="Both" Cursor="Hand" Minimum="1"
+                                    VerticalAlignment="Top" Width="287" TickPlacement="Both" Minimum="1"
                                     Maximum="100"
                                     Value="{Binding Path=Options.DetectorSensitivity, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                     IsSnapToTickEnabled="True" SmallChange="1" TickFrequency="5" />
