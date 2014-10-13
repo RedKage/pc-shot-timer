@@ -37,7 +37,7 @@
                     <ControlTemplate TargetType="Button">
                         <Border Name="Border" 
                             BorderBrush="Black"
-                            BorderThickness="2"
+                            BorderThickness="1"
                             CornerRadius="3"
                             HorizontalAlignment="Right"
                             Width="116"
@@ -51,7 +51,7 @@
                                 TextBlock.FontWeight="Bold"/>
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FFAAAAAA" Offset="0" />
+                                    <GradientStop Color="#FF777777" Offset="0" />
                                     <GradientStop Color="White" Offset="1" />
                                 </LinearGradientBrush>
                             </Border.Background>
@@ -61,8 +61,21 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="BorderThickness" Value="3" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FF222222" />
+                                <Setter TargetName="Border" Property="Border.Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FF888888" Offset="0" />
+                                            <GradientStop Color="White" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Cursor" Value="Arrow" />
+                                <Setter TargetName="Border" Property="BorderThickness" Value="1" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="DarkSlateGray" />
+                                <Setter TargetName="Border" Property="TextBlock.Foreground" Value="Gray" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -149,7 +162,7 @@
 
         <!-- CLEAR -->
         <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnClear" Content="Clear" HorizontalAlignment="Right" Margin="0,237,10,0"
-                VerticalAlignment="Top"  Click="ButtonClear_Click">
+                VerticalAlignment="Top"  Click="ButtonClear_Click" IsEnabled="False">
         </Button>
 
         <!-- OPTIONS -->
