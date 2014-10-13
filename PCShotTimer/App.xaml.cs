@@ -26,7 +26,7 @@ namespace PCShotTimer
         private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
         /// <summary>Location the assembly directory.</summary>
-        public static string AppDirectory = Path.GetDirectoryName(_assembly.CodeBase).Replace(@"file:\", "");
+        public static string AppDirectory = Path.GetDirectoryName(_assembly.Location);
 
         #endregion
 
@@ -157,9 +157,10 @@ namespace PCShotTimer
         /// <param name="exception">The exception responsible.</param>
         public static void FatalError(Exception exception)
         {
-            Error(exception.Message);
-            Debug(exception.StackTrace);
-            MessageBox.Show(exception.Message, "Fatal error", MessageBoxButton.OK, MessageBoxImage.Stop);
+            var message = String.Format("{0}:\n{1}", exception.GetType().Name, exception.Message);
+            Error(message);
+            Debug(message);
+            MessageBox.Show(message, "Fatal error", MessageBoxButton.OK, MessageBoxImage.Stop);
             Current.Shutdown(1);
         }
 

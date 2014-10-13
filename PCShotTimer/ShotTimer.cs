@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
+using System.Reflection;
 using System.Threading;
 using System.Timers;
 using System.Windows.Threading;
@@ -119,7 +120,7 @@ namespace PCShotTimer
         {
             _options = options;
             ShotFired = shotFiredEvent;
-            SoundsDirectory = App.AppDirectory + "\\" + SOUNDS_DIRECORY_NAME;
+            SoundsDirectory = String.Format(@"{0}\{1}", App.AppDirectory, SOUNDS_DIRECORY_NAME);
             TimeElapsed = DEFAULT_TIMER_VALUE;
 
             // Uses the second Core or Processor
