@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using NAudio.Wave;
@@ -15,7 +16,10 @@ namespace PCShotTimer
     /// </summary>
     public partial class MainWindow
     {
-        #region Events
+        #region Members
+
+        /// <summary>Keep the big ass binding as we clear it when we stop and restore it on start.</summary>
+        private readonly Binding _timerBinding;
 
         /// <summary>Blinking animation for the Green LED</summary>
         private Storyboard _ledGreenBlinking;
@@ -48,6 +52,9 @@ namespace PCShotTimer
 
             // Load the defaults params         
             _options = new OptionsData(App.DefaultConfig);
+
+            // Save the (big ass) timer binding. We will have to clear it when we stop and restore it on start.
+            _timerBinding = BindingOperations.GetBinding(TxtBoxTotalTime, TextBox.TextProperty);
 
             // Init in a new thread for faster startup
             var thread = new Thread(Initialize);
@@ -207,6 +214,9 @@ namespace PCShotTimer
             _ledGreenBlinking.Begin();
             _timerBlinking.Stop();
 
+            // Activate binding for the big ass timer up there
+            BindingOperations.SetBinding(TxtBoxTotalTime, TextBox.TextProperty, _timerBinding);
+
             // Start shot timer
             _shotTimer.Start();
         }
@@ -235,6 +245,9 @@ namespace PCShotTimer
             LedGreen.Opacity = 0.5;
             LedRed.Opacity = 1.0;
 
+            // Stop the big ass timer's binding as it would continue to be updated by the property
+            BindingOperations.ClearBinding(TxtBoxTotalTime, TextBox.TextProperty);
+            
             // Show lastest time
             if (LstViewShots.Items.Count < 1)
                 return;
@@ -244,6 +257,8 @@ namespace PCShotTimer
             if (null == latestTimeRow)
                 return;
 
+            // TODO hmm looks like that dynamic shit is slow like really slow (1sec or a bit more)
+            // Create an explicite type here instead for faster execution?
             var latestTime = (dynamic) latestTimeRow.Content;
             latestTimeRow.Background = Brushes.LightGray;
             TxtBoxTotalTime.Text = latestTime.Time;

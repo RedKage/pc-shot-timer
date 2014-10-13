@@ -208,6 +208,9 @@ namespace PCShotTimer
             // Calls the tick one last time to make sure that the TimeElapsed is accurate.
             OnDispatcherTimerTick(this, EventArgs.Empty);
 
+            // Clear the time elapsed
+            TimeElapsed = DEFAULT_TIMER_VALUE;
+
             // Revert process priorities
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Normal;
             Thread.CurrentThread.Priority = ThreadPriority.Normal;
