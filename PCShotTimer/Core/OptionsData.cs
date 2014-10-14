@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Reflection;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace PCShotTimer.Core
@@ -155,6 +155,28 @@ namespace PCShotTimer.Core
             var optionsCopy = new OptionsData();
             optionsCopy.Update(this);
             return optionsCopy;
+        }
+
+        /// <summary>
+        /// Text representation of this OptionsData object.
+        /// </summary>
+        /// <returns>
+        /// Hard to explain.
+        /// Only human readable delay and ready/standby sounds for now
+        /// </returns>
+        public override string ToString()
+        {
+            var rc = new StringBuilder();
+            if (GeneralRandomDelay)
+                rc.AppendFormat("Delay: {0}-{1}secs", GeneralRandomStartDelayMin, GeneralRandomStartDelayMax);
+            else
+                rc.AppendFormat("Delay: {0}secs", GeneralRandomStartDelayMin);
+
+            rc.Append(SoundPlayReadyStandby
+                ? " / Ready-standby: yes"
+                : " / Ready-standby: no");
+
+            return rc.ToString();
         }
 
         #endregion

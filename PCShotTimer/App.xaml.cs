@@ -95,7 +95,7 @@ namespace PCShotTimer
         /// <returns>A list of the available audio devices ordered by NAudio device index.</returns>
         private static IList<MMDevice> GetAudioInputDevices()
         {
-            Info("GetAudioInputDevices requested");
+            Info("Detected input devices: {0}", WaveIn.DeviceCount);
 
             // Enumerates audio input devices using MMDevice
             var devices = new MMDevice[WaveIn.DeviceCount];
@@ -120,7 +120,7 @@ namespace PCShotTimer
                     }
                 }
 
-                Info(@"{0}:{1}, {2} channels", naudioIndex, deviceInfo.FriendlyName,
+                Info("{0}:{1}, {2} channels", naudioIndex, deviceInfo.FriendlyName,
                     deviceInfo.AudioEndpointVolume.Channels.Count);
                 devices[naudioIndex] = deviceInfo;
             }
