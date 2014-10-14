@@ -16,12 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * File converted to C# by
- * Tactical Freak, 2014
- * Original source can by found there https://code.google.com/p/openshottimer/
- */
-
 using System;
 using System.IO;
 
@@ -29,6 +23,10 @@ namespace PCShotTimer.openshottimer
 {
     /// <summary>
     ///     Base class for different shot detection algorithms.
+    /// 
+    /// File converted to C# by
+    /// Tactical Freak, 2014
+    /// Original source can by found there https://code.google.com/p/openshottimer/
     /// </summary>
     public abstract class ShotDetector
     {

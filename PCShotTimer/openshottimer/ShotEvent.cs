@@ -16,12 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * File converted to C# by
- * Tactical Freak, 2014
- * Original source can by found there https://code.google.com/p/openshottimer/
- */
-
 using System;
 
 namespace PCShotTimer.openshottimer
@@ -31,6 +25,11 @@ namespace PCShotTimer.openshottimer
     ///     - a number (the shot number)
     ///     - a number of ms since the beginning for that shot
     ///     - a number of ms since the last shot
+    /// 
+    /// 
+    /// File converted to C# by
+    /// Tactical Freak, 2014
+    /// Original source can by found there https://code.google.com/p/openshottimer/
     /// </summary>
     public class ShotEvent : EventArgs
     {
