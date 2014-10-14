@@ -50,8 +50,18 @@ namespace PCShotTimer
         {
             InitializeComponent();
 
-            // Load the defaults params         
-            _options = new OptionsData(App.DefaultConfig);
+            try
+            {
+                // Load the user config
+                _options = new OptionsData(String.Format(@"{0}\{1}", App.AppDirectory, App.UserConfigFileName));
+            }
+            catch (Exception e)
+            {
+                App.DialogContinue(e.Message);
+
+                // Load the defaults params         
+                _options = new OptionsData(App.DefaultConfig);
+            }
 
             // Save the (big ass) timer binding. We will have to clear it when we stop and restore it on start.
             _timerBinding = BindingOperations.GetBinding(TxtBoxTotalTime, TextBox.TextProperty);
@@ -112,7 +122,7 @@ namespace PCShotTimer
                     var message = String.Format("{0}\nReverting to previous settings.", exception.Message);
 
                     // We can stop the bleeding!
-                    App.DialogWarning(message);
+                    App.DialogContinue(message);
 
                     // Revert the previous config
                     _options = _previousOptions;
@@ -124,7 +134,7 @@ namespace PCShotTimer
                 catch (Exception e)
                 {
                     // Let's crash that party
-                    App.FatalError(e);
+                    App.DialogFatalError(e);
                 }
             }));
         }
@@ -254,7 +264,7 @@ namespace PCShotTimer
                 return;
 
             // TODO hmm looks like that dynamic shit is slow like really slow (1sec or a bit more)
-            // Create an explicite type here instead for faster execution?
+            // Create an explicit type here instead for faster execution?
             var latestTime = (dynamic) latestTimeRow.Content;
             latestTimeRow.Background = Brushes.LightGray;
             TxtBoxTotalTime.Text = latestTime.Time;
@@ -287,6 +297,18 @@ namespace PCShotTimer
             {
                 // Restore the old options when canceled
                 _options = _previousOptions;
+            }
+            else
+            {
+                // Save the config
+                try
+                {
+                    _options.Save(String.Format(@"{0}\{1}", App.AppDirectory, App.UserConfigFileName));
+                }
+                catch (Exception exception)
+                {
+                    App.DialogWarning(exception.Message);
+                }
             }
 
             // Options changed, so gotta reload everything man

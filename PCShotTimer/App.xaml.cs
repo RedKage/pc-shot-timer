@@ -28,6 +28,9 @@ namespace PCShotTimer
         /// <summary>Location the assembly directory.</summary>
         public static string AppDirectory = Path.GetDirectoryName(_assembly.Location);
 
+        /// <summary>File name for the user config saved on disk.</summary>
+        public const string UserConfigFileName = "config.xml";
+
         #endregion
 
         #region Properties
@@ -64,7 +67,7 @@ namespace PCShotTimer
             catch (Exception e)
             {
                 Error("Exception caught from App");
-                FatalError(e);
+                DialogFatalError(e);
             }
         }
 
@@ -142,12 +145,27 @@ namespace PCShotTimer
         }
 
         /// <summary>
+        ///     An error msgbox providing the user the option to continue the execution or the program.
+        /// </summary>
+        /// <param name="message">Explanation.</param>
+        public static void DialogContinue(string message)
+        {
+            Error(message);
+            message = String.Format("{0}\n{1}", message, "Do you want to continue the program execution?");
+            var rc = MessageBox.Show(message, "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
+            if (MessageBoxResult.No == rc)
+            {
+                Current.Shutdown(1);
+            }
+        }
+
+        /// <summary>
         ///     An error msgbox.
         /// </summary>
         /// <param name="message">Explanation.</param>
         public static void DialogWarning(string message)
         {
-            Info(message);
+            Error(message);
             MessageBox.Show(message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
@@ -155,7 +173,7 @@ namespace PCShotTimer
         ///     Fatal error msgbox and exits.
         /// </summary>
         /// <param name="exception">The exception responsible.</param>
-        public static void FatalError(Exception exception)
+        public static void DialogFatalError(Exception exception)
         {
             var message = String.Format("{0}:\n{1}", exception.GetType().Name, exception.Message);
             Error(message);
