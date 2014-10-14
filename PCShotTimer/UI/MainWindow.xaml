@@ -1,10 +1,10 @@
-﻿<Window x:Name="WinMainWindow" x:Class="PCShotTimer.MainWindow"
+﻿<Window x:Name="WinMainWindow" x:Class="PCShotTimer.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         Title="Shot Timer" Height="470" Width="710" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
-        Icon="resources/Icon.ico" Closing="WinMainWindow_Closing" Closed="WinMainWindow_Closed">
+        Icon="/resources/Icon.ico" Closing="WinMainWindow_Closing" Closed="WinMainWindow_Closed">
 
     <Window.Resources>
         <!-- Green LED blinking animation -->
@@ -31,24 +31,24 @@
 
         <!-- Buttons style to remove the WPF default 'animated' mouse over effect -->
         <Style x:Key="MyButtonStyle" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="Border" 
-                            BorderBrush="Black"
-                            BorderThickness="1"
-                            CornerRadius="3"
-                            HorizontalAlignment="Right"
-                            Width="116"
-                            Height="60"
-                            Cursor="Hand">
+                        <Border Name="Border"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                CornerRadius="3"
+                                HorizontalAlignment="Right"
+                                Width="116"
+                                Height="60"
+                                Cursor="Hand">
                             <ContentPresenter
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 TextBlock.FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
                                 TextBlock.FontSize="22"
-                                TextBlock.FontWeight="Bold"/>
+                                TextBlock.FontWeight="Bold" />
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#FF777777" Offset="0" />
@@ -151,28 +151,28 @@
         </ListView>
 
         <!-- START -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnStart" Content="Start" HorizontalAlignment="Right" Margin="0,105,10,0"
-                VerticalAlignment="Top" IsDefault="True" Click="ButtonStart_Click">
-        </Button>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnStart" Content="Start" HorizontalAlignment="Right"
+                Margin="0,105,10,0"
+                VerticalAlignment="Top" IsDefault="True" Click="ButtonStart_Click" />
 
         <!-- STOP -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnStop" Content="Stop" HorizontalAlignment="Right" Margin="0,171,10,0"
-                VerticalAlignment="Top" Click="ButtonStop_Click">
-        </Button>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnStop" Content="Stop" HorizontalAlignment="Right"
+                Margin="0,171,10,0"
+                VerticalAlignment="Top" Click="ButtonStop_Click" />
 
         <!-- CLEAR -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnClear" Content="Clear" HorizontalAlignment="Right" Margin="0,237,10,0"
-                VerticalAlignment="Top"  Click="ButtonClear_Click" IsEnabled="False">
-        </Button>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnClear" Content="Clear" HorizontalAlignment="Right"
+                Margin="0,237,10,0"
+                VerticalAlignment="Top" Click="ButtonClear_Click" IsEnabled="False" />
 
         <!-- OPTIONS -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnOption" Content="Options" HorizontalAlignment="Right" Margin="0,302,10,0"
-                VerticalAlignment="Top" Click="ButtonOptions_Click">
-        </Button>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnOption" Content="Options" HorizontalAlignment="Right"
+                Margin="0,302,10,0"
+                VerticalAlignment="Top" Click="ButtonOptions_Click" />
 
         <!-- EXIT -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnExit" Content="Exit" HorizontalAlignment="Right" Margin="0,367,10,0"
-                VerticalAlignment="Top" Click="ButtonExit_Click">
-        </Button>
+        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnExit" Content="Exit" HorizontalAlignment="Right"
+                Margin="0,367,10,0"
+                VerticalAlignment="Top" Click="ButtonExit_Click" />
     </Grid>
 </Window>

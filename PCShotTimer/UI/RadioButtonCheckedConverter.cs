@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace PCShotTimer
+namespace PCShotTimer.UI
 {
     /// <summary>
     ///     RadioButton Converter.

@@ -4,9 +4,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pcShotTimer="clr-namespace:PCShotTimer"
-    x:Class="PCShotTimer.OptionsWindow"
+    x:Class="PCShotTimer.UI.OptionsWindow"
     mc:Ignorable="d"
-    Title="Options" Height="400" Width="570" WindowStyle="ToolWindow" Icon="resources/Icon.ico"
+    Title="Options" Height="400" Width="570" WindowStyle="ToolWindow" Icon="/resources/Icon.ico"
     WindowStartupLocation="CenterScreen" Closing="Window_Closing" Background="#FFC8C8C8" ResizeMode="NoResize"
     Topmost="True">
 
@@ -16,7 +16,8 @@
 
     <Grid>
         <TabControl x:Name="TabOptions" TabStripPlacement="Left" BorderBrush="{x:Null}" Background="{x:Null}"
-                    VerticalContentAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Right" Width="583.6">
+                    VerticalContentAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Right"
+                    Width="583.6">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
@@ -35,24 +36,23 @@
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
                                         ContentSource="Header"
-                                        TextBlock.FontSize="14"
-                                        />
+                                        TextBlock.FontSize="14" />
                                     <Border.Background>
                                         <LinearGradientBrush EndPoint="0,0" StartPoint="1,0">
-                                            <GradientStop Color="#FF999999" Offset="1"/>
-                                            <GradientStop Color="#FFE5E5E5"/>
+                                            <GradientStop Color="#FF999999" Offset="1" />
+                                            <GradientStop Color="#FFE5E5E5" />
                                         </LinearGradientBrush>
                                     </Border.Background>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Panel" Property="TextBlock.FontSize" Value="15"/>
-                                        <Setter TargetName="Panel" Property="TextBlock.Width" Value="100"/>
+                                        <Setter TargetName="Panel" Property="TextBlock.FontSize" Value="15" />
+                                        <Setter TargetName="Panel" Property="TextBlock.Width" Value="100" />
                                         <Setter TargetName="Panel" Property="Border.Background">
                                             <Setter.Value>
                                                 <LinearGradientBrush EndPoint="0,0" StartPoint="1,0">
-                                                    <GradientStop Color="#FFBBBBBB" Offset="1"/>
-                                                    <GradientStop Color="#FFE5E5E5"/>
+                                                    <GradientStop Color="#FFBBBBBB" Offset="1" />
+                                                    <GradientStop Color="#FFE5E5E5" />
                                                 </LinearGradientBrush>
                                             </Setter.Value>
                                         </Setter>
@@ -176,7 +176,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Sounds" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                      FontWeight="Bold" Margin="28,-1.6,-29.2,2.4" Cursor="Hand">
+                     FontWeight="Bold" Margin="28,-1.6,-29.2,2.4" Cursor="Hand">
                 <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
                     <GroupBox Header="Sound" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
@@ -188,7 +188,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Detector" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                      FontWeight="Bold" Margin="28,-2.4,-29.2,2.2" Cursor="Hand">
+                     FontWeight="Bold" Margin="28,-2.4,-29.2,2.2" Cursor="Hand">
                 <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
                     <GroupBox Header="Shot detector" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>

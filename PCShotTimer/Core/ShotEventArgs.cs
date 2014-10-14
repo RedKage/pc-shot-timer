@@ -1,7 +1,7 @@
 ﻿using System;
 using PCShotTimer.openshottimer;
 
-namespace PCShotTimer
+namespace PCShotTimer.Core
 {
     /// <summary>
     ///     ShotEventArgs just extends EventArgs real quick so a ShotEvent array can be bundled with an Event.

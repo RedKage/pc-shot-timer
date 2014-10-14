@@ -23,13 +23,11 @@ using System.IO;
 namespace PCShotTimer.openshottimer
 {
     /// <summary>
-    /// This detector uses sound spikes to detect a gunshot.
-    /// 
-    /// File converted to C# by
-    /// Tactical Freak, 2014
-    /// Original source can by found there https://code.google.com/p/openshottimer/
-    /// 
-    /// Original class comment:
+    ///     This detector uses sound spikes to detect a gunshot.
+    ///     File converted to C# by
+    ///     Tactical Freak, 2014
+    ///     Original source can by found there https://code.google.com/p/openshottimer/
+    ///     Original class comment:
     ///     With a .45 I found that it spikes at for 18 milliseconds with a dense number of samples and then drops off.
     ///     When the first big sample comes in count it as a shot and then stop listening for .12 seconds.
     /// </summary>

@@ -8,8 +8,10 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using NAudio.Wave;
+using PCShotTimer.Core;
+using PCShotTimer.openshottimer;
 
-namespace PCShotTimer
+namespace PCShotTimer.UI
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
@@ -91,7 +93,7 @@ namespace PCShotTimer
                     {
                         throw new Exception("No input device found. Can't continue.");
                     }
-                    
+
                     // Initializes the audio input device
                     var waveIn = new WaveInEvent
                     {
@@ -253,7 +255,7 @@ namespace PCShotTimer
 
             // Stop the big ass timer's binding as it would continue to be updated by the property
             BindingOperations.ClearBinding(TxtBoxTotalTime, TextBox.TextProperty);
-            
+
             // Show lastest time
             if (LstViewShots.Items.Count < 1)
                 return;

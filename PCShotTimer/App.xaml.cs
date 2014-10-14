@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
+using PCShotTimer.UI;
 
 namespace PCShotTimer
 {
@@ -22,14 +23,14 @@ namespace PCShotTimer
         /// <summary>Resource file name for the default embedded config.</summary>
         private const string DefaultConfigResourceName = "defaultconfig.xml";
 
+        /// <summary>File name for the user config saved on disk.</summary>
+        public const string UserConfigFileName = "config.xml";
+
         /// <summary>The App assembly.</summary>
         private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
         /// <summary>Location the assembly directory.</summary>
         public static string AppDirectory = Path.GetDirectoryName(_assembly.Location);
-
-        /// <summary>File name for the user config saved on disk.</summary>
-        public const string UserConfigFileName = "config.xml";
 
         #endregion
 

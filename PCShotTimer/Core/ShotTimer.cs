@@ -12,7 +12,7 @@ using NAudio.Wave;
 using PCShotTimer.openshottimer;
 using Timer = System.Timers.Timer;
 
-namespace PCShotTimer
+namespace PCShotTimer.Core
 {
     /// <summary>
     ///     This class handles the shot timer behaviors:
@@ -127,7 +127,7 @@ namespace PCShotTimer
             {
                 Process.GetCurrentProcess().ProcessorAffinity = new IntPtr(2);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 App.Error("Setting processor affinity failed: {0}", e.Message);
             }
@@ -173,6 +173,15 @@ namespace PCShotTimer
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        ///     Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            _soundPlayer.Dispose();
+            _randomDelay.Dispose();
+        }
 
         /// <summary>
         ///     "Starts" the shot timer.
@@ -238,15 +247,6 @@ namespace PCShotTimer
             return TimeSpan.Zero == timeSpan
                 ? DEFAULT_TIMER_VALUE
                 : String.Format("{0:00}:{1:00}:{2:000}", timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds);
-        }
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        public void Dispose()
-        {
-            _soundPlayer.Dispose();
-            _randomDelay.Dispose();
         }
 
         #endregion

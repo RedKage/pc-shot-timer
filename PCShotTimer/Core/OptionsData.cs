@@ -1,7 +1,8 @@
 ﻿using System.IO;
+using System.Reflection;
 using System.Xml.Serialization;
 
-namespace PCShotTimer
+namespace PCShotTimer.Core
 {
     /// <summary>
     ///     Container for the options.

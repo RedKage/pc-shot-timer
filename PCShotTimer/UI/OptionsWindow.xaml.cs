@@ -2,8 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using NAudio.CoreAudioApi;
+using PCShotTimer.Core;
 
-namespace PCShotTimer
+namespace PCShotTimer.UI
 {
     /// <summary>
     ///     Interaction logic for OptionsWindow.xaml
