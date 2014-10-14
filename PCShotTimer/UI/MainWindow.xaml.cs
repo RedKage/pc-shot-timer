@@ -5,11 +5,11 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using NAudio.Wave;
 using PCShotTimer.Core;
-using PCShotTimer.openshottimer;
 
 namespace PCShotTimer.UI
 {
@@ -26,9 +26,6 @@ namespace PCShotTimer.UI
         /// <summary>Blinking animation for the Green LED</summary>
         private Storyboard _ledGreenBlinking;
 
-        /// <summary>Program options.</summary>
-        private OptionsData _options;
-
         /// <summary>The options window.</summary>
         private OptionsWindow _optionsWindow;
 
@@ -40,6 +37,13 @@ namespace PCShotTimer.UI
 
         /// <summary>Blinking animation for big ass timer.</summary>
         private Storyboard _timerBlinking;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>Gets or sets the program options.</summary>
+        public OptionsData Options { get; set; }
 
         #endregion
 
@@ -55,14 +59,14 @@ namespace PCShotTimer.UI
             try
             {
                 // Load the user config
-                _options = new OptionsData(String.Format(@"{0}\{1}", App.AppDirectory, App.UserConfigFileName));
+                Options = new OptionsData(String.Format(@"{0}\{1}", App.AppDirectory, App.UserConfigFileName));
             }
             catch (Exception e)
             {
                 App.DialogContinue(e.Message);
 
                 // Load the defaults params         
-                _options = new OptionsData(App.DefaultConfig);
+                Options = new OptionsData(App.DefaultConfig);
             }
 
             // Save the (big ass) timer binding. We will have to clear it when we stop and restore it on start.
@@ -97,13 +101,13 @@ namespace PCShotTimer.UI
                     // Initializes the audio input device
                     var waveIn = new WaveInEvent
                     {
-                        DeviceNumber = _options.SelectedDeviceId,
+                        DeviceNumber = Options.SelectedDeviceId,
                         BufferMilliseconds = 100,
                         NumberOfBuffers = 3,
                         WaveFormat = new WaveFormat(
-                            _options.InputSampleRate,
-                            _options.InputSampleBits,
-                            _options.InputChannels)
+                            Options.InputSampleRate,
+                            Options.InputSampleBits,
+                            Options.InputChannels)
                     };
 
                     // Loading animations from XAML
@@ -111,13 +115,13 @@ namespace PCShotTimer.UI
                     _timerBlinking = (Storyboard) Resources["TimerBlinking"];
 
                     // Create the shot timer
-                    _shotTimer = new ShotTimer(_options, WhenShotDetected, waveIn);
+                    _shotTimer = new ShotTimer(Options, WhenShotDetected, waveIn);
 
                     // For binding the TimeElapse property
                     DataContext = _shotTimer;
 
                     // Create the options window
-                    _optionsWindow = new OptionsWindow(_options);
+                    _optionsWindow = new OptionsWindow(Options);
                 }
                 catch (ApplicationException exception)
                 {
@@ -127,7 +131,7 @@ namespace PCShotTimer.UI
                     App.DialogContinue(message);
 
                     // Revert the previous config
-                    _options = _previousOptions;
+                    Options = _previousOptions;
 
                     // Try again
                     var thread = new Thread(Initialize);
@@ -160,9 +164,26 @@ namespace PCShotTimer.UI
         /// </summary>
         protected void Exit()
         {
+            App.Info("Exit request");
             if (null != _shotTimer)
                 _shotTimer.Stop();
             Application.Current.Shutdown(0);
+        }
+
+        /// <summary>
+        /// Saves the options.
+        /// </summary>
+        protected void SaveOptions()
+        {
+            try
+            {
+                App.Info("Saving options");
+                Options.Save(String.Format(@"{0}\{1}", App.AppDirectory, App.UserConfigFileName));
+            }
+            catch (Exception exception)
+            {
+                App.DialogWarning(exception.Message);
+            }
         }
 
         /// <summary>
@@ -209,6 +230,9 @@ namespace PCShotTimer.UI
         /// <param name="e">Event</param>
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
+            App.Info("Start");
+            App.Info(Options.ToString());
+
             // Grey out buttons and stuff
             BtnStart.IsEnabled = false;
             BtnClear.IsEnabled = false;
@@ -289,26 +313,18 @@ namespace PCShotTimer.UI
         private void ButtonOptions_Click(object sender, RoutedEventArgs e)
         {
             // Backup the config
-            _previousOptions = _options.Clone();
+            _previousOptions = Options.Clone();
             var rc = _optionsWindow.ShowDialog();
 
             // Null = cancel; false = OK
             if (null == rc)
             {
                 // Restore the old options when canceled
-                _options = _previousOptions;
+                Options = _previousOptions;
             }
             else
             {
-                // Save the config
-                try
-                {
-                    _options.Save(String.Format(@"{0}\{1}", App.AppDirectory, App.UserConfigFileName));
-                }
-                catch (Exception exception)
-                {
-                    App.DialogWarning(exception.Message);
-                }
+                SaveOptions();
             }
 
             // Options changed, so gotta reload everything man
@@ -323,6 +339,19 @@ namespace PCShotTimer.UI
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
             Exit();
+        }
+
+        /// <summary>
+        /// Triggered when the user clicks on an HUD little icon thingy stuff.
+        /// We save the config then.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="routedEventArgs">Event</param>
+        private void HudElement_Toggle(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var control = (CheckBox) sender;
+            App.Info("HUD save from {0}. Value: {1}", control.Name, control.IsChecked);
+            SaveOptions();
         }
 
         /// <summary>

@@ -82,6 +82,66 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+
+        <!-- HUD elements -->
+        <Style x:Key="HudElementStyle" TargetType="CheckBox">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <BulletDecorator Name="HuDecorator" Background="Transparent">
+                            <BulletDecorator.Bullet>
+                                <TextBlock/>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter
+                                Name="ContentPresenter"
+                                Margin="5,5,5,5"
+                                TextBlock.FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
+                                TextBlock.FontSize="15"
+                                TextBlock.Foreground="Black"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                RecognizesAccessKey="False"
+                                Cursor="Hand"/>
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ContentPresenter" Property="TextBlock.Foreground" Value="#FF333333"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ContentPresenter" Property="TextBlock.Foreground" Value="#FF888888"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- HUD element: random timer -->
+        <Style x:Key="HudRandomDelay" TargetType="CheckBox" BasedOn="{StaticResource HudElementStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="🎲"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter Property="Content" Value="🕒"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- HUD ready/standby -->
+        <Style x:Key="HudReadyStandby" TargetType="CheckBox" BasedOn="{StaticResource HudElementStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="📢"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter Property="Content" Value="🔇"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>  
     </Window.Resources>
 
     <Window.Effect>
@@ -174,5 +234,19 @@
         <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnExit" Content="Exit" HorizontalAlignment="Right"
                 Margin="0,367,10,0"
                 VerticalAlignment="Top" Click="ButtonExit_Click" />
+
+        <!-- HUD Random delay -->
+        <CheckBox Name="HudRandomDelay"
+            Style="{StaticResource HudRandomDelay}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
+            IsChecked="{Binding Path=Options.GeneralRandomDelay, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+            Click="HudElement_Toggle"
+            ToolTip="🎲 Random delay activated&#x0a;🕒 No random delay"/>
+        
+        <!-- HUD Speeches ready/standby -->
+        <CheckBox Name="HudReadyStandby"
+            Style="{StaticResource HudReadyStandby}" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"
+        	IsChecked="{Binding Options.SoundPlayReadyStandby, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+            Click="HudElement_Toggle"
+        	ToolTip="📢 Ready/Standby speeches&#xA;🔇 Less talking, more shooting" />
     </Grid>
 </Window>
