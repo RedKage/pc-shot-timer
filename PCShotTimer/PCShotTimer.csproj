@@ -102,6 +102,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Core\ShotTimeRow.cs" />
     <Compile Include="UI\RadioButtonCheckedConverter.cs" />
     <Compile Include="openshottimer\AmplitudeSpikeShotDetector.cs" />
     <Compile Include="openshottimer\ShotDetector.cs" />

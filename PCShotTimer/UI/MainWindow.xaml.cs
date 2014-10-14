@@ -187,7 +187,7 @@ namespace PCShotTimer.UI
                     App.Info(String.Format("Shot {0} detected @ {1}. Split={2}", shotNumber, shotTime, shotSplit));
 
                     // Create a row
-                    LstViewShots.Items.Add(new {Id = shotNumber, Time = shotTime, Split = shotSplit});
+                    LstViewShots.Items.Add(new ShotTimeRow { Id = shotNumber, Time = shotTime, Split = shotSplit });
 
                     // Focus on last row
                     LstViewShots.SelectedItem = LstViewShots.Items.GetItemAt(LstViewShots.Items.Count - 1);
@@ -265,9 +265,7 @@ namespace PCShotTimer.UI
             if (null == latestTimeRow)
                 return;
 
-            // TODO hmm looks like that dynamic shit is slow like really slow (1sec or a bit more)
-            // Create an explicit type here instead for faster execution?
-            var latestTime = (dynamic) latestTimeRow.Content;
+            var latestTime = (ShotTimeRow) latestTimeRow.Content;
             latestTimeRow.Background = Brushes.LightGray;
             TxtBoxTotalTime.Text = latestTime.Time;
             _timerBlinking.Begin();
