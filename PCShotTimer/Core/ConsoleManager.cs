@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
 
 namespace PCShotTimer.Core
 {
     /// <summary>
-    /// Enables real console output while being a GUI win app.
-    /// Improved a little bit the version from http://stackoverflow.com/questions/160587/no-output-to-console-from-a-wpf-application
+    ///     Enables real console output while being a GUI win app.
+    ///     Improved a little bit the version from
+    ///     http://stackoverflow.com/questions/160587/no-output-to-console-from-a-wpf-application
     /// </summary>
     [SuppressUnmanagedCodeSecurity]
     public static class ConsoleManager
@@ -43,8 +45,8 @@ namespace PCShotTimer.Core
         }
 
         /// <summary>
-        /// Attache the console to the parent one, if it exists.
-        /// If not, creates a new console instance if the process is not attached to a console already.
+        ///     Attache the console to the parent one, if it exists.
+        ///     If not, creates a new console instance if the process is not attached to a console already.
         /// </summary>
         public static void Show()
         {
@@ -59,7 +61,8 @@ namespace PCShotTimer.Core
         }
 
         /// <summary>
-        /// If the process has a console attached to it, it will be detached and no longer visible. Writing to the System.Console is still possible, but no output will be shown.
+        ///     If the process has a console attached to it, it will be detached and no longer visible. Writing to the
+        ///     System.Console is still possible, but no output will be shown.
         /// </summary>
         public static void Hide()
         {
@@ -71,7 +74,7 @@ namespace PCShotTimer.Core
         }
 
         /// <summary>
-        /// Toggle the visibility of the console.
+        ///     Toggle the visibility of the console.
         /// </summary>
         public static void Toggle()
         {
@@ -90,21 +93,21 @@ namespace PCShotTimer.Core
         #region Internals
 
         /// <summary>
-        /// Removes the standard redirections.
+        ///     Removes the standard redirections.
         /// </summary>
         internal static void InvalidateOutAndError()
         {
             // ReSharper disable InconsistentNaming
-            var type = typeof(Console);
+            var type = typeof (Console);
 
             var stdOut = type.GetField("_out",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+                BindingFlags.Static | BindingFlags.NonPublic);
 
             var stdErr = type.GetField("_error",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+                BindingFlags.Static | BindingFlags.NonPublic);
 
             var initializeStdOutError = type.GetMethod("InitializeStdOutError",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+                BindingFlags.Static | BindingFlags.NonPublic);
 
             Debug.Assert(stdOut != null);
             Debug.Assert(stdErr != null);
@@ -113,12 +116,12 @@ namespace PCShotTimer.Core
             stdOut.SetValue(null, null);
             stdErr.SetValue(null, null);
 
-            initializeStdOutError.Invoke(null, new object[] { true });
+            initializeStdOutError.Invoke(null, new object[] {true});
             // ReSharper restore InconsistentNaming
         }
 
         /// <summary>
-        /// Prevent any output being done.
+        ///     Prevent any output being done.
         /// </summary>
         internal static void SetOutAndErrorNull()
         {

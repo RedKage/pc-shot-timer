@@ -5,11 +5,11 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using NAudio.Wave;
 using PCShotTimer.Core;
+using PCShotTimer.openshottimer;
 
 namespace PCShotTimer.UI
 {
@@ -22,6 +22,13 @@ namespace PCShotTimer.UI
 
         /// <summary>Keep the big ass binding as we clear it when we stop and restore it on start.</summary>
         private readonly Binding _timerBinding;
+
+        /// <summary>
+        ///     Indicates whether the timer blinking animation is running.
+        ///     Since M$ can't pull their fingers outta their asses and provide us with a cool property doing just that.
+        ///     Yes, I am pissed.
+        /// </summary>
+        private bool _isTimerBlinking;
 
         /// <summary>Blinking animation for the Green LED</summary>
         private Storyboard _ledGreenBlinking;
@@ -151,12 +158,17 @@ namespace PCShotTimer.UI
         protected void Clear()
         {
             LstViewShots.Items.Clear();
-            TxtBoxTotalTime.Text = ShotTimer.DEFAULT_TIMER_VALUE;
+            TxtBoxTotalTime.Text = ShotTimer.DefaultTimerValue;
             BtnClear.IsEnabled = false;
             if (null != ShotTimer)
                 ShotTimer.Reset();
-            if (null != _timerBlinking)
+
+            // OMG I'm so pissed right now
+            if (null != _timerBlinking && _isTimerBlinking)
+            {
+                _isTimerBlinking = false;
                 _timerBlinking.Stop();
+            }
         }
 
         /// <summary>
@@ -171,7 +183,7 @@ namespace PCShotTimer.UI
         }
 
         /// <summary>
-        /// Saves the options.
+        ///     Saves the options.
         /// </summary>
         protected void SaveOptions()
         {
@@ -208,7 +220,7 @@ namespace PCShotTimer.UI
                     App.Info(String.Format("Shot {0} detected @ {1}. Split={2}", shotNumber, shotTime, shotSplit));
 
                     // Create a row
-                    LstViewShots.Items.Add(new ShotTimeRow { Id = shotNumber, Time = shotTime, Split = shotSplit });
+                    LstViewShots.Items.Add(new ShotTimeRow {Id = shotNumber, Time = shotTime, Split = shotSplit});
 
                     // Focus on last row
                     LstViewShots.SelectedItem = LstViewShots.Items.GetItemAt(LstViewShots.Items.Count - 1);
@@ -238,13 +250,20 @@ namespace PCShotTimer.UI
             BtnClear.IsEnabled = false;
             BtnOption.IsEnabled = false;
             BtnStop.IsEnabled = true;
-            TxtBoxTotalTime.Text = ShotTimer.DEFAULT_TIMER_VALUE;
+            TxtBoxTotalTime.Text = ShotTimer.DefaultTimerValue;
 
             // Start blinkin the LEDs
             LedGreen.Opacity = 1.0;
             LedRed.Opacity = 0.5;
             _ledGreenBlinking.Begin();
-            _timerBlinking.Stop();
+
+            // Stop the timer blinking
+            if (_isTimerBlinking)
+            {
+                // Sigh...
+                _isTimerBlinking = false;
+                _timerBlinking.Stop();
+            }
 
             // Activate binding for the big ass timer up there
             BindingOperations.SetBinding(TxtBoxTotalTime, TextBox.TextProperty, _timerBinding);
@@ -283,7 +302,7 @@ namespace PCShotTimer.UI
             // Show lastest time
             if (LstViewShots.Items.Count < 1)
             {
-                TxtBoxTotalTime.Text = ShotTimer.DEFAULT_TIMER_VALUE;
+                TxtBoxTotalTime.Text = ShotTimer.DefaultTimerValue;
                 return;
             }
 
@@ -295,6 +314,9 @@ namespace PCShotTimer.UI
             var latestTime = (ShotTimeRow) latestTimeRow.Content;
             latestTimeRow.Background = Brushes.LightGray;
             TxtBoxTotalTime.Text = latestTime.Time;
+
+            // Ohh look! That's what I have to do since M$ still didn't pull their SHIT outta their ASSES
+            _isTimerBlinking = true;
             _timerBlinking.Begin();
         }
 
@@ -345,8 +367,8 @@ namespace PCShotTimer.UI
         }
 
         /// <summary>
-        /// Triggered when the user clicks on an HUD little icon thingy stuff.
-        /// We save the config then.
+        ///     Triggered when the user clicks on an HUD little icon thingy stuff.
+        ///     We save the config then.
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="routedEventArgs">Event</param>

@@ -58,10 +58,10 @@ namespace PCShotTimer
         /// </summary>
         public App()
         {
-            #if DEBUG
-                ConsoleManager.Show();
-                Console.Out.WriteLine();
-            #endif
+#if DEBUG
+            ConsoleManager.Show();
+            Console.Out.WriteLine();
+#endif
 
             Info("Started");
 

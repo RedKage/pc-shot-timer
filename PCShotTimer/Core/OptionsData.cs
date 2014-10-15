@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 using PropertyChanged;
@@ -10,7 +11,7 @@ namespace PCShotTimer.Core
     /// </summary>
     [XmlRoot("Options")]
     [ImplementPropertyChanged]
-    public class OptionsData 
+    public class OptionsData
     {
         #region Properties
 
@@ -145,7 +146,7 @@ namespace PCShotTimer.Core
             foreach (var property in GetType().GetProperties())
                 if (property.GetCustomAttributes(typeof (XmlIgnoreAttribute), false).GetLength(0) == 0)
                     property.SetValue(this, property.GetValue(optionsData, null), null);
-                
+
             return optionsData;
         }
 
@@ -161,11 +162,11 @@ namespace PCShotTimer.Core
         }
 
         /// <summary>
-        /// Text representation of this OptionsData object.
+        ///     Text representation of this OptionsData object.
         /// </summary>
         /// <returns>
-        /// Hard to explain.
-        /// Only human readable delay and ready/standby sounds for now
+        ///     Hard to explain.
+        ///     Only human readable delay and ready/standby sounds for now
         /// </returns>
         public override string ToString()
         {

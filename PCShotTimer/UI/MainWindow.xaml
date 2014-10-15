@@ -14,13 +14,28 @@
     Closed="WinMainWindow_Closed">
 
     <Window.Resources>
+        <!-- LEDs -->
+        <Style x:Key="Led" TargetType="Ellipse">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Stroke" Value="Black" />
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- Green LED blinking animation -->
         <Storyboard x:Key="GreenLedBlinking" RepeatBehavior="Forever">
-            <DoubleAnimation
+            <ColorAnimation
                 Storyboard.TargetName="LedGreen"
-                Storyboard.TargetProperty="Opacity"
-                From="0.3"
-                To="1.0"
+                Storyboard.TargetProperty="(Ellipse.Fill).(SolidColorBrush.Color)"
+                From="#FF004400"
+                To="#FF00CC00"
                 AutoReverse="True"
                 Duration="0:0:0.5" />
         </Storyboard>
@@ -37,7 +52,7 @@
         </Storyboard>
 
         <!-- Buttons style to remove the WPF default 'animated' mouse over effect -->
-        <Style x:Key="MyButtonStyle" TargetType="Button">
+        <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -92,8 +107,8 @@
 
         <!-- HUD elements -->
         <Style x:Key="HudElementStyle" TargetType="CheckBox">
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
@@ -105,13 +120,13 @@
                             TextBlock.Foreground="Black"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Cursor="Hand"/>
+                            Cursor="Hand" />
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Content" Property="TextBlock.Foreground" Value="#FF333333"/>
+                                <Setter TargetName="Content" Property="TextBlock.Foreground" Value="#FF333333" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Content" Property="TextBlock.Foreground" Value="#FF888888"/>
+                                <Setter TargetName="Content" Property="TextBlock.Foreground" Value="#FF888888" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -123,12 +138,14 @@
         <Style x:Key="HudRandomDelay" TargetType="CheckBox" BasedOn="{StaticResource HudElementStyle}">
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Content" Value="{Binding Path=Options.GeneralRandomStartDelayMax, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
-                    <Setter Property="ContentStringFormat" Value="{}🎲 ~{0:0.0}"/>
+                    <Setter Property="Content"
+                            Value="{Binding Path=Options.GeneralRandomStartDelayMax, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                    <Setter Property="ContentStringFormat" Value="{}🎲 ~{0:0.0}" />
                 </Trigger>
                 <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Content" Value="{Binding Path=Options.GeneralRandomStartDelayMin, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
-                    <Setter Property="ContentStringFormat" Value="{}🕒 {0:0.0}"/>
+                    <Setter Property="Content"
+                            Value="{Binding Path=Options.GeneralRandomStartDelayMin, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                    <Setter Property="ContentStringFormat" Value="{}🕒 {0:0.0}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -137,13 +154,13 @@
         <Style x:Key="HudReadyStandby" TargetType="CheckBox" BasedOn="{StaticResource HudElementStyle}">
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Content" Value="📢"/>
+                    <Setter Property="Content" Value="📢" />
                 </Trigger>
                 <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Content" Value="🔇"/>
+                    <Setter Property="Content" Value="🔇" />
                 </Trigger>
             </Style.Triggers>
-        </Style>  
+        </Style>
     </Window.Resources>
 
     <Window.Effect>
@@ -162,15 +179,15 @@
         <!-- Big (ass) Timer -->
         <TextBox
             Name="TxtBoxTotalTime"
-            HorizontalAlignment="Left" VerticalAlignment="Top" 
+            HorizontalAlignment="Left" VerticalAlignment="Top"
             Height="85" Width="552.239"
             Margin="10,10,0,0"
-            BorderThickness="2" 
+            BorderThickness="2"
             Text="{Binding Path=ShotTimer.TimeElapsed, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
             TextAlignment="Center"
             Foreground="Black" BorderBrush="Black"
-            FontSize="72" FontWeight="Bold" 
-            FontFamily="/PCShotTimer;component/fonts/LCDMonoWinTT/#LCDMono" 
+            FontSize="72" FontWeight="Bold"
+            FontFamily="/PCShotTimer;component/fonts/LCDMonoWinTT/#LCDMono"
             IsTabStop="False" IsHitTestVisible="False" Focusable="False">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
@@ -187,25 +204,13 @@
         <Ellipse
             Name="LedRed"
             Fill="Red"
-            HorizontalAlignment="Right" VerticalAlignment="Top"
-            Height="30" Width="30"
-            Margin="0,55,150,0"
-            Stroke="Black" StrokeThickness="2">
-            <Ellipse.Effect>
-                <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
-            </Ellipse.Effect>
-        </Ellipse>
+            Style="{StaticResource Led}"
+            Margin="0,55,150,0" />
         <Ellipse
             Name="LedGreen"
             Fill="Green"
-            HorizontalAlignment="Right" VerticalAlignment="Top"
-            Height="30" Width="30"
-            Margin="0,20,150,0"
-            Stroke="Black" StrokeThickness="2">
-            <Ellipse.Effect>
-                <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
-            </Ellipse.Effect>
-        </Ellipse>
+            Style="{StaticResource Led}"
+            Margin="0,20,150,0" />
 
         <!-- ListView -->
         <ListView
@@ -225,52 +230,56 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="#" DisplayMemberBinding="{Binding Path=(core:ShotTimeRow.Id)}" Width="30" />
-                    <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Path=(core:ShotTimeRow.Time)}" Width="100" />
-                    <GridViewColumn Header="Split" DisplayMemberBinding="{Binding Path=(core:ShotTimeRow.Split)}" Width="100" />
+                    <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Path=(core:ShotTimeRow.Time)}"
+                                    Width="100" />
+                    <GridViewColumn Header="Split" DisplayMemberBinding="{Binding Path=(core:ShotTimeRow.Split)}"
+                                    Width="100" />
                 </GridView>
             </ListView.View>
         </ListView>
 
         <!-- START -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnStart" Content="Start" HorizontalAlignment="Right"
+        <Button Style="{StaticResource ButtonStyle}" x:Name="BtnStart" Content="Start" HorizontalAlignment="Right"
                 Margin="0,105,10,0"
                 VerticalAlignment="Top" IsDefault="True" Click="ButtonStart_Click" />
 
         <!-- STOP -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnStop" Content="Stop" HorizontalAlignment="Right"
+        <Button Style="{StaticResource ButtonStyle}" x:Name="BtnStop" Content="Stop" HorizontalAlignment="Right"
                 Margin="0,171,10,0"
                 VerticalAlignment="Top" Click="ButtonStop_Click" />
 
         <!-- CLEAR -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnClear" Content="Clear" HorizontalAlignment="Right"
+        <Button Style="{StaticResource ButtonStyle}" x:Name="BtnClear" Content="Clear" HorizontalAlignment="Right"
                 Margin="0,237,10,0"
                 VerticalAlignment="Top" Click="ButtonClear_Click" IsEnabled="False" />
 
         <!-- OPTIONS -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnOption" Content="Options" HorizontalAlignment="Right"
+        <Button Style="{StaticResource ButtonStyle}" x:Name="BtnOption" Content="Options" HorizontalAlignment="Right"
                 Margin="0,302,10,0"
                 VerticalAlignment="Top" Click="ButtonOptions_Click" />
 
         <!-- EXIT -->
-        <Button Style="{StaticResource MyButtonStyle}" x:Name="BtnExit" Content="Exit" HorizontalAlignment="Right"
+        <Button Style="{StaticResource ButtonStyle}" x:Name="BtnExit" Content="Exit" HorizontalAlignment="Right"
                 Margin="0,367,10,0"
                 VerticalAlignment="Top" Click="ButtonExit_Click" />
 
         <!-- HUD Random delay -->
         <CheckBox
             Name="HudRandomDelay"
-            Style="{StaticResource HudRandomDelay}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
+            Style="{StaticResource HudRandomDelay}" HorizontalAlignment="Left" Margin="10,10,0,0"
+            VerticalAlignment="Top"
             IsChecked="{Binding Path=Options.GeneralRandomDelay, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
             Click="HudElement_Toggle"
-            ToolTip="🎲 Random delay activated&#x0a;🕒 No random delay"/>
-        
+            ToolTip="🎲 Random delay activated&#x0a;🕒 No random delay" />
+
         <!-- HUD Speeches ready/standby -->
         <CheckBox
             Name="HudReadyStandby"
-            Style="{StaticResource HudReadyStandby}" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"
-        	IsChecked="{Binding Options.SoundPlayReadyStandby, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+            Style="{StaticResource HudReadyStandby}" HorizontalAlignment="Left" Margin="10,35,0,0"
+            VerticalAlignment="Top"
+            IsChecked="{Binding Options.SoundPlayReadyStandby, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
             Click="HudElement_Toggle"
-        	ToolTip="📢 Ready/Standby speeches&#xA;🔇 Less talking, more shooting" />
-        
+            ToolTip="📢 Ready/Standby speeches&#xA;🔇 Less talking, more shooting" />
+
     </Grid>
 </Window>

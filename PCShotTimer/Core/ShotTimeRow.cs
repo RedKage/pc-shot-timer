@@ -1,7 +1,7 @@
 ﻿namespace PCShotTimer.Core
 {
     /// <summary>
-    /// Represents the data contained in a row from the big ass ListView showing the shot times, etc.
+    ///     Represents the data contained in a row from the big ass ListView showing the shot times, etc.
     /// </summary>
     public class ShotTimeRow
     {

@@ -25,13 +25,13 @@ namespace PCShotTimer.Core
         #region Constants
 
         /// <summary>Default timer value returned by TimeElapse when nothing is going on.</summary>
-        public const string DEFAULT_TIMER_VALUE = "00:00:000";
+        public const string DefaultTimerValue = "00:00:000";
 
         /// <summary>Indicates how many milliseconds shall pass before PropertyChanging the TimeElapse property.</summary>
-        private const int TIME_ELAPSE_UPDATE_MS = 1;
+        private const int TimeElapseUpdateMs = 1;
 
         /// <summary>Subdirectory in the app folder that contains the sound files.</summary>
-        private const string SOUNDS_DIRECORY_NAME = "sounds";
+        private const string SoundsDirecoryName = "sounds";
 
         #endregion
 
@@ -119,8 +119,8 @@ namespace PCShotTimer.Core
         {
             _options = options;
             ShotFired = shotFiredEvent;
-            SoundsDirectory = String.Format(@"{0}\{1}", App.AppDirectory, SOUNDS_DIRECORY_NAME);
-            TimeElapsed = DEFAULT_TIMER_VALUE;
+            SoundsDirectory = String.Format(@"{0}\{1}", App.AppDirectory, SoundsDirecoryName);
+            TimeElapsed = DefaultTimerValue;
 
             // Uses the second Core or Processor
             try
@@ -217,7 +217,7 @@ namespace PCShotTimer.Core
             OnDispatcherTimerTick(this, EventArgs.Empty);
 
             // Clear the time elapsed
-            TimeElapsed = DEFAULT_TIMER_VALUE;
+            TimeElapsed = DefaultTimerValue;
 
             // Revert process priorities
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Normal;
@@ -233,7 +233,7 @@ namespace PCShotTimer.Core
                 _stopWatch.Reset();
 
             _shotDetector.Reset();
-            TimeElapsed = DEFAULT_TIMER_VALUE;
+            TimeElapsed = DefaultTimerValue;
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace PCShotTimer.Core
         public static string HumanReadableMs(TimeSpan timeSpan)
         {
             return TimeSpan.Zero == timeSpan
-                ? DEFAULT_TIMER_VALUE
+                ? DefaultTimerValue
                 : String.Format("{0:00}:{1:00}:{2:000}", timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds);
         }
 
@@ -322,7 +322,7 @@ namespace PCShotTimer.Core
             // Assing OnDispatcherTimerTick for every tick the dispatcher does
             // We need this to regulary PropertyChange our TimeElapse property
             _dispatcherTimer.Tick += OnDispatcherTimerTick;
-            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, TIME_ELAPSE_UPDATE_MS);
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, TimeElapseUpdateMs);
 
             // Reset everything just before starting the time.
             // Here this will also reset the Shot Detector currentsample, so it will reset it to 0ms.
