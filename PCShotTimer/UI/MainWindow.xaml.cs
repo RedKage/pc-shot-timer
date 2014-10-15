@@ -282,7 +282,10 @@ namespace PCShotTimer.UI
 
             // Show lastest time
             if (LstViewShots.Items.Count < 1)
+            {
+                TxtBoxTotalTime.Text = ShotTimer.DEFAULT_TIMER_VALUE;
                 return;
+            }
 
             var latestTimeRow =
                 LstViewShots.ItemContainerGenerator.ContainerFromIndex(LstViewShots.Items.Count - 1) as ListViewItem;
