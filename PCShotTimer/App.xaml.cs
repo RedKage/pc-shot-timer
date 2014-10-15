@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
+using PCShotTimer.Core;
 using PCShotTimer.UI;
 
 namespace PCShotTimer
@@ -57,6 +58,11 @@ namespace PCShotTimer
         /// </summary>
         public App()
         {
+            #if DEBUG
+                ConsoleManager.Show();
+                Console.Out.WriteLine();
+            #endif
+
             Info("Started");
 
             try
