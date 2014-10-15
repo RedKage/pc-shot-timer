@@ -9,7 +9,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using NAudio.Wave;
 using PCShotTimer.Core;
-using PCShotTimer.openshottimer;
 
 namespace PCShotTimer.UI
 {

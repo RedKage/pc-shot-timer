@@ -217,12 +217,15 @@
                             <RadioButton
                                 GroupName="Channel" Content="Mono"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="98,91,0,0" 
+                                Margin="98,91,0,0"
+                                TextBlock.Foreground="Black"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                 IsChecked="{Binding Options.InputChannels, ConverterParameter={StaticResource Mono}, Converter={StaticResource RadioButtonCheckedConverter}, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}" />
                             <RadioButton
                                 GroupName="Channel" Content="Stereo"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="146,91,0,0" 
+                                Margin="150,91,0,0"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                 IsChecked="{Binding Options.InputChannels, ConverterParameter={StaticResource Stereo}, Converter={StaticResource RadioButtonCheckedConverter}, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}" />
                         </Grid>
                     </GroupBox>

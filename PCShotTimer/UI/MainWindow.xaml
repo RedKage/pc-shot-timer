@@ -22,11 +22,6 @@
             <Setter Property="Width" Value="30" />
             <Setter Property="Stroke" Value="Black" />
             <Setter Property="StrokeThickness" Value="2" />
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
-                </Setter.Value>
-            </Setter>
         </Style>
 
         <!-- Green LED blinking animation -->
@@ -57,17 +52,19 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="Border"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                CornerRadius="3"
-                                HorizontalAlignment="Right"
-                                Width="116"
-                                Height="60"
-                                Cursor="Hand">
+                        <Border
+                            Name="Button"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="3"
+                            Width="116"
+                            Height="60"
+                            Cursor="Hand">
                             <ContentPresenter
+                                Name="Content"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
+                                TextBlock.Foreground="Black"
                                 TextBlock.FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
                                 TextBlock.FontSize="22"
                                 TextBlock.FontWeight="Bold" />
@@ -83,8 +80,8 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="BorderBrush" Value="#FF222222" />
-                                <Setter TargetName="Border" Property="Border.Background">
+                                <Setter TargetName="Button" Property="BorderBrush" Value="#FF222222" />
+                                <Setter TargetName="Button" Property="Button.Background">
                                     <Setter.Value>
                                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                             <GradientStop Color="#FF888888" Offset="0" />
@@ -94,10 +91,13 @@
                                 </Setter>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="Border" Property="Cursor" Value="Arrow" />
-                                <Setter TargetName="Border" Property="BorderThickness" Value="1" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="DarkSlateGray" />
-                                <Setter TargetName="Border" Property="TextBlock.Foreground" Value="Gray" />
+                                <Setter TargetName="Button" Property="Cursor" Value="Arrow" />
+                                <Setter TargetName="Button" Property="BorderBrush" Value="DarkSlateGray" />
+                                <Setter TargetName="Content" Property="TextBlock.Foreground" Value="Gray" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Button" Property="BorderBrush" Value="DarkSlateGray" />
+                                <Setter TargetName="Button" Property="Button.Background" Value="White" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -134,13 +134,13 @@
             </Setter>
         </Style>
 
-        <!-- HUD element: random timer -->
+        <!-- HUD element: random delay -->
         <Style x:Key="HudRandomDelay" TargetType="CheckBox" BasedOn="{StaticResource HudElementStyle}">
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
                     <Setter Property="Content"
                             Value="{Binding Path=Options.GeneralRandomStartDelayMax, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
-                    <Setter Property="ContentStringFormat" Value="{}🎲 ~{0:0.0}" />
+                    <Setter Property="ContentStringFormat" Value="{}🎲 ∼{0:0.0}" />
                 </Trigger>
                 <Trigger Property="IsChecked" Value="False">
                     <Setter Property="Content"
@@ -204,13 +204,15 @@
         <Ellipse
             Name="LedRed"
             Fill="Red"
+            Opacity="1.0"
             Style="{StaticResource Led}"
-            Margin="0,55,150,0" />
+            Margin="0,55,152,0" />
         <Ellipse
             Name="LedGreen"
             Fill="Green"
+            Opacity="0.5"
             Style="{StaticResource Led}"
-            Margin="0,20,150,0" />
+            Margin="0,20,152,0" />
 
         <!-- ListView -->
         <ListView
