@@ -320,7 +320,7 @@ namespace PCShotTimer.UI
             if (null == rc)
             {
                 // Restore the old options when canceled
-                Options = _previousOptions;
+                Options.Update(_previousOptions);
             }
             else
             {

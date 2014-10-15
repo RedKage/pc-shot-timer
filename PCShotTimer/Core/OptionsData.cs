@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using PropertyChanged;
 
 namespace PCShotTimer.Core
 {
@@ -8,7 +9,8 @@ namespace PCShotTimer.Core
     ///     Container for the options.
     /// </summary>
     [XmlRoot("Options")]
-    public class OptionsData
+    [ImplementPropertyChanged]
+    public class OptionsData 
     {
         #region Properties
 
@@ -143,6 +145,7 @@ namespace PCShotTimer.Core
             foreach (var property in GetType().GetProperties())
                 if (property.GetCustomAttributes(typeof (XmlIgnoreAttribute), false).GetLength(0) == 0)
                     property.SetValue(this, property.GetValue(optionsData, null), null);
+                
             return optionsData;
         }
 
