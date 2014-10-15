@@ -155,8 +155,11 @@ namespace PCShotTimer.Core
             _waveIn.DataAvailable += ReadingAvailableAudioData;
 
             // Create the shot detector: here we use a simple noise spike detector.
-            _shotDetector = new AmplitudeSpikeShotDetector(_options.InputSampleRate, _options.InputSampleBits,
-                _options.DetectorSensitivity);
+            _shotDetector = new AmplitudeSpikeShotDetector(
+                _options.InputSampleRate,
+                _options.InputSampleBits,
+                _options.DetectorSensitivity,
+                _options.DetectorLoudness);
 
             // Capture the audio in
             try

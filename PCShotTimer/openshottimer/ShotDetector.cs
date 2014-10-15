@@ -24,8 +24,7 @@ namespace PCShotTimer.openshottimer
 {
     /// <summary>
     ///     Base class for different shot detection algorithms.
-    ///     File converted to C# by
-    ///     Tactical Freak, 2014
+    ///     File converted to C# by Tactical Freak, 2014
     ///     Original source can by found there https://code.google.com/p/openshottimer/
     /// </summary>
     public abstract class ShotDetector

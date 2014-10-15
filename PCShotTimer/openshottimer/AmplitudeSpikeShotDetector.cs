@@ -24,8 +24,7 @@ namespace PCShotTimer.openshottimer
 {
     /// <summary>
     ///     This detector uses sound spikes to detect a gunshot.
-    ///     File converted to C# by
-    ///     Tactical Freak, 2014
+    ///     File converted to C# by Tactical Freak, 2014
     ///     Original source can by found there https://code.google.com/p/openshottimer/
     ///     Original class comment:
     ///     With a .45 I found that it spikes at for 18 milliseconds with a dense number of samples and then drops off.
@@ -33,14 +32,23 @@ namespace PCShotTimer.openshottimer
     /// </summary>
     public class AmplitudeSpikeShotDetector : ShotDetector
     {
-        private const short m_shotDetectionThreshhold = 32000; // TODO Config
+        #region members
 
-        /// <summary>Number of samples with a spike required to consider a gunshot has occured. The lower the more sensitive.</summary>
+        /// <summary>
+        /// Number of consecutive sample spikes required to consider a gunshot has occured.
+        /// The lower the more sensitive.
+        /// </summary>
         private readonly int _samplesAboveThresholdRequired;
+
+        /// <summary>This is the spike value: pretty much how loud it should be.</summary>
+        private readonly short _shotDetectionThreshold;
 
         /// <summary>Used to ignore samples until the buffer is large enough.</summary>
         private long _ignoreUntilSample = -1;
 
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of AmplitudeSpikeShotDetector.
@@ -52,15 +60,24 @@ namespace PCShotTimer.openshottimer
         ///     Number of samples with a spike required to consider a gunshot has occured.
         ///     The lower the more sensitive.
         /// </param>
-        public AmplitudeSpikeShotDetector(int sampleRate, int sampleSizeInBits, int samplesAboveThresholdRequired)
+        /// <param name="shotDetectionLoudness">
+        ///     This is the previous param's threshold value:
+        ///     pretty much how loud it should be. Here it's a percent.
+        /// </param>
+        public AmplitudeSpikeShotDetector(int sampleRate, int sampleSizeInBits, int samplesAboveThresholdRequired, int shotDetectionLoudness)
             : base(sampleRate, sampleSizeInBits)
         {
+            _shotDetectionThreshold = Convert.ToInt16(shotDetectionLoudness * short.MaxValue / 100);
             _samplesAboveThresholdRequired = samplesAboveThresholdRequired + 1;
             if (sampleSizeInBits != 16)
                 throw new ArgumentException("Only support 16 bit samples");
 
             _ignoreUntilSample = Convert.ToInt64(_samplesPerMillisecond*1000);
         }
+
+        #endregion
+
+        #region Internal methods
 
         /// <summary>
         ///     Detects noise spike.
@@ -74,6 +91,7 @@ namespace PCShotTimer.openshottimer
             var sampleMax = 0;
 
             // Ignoring samples until buffer is large enough
+            // Or check if our buffer is not already in the 'ignored' range
             if (_ignoreUntilSample > 0)
             {
                 var bufferLength = (length/_sampleSizeInBytes);
@@ -93,15 +111,16 @@ namespace PCShotTimer.openshottimer
                     short rawSample;
 
                     // TODO I had a 2 crashes there while messing with the sample rate. Now can't reproduce.
-                    // Weird cuz Position was same as reader.BaseStream.Length in the debugger.
-                    // So yeah it was like impossible to crash there, shoulda exited the while.
-                    // Guess that the stream can get affected somehow from outside that loop then wtf?
+                    // TODO Weird cuz Position was same as reader.BaseStream.Length in the debugger.
+                    // TODO So yeah it was like impossible to crash there, shoulda exited the while.
+                    // TODO Guess that the stream can get affected somehow from outside that loop then wtf?
                     try
                     {
                         rawSample = reader.ReadInt16();
                     }
                     catch (EndOfStreamException)
                     {
+                        // TODO why the fuck should that happen anyway uh?
                         break;
                     }
 
@@ -113,7 +132,7 @@ namespace PCShotTimer.openshottimer
 
                     // Get sample max spike so far
                     sampleMax = Math.Max(sample, sampleMax);
-                    if (sample <= m_shotDetectionThreshhold)
+                    if (sample <= _shotDetectionThreshold)
                         continue;
 
                     // Found a spike that is above the threshold
@@ -133,7 +152,7 @@ namespace PCShotTimer.openshottimer
                         new TimeSpan(0, 0, 0, 0, split)));
                     _lastShotSample = currentSample;
 
-                    //
+                    // Compute if we have reached the ignored range
                     var remaining = Convert.ToInt32(buffer.Length - buffer.Position);
                     var currentSamplePlusRemaining = currentSample + remaining;
                     if (currentSamplePlusRemaining <= _ignoreUntilSample)
@@ -146,6 +165,10 @@ namespace PCShotTimer.openshottimer
             return shotEvents.ToArray();
         }
 
+        #endregion
+
+        #region Public methods
+
         /// <summary>
         ///     Resets this Shot Detector.
         /// </summary>
@@ -156,5 +179,7 @@ namespace PCShotTimer.openshottimer
             _lastShotSample = 0;
             _ignoreUntilSample = -1;
         }
+
+        #endregion
     }
 }

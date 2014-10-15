@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 using PropertyChanged;
@@ -49,6 +48,13 @@ namespace PCShotTimer.Core
         /// </summary>
         [XmlElement("DetectorSensitivity")]
         public int DetectorSensitivity { get; set; }
+
+        /// <summary>
+        ///     This is value of this spike. The louder the higher the number.
+        ///     Here this is a percent value of the maximum input loudness.
+        /// </summary>
+        [XmlElement("DetectorLoudness")]
+        public int DetectorLoudness { get; set; }
 
         /// <summary>Defines if there should be a speech before the beep.</summary>
         [XmlElement("SoundPlayReadyStandby")]
@@ -180,6 +186,7 @@ namespace PCShotTimer.Core
                 ? " / Ready-standby: yes"
                 : " / Ready-standby: no");
 
+            rc.AppendFormat(" / Spikes: {0} / Loudness {1}%", DetectorSensitivity, DetectorLoudness);
             return rc.ToString();
         }
 
