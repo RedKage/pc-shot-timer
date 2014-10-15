@@ -1,10 +1,17 @@
-﻿<Window x:Name="WinMainWindow" x:Class="PCShotTimer.UI.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-        Title="Shot Timer" Height="470" Width="710" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
-        Icon="/resources/Icon.ico" Closing="WinMainWindow_Closing" Closed="WinMainWindow_Closed">
+﻿<Window
+    Name="WinMainWindow" x:Class="PCShotTimer.UI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:core="clr-namespace:PCShotTimer.Core"
+    mc:Ignorable="d"
+    Title="Shot Timer"
+    Height="470" Width="710"
+    ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
+    Icon="/resources/Icon.ico"
+    Closing="WinMainWindow_Closing"
+    Closed="WinMainWindow_Closed">
 
     <Window.Resources>
         <!-- Green LED blinking animation -->
@@ -83,7 +90,6 @@
             </Setter>
         </Style>
 
-
         <!-- HUD elements -->
         <Style x:Key="HudElementStyle" TargetType="CheckBox">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -91,27 +97,21 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
-                        <BulletDecorator Name="HuDecorator" Background="Transparent">
-                            <BulletDecorator.Bullet>
-                                <TextBlock/>
-                            </BulletDecorator.Bullet>
-                            <ContentPresenter
-                                Name="ContentPresenter"
-                                Margin="5,5,5,5"
-                                TextBlock.FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
-                                TextBlock.FontSize="15"
-                                TextBlock.Foreground="Black"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                RecognizesAccessKey="False"
-                                Cursor="Hand"/>
-                        </BulletDecorator>
+                        <ContentPresenter
+                            Name="Content"
+                            Margin="5,5,5,5"
+                            TextBlock.FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
+                            TextBlock.FontSize="15"
+                            TextBlock.Foreground="Black"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Cursor="Hand"/>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ContentPresenter" Property="TextBlock.Foreground" Value="#FF333333"/>
+                                <Setter TargetName="Content" Property="TextBlock.Foreground" Value="#FF333333"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ContentPresenter" Property="TextBlock.Foreground" Value="#FF888888"/>
+                                <Setter TargetName="Content" Property="TextBlock.Foreground" Value="#FF888888"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -123,10 +123,12 @@
         <Style x:Key="HudRandomDelay" TargetType="CheckBox" BasedOn="{StaticResource HudElementStyle}">
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Content" Value="🎲"/>
+                    <Setter Property="Content" Value="{Binding Path=Options.GeneralRandomStartDelayMax, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+                    <Setter Property="ContentStringFormat" Value="{}🎲 ~{0:0.0}"/>
                 </Trigger>
                 <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Content" Value="🕒"/>
+                    <Setter Property="Content" Value="{Binding Path=Options.GeneralRandomStartDelayMin, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+                    <Setter Property="ContentStringFormat" Value="{}🕒 {0:0.0}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -158,12 +160,18 @@
     <Grid x:Name="GridMain">
 
         <!-- Big (ass) Timer -->
-        <TextBox x:Name="TxtBoxTotalTime" HorizontalAlignment="Left" Height="85" Margin="10,10,0,0" TextWrapping="Wrap"
-                 Text="{Binding Path=TimeElapsed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 VerticalAlignment="Top" Width="552.239" TextAlignment="Center" FontSize="72"
-                 FontFamily="/PCShotTimer;component/fonts/LCDMonoWinTT/#LCDMono" FontWeight="Bold" Foreground="Black"
-                 BorderThickness="2" BorderBrush="Black" d:DataContext="{d:DesignData}" IsUndoEnabled="False"
-                 IsTabStop="False" IsHitTestVisible="False" Focusable="False" AllowDrop="False">
+        <TextBox
+            Name="TxtBoxTotalTime"
+            HorizontalAlignment="Left" VerticalAlignment="Top" 
+            Height="85" Width="552.239"
+            Margin="10,10,0,0"
+            BorderThickness="2" 
+            Text="{Binding Path=ShotTimer.TimeElapsed, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+            TextAlignment="Center"
+            Foreground="Black" BorderBrush="Black"
+            FontSize="72" FontWeight="Bold" 
+            FontFamily="/PCShotTimer;component/fonts/LCDMonoWinTT/#LCDMono" 
+            IsTabStop="False" IsHitTestVisible="False" Focusable="False">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
             </TextBox.Effect>
@@ -176,23 +184,36 @@
         </TextBox>
 
         <!-- LEDs -->
-        <Ellipse x:Name="LedRed" Fill="Red" HorizontalAlignment="Right" Height="40" Margin="0,35,20,0" Stroke="Black"
-                 VerticalAlignment="Top" Width="40" StrokeThickness="2">
+        <Ellipse
+            Name="LedRed"
+            Fill="Red"
+            HorizontalAlignment="Right" VerticalAlignment="Top"
+            Height="30" Width="30"
+            Margin="0,55,150,0"
+            Stroke="Black" StrokeThickness="2">
             <Ellipse.Effect>
                 <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
             </Ellipse.Effect>
         </Ellipse>
-        <Ellipse x:Name="LedGreen" HorizontalAlignment="Right" Height="40" Margin="0,35,80,0" VerticalAlignment="Top"
-                 Width="40" Stroke="Black" Fill="Lime" StrokeThickness="2" Opacity="0.5">
+        <Ellipse
+            Name="LedGreen"
+            Fill="Green"
+            HorizontalAlignment="Right" VerticalAlignment="Top"
+            Height="30" Width="30"
+            Margin="0,20,150,0"
+            Stroke="Black" StrokeThickness="2">
             <Ellipse.Effect>
                 <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
             </Ellipse.Effect>
         </Ellipse>
 
         <!-- ListView -->
-        <ListView x:Name="LstViewShots" HorizontalAlignment="Left" Height="322" Margin="10,105,0,0"
-                  VerticalAlignment="Top" Width="552" BorderBrush="Black" BorderThickness="2"
-                  d:DataContext="{d:DesignInstance}">
+        <ListView
+            Name="LstViewShots"
+            Width="552" Height="322"
+            Margin="10,105,0,0"
+            HorizontalAlignment="Left" VerticalAlignment="Top"
+            BorderBrush="Black" BorderThickness="2">
             <ListView.Effect>
                 <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
             </ListView.Effect>
@@ -203,9 +224,9 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="#" DisplayMemberBinding="{Binding Path=Id}" Width="30" />
-                    <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Path=Time}" Width="100" />
-                    <GridViewColumn Header="Split" DisplayMemberBinding="{Binding Path=Split}" Width="100" />
+                    <GridViewColumn Header="#" DisplayMemberBinding="{Binding Path=(core:ShotTimeRow.Id)}" Width="30" />
+                    <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Path=(core:ShotTimeRow.Time)}" Width="100" />
+                    <GridViewColumn Header="Split" DisplayMemberBinding="{Binding Path=(core:ShotTimeRow.Split)}" Width="100" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -236,17 +257,20 @@
                 VerticalAlignment="Top" Click="ButtonExit_Click" />
 
         <!-- HUD Random delay -->
-        <CheckBox Name="HudRandomDelay"
+        <CheckBox
+            Name="HudRandomDelay"
             Style="{StaticResource HudRandomDelay}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
             IsChecked="{Binding Path=Options.GeneralRandomDelay, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
             Click="HudElement_Toggle"
             ToolTip="🎲 Random delay activated&#x0a;🕒 No random delay"/>
         
         <!-- HUD Speeches ready/standby -->
-        <CheckBox Name="HudReadyStandby"
+        <CheckBox
+            Name="HudReadyStandby"
             Style="{StaticResource HudReadyStandby}" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"
         	IsChecked="{Binding Options.SoundPlayReadyStandby, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
             Click="HudElement_Toggle"
         	ToolTip="📢 Ready/Standby speeches&#xA;🔇 Less talking, more shooting" />
+        
     </Grid>
 </Window>

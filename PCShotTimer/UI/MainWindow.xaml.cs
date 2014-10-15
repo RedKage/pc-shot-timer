@@ -32,9 +32,6 @@ namespace PCShotTimer.UI
         /// <summary>The previous program options. Used in case of error/exception requiring reverting the options.</summary>
         private OptionsData _previousOptions;
 
-        /// <summary>Shot timer.</summary>
-        private ShotTimer _shotTimer;
-
         /// <summary>Blinking animation for big ass timer.</summary>
         private Storyboard _timerBlinking;
 
@@ -44,6 +41,9 @@ namespace PCShotTimer.UI
 
         /// <summary>Gets or sets the program options.</summary>
         public OptionsData Options { get; set; }
+
+        /// <summary>Gets the ShotTimer.</summary>
+        public ShotTimer ShotTimer { get; protected set; }
 
         #endregion
 
@@ -115,10 +115,10 @@ namespace PCShotTimer.UI
                     _timerBlinking = (Storyboard) Resources["TimerBlinking"];
 
                     // Create the shot timer
-                    _shotTimer = new ShotTimer(Options, WhenShotDetected, waveIn);
+                    ShotTimer = new ShotTimer(Options, WhenShotDetected, waveIn);
 
                     // For binding the TimeElapse property
-                    DataContext = _shotTimer;
+                    DataContext = ShotTimer;
 
                     // Create the options window
                     _optionsWindow = new OptionsWindow(Options);
@@ -153,8 +153,8 @@ namespace PCShotTimer.UI
             LstViewShots.Items.Clear();
             TxtBoxTotalTime.Text = ShotTimer.DEFAULT_TIMER_VALUE;
             BtnClear.IsEnabled = false;
-            if (null != _shotTimer)
-                _shotTimer.Reset();
+            if (null != ShotTimer)
+                ShotTimer.Reset();
             if (null != _timerBlinking)
                 _timerBlinking.Stop();
         }
@@ -165,8 +165,8 @@ namespace PCShotTimer.UI
         protected void Exit()
         {
             App.Info("Exit request");
-            if (null != _shotTimer)
-                _shotTimer.Stop();
+            if (null != ShotTimer)
+                ShotTimer.Stop();
             Application.Current.Shutdown(0);
         }
 
@@ -250,7 +250,7 @@ namespace PCShotTimer.UI
             BindingOperations.SetBinding(TxtBoxTotalTime, TextBox.TextProperty, _timerBinding);
 
             // Start shot timer
-            _shotTimer.Start();
+            ShotTimer.Start();
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace PCShotTimer.UI
             BtnStop.IsEnabled = false;
 
             // Stop the timer, which will wait to finish current playback, so new thread
-            var thread = new Thread(_shotTimer.Stop);
+            var thread = new Thread(ShotTimer.Stop);
             thread.Start();
 
             // Grey out buttons and stuff
@@ -364,8 +364,8 @@ namespace PCShotTimer.UI
         /// <param name="e">Event</param>
         private void WinMainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (null != _shotTimer)
-                _shotTimer.Stop();
+            if (null != ShotTimer)
+                ShotTimer.Stop();
         }
 
         /// <summary>
