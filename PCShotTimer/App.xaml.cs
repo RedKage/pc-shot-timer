@@ -37,10 +37,10 @@ namespace PCShotTimer
         public const string ReadyStandbySoundsPrefix = "ReadyStandby_";
 
         /// <summary>The App assembly.</summary>
-        private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
+        private static readonly Assembly Assembly = Assembly.GetExecutingAssembly();
 
         /// <summary>Location the assembly directory.</summary>
-        public static string AppDirectory = Path.GetDirectoryName(_assembly.Location);
+        public static string AppDirectory = Path.GetDirectoryName(Assembly.Location);
 
         #endregion
 
@@ -49,7 +49,7 @@ namespace PCShotTimer
         /// <summary>Gets the application name with its version.</summary>
         public static string AppTitle
         {
-            get { return string.Format("{0} {1}", _assembly.GetName().Name, _assembly.GetName().Version); }
+            get { return string.Format("{0} {1}", Assembly.GetName().Name, Assembly.GetName().Version); }
         }
 
         /// <summary>Gets the default config of this app from the app embedded resources.</summary>
@@ -161,9 +161,9 @@ namespace PCShotTimer
         /// <returns>A stream on the wanted resource.</returns>
         public static Stream GetResource(string resourceName)
         {
-            var resourceFullName = String.Format("{0}.{1}.{2}", _assembly.GetName().Name, DefaultResourcesFolderName,
+            var resourceFullName = String.Format("{0}.{1}.{2}", Assembly.GetName().Name, DefaultResourcesFolderName,
                 resourceName);
-            var resourceStream = _assembly.GetManifestResourceStream(resourceFullName);
+            var resourceStream = Assembly.GetManifestResourceStream(resourceFullName);
             return resourceStream;
         }
 
@@ -215,6 +215,9 @@ namespace PCShotTimer
         /// </param>
         public static void Info(string stuff, params object[] objects)
         {
+            if (!ConsoleManager.HasConsole)
+                return;
+
             if (objects.Length >= 1)
                 Console.Out.WriteLine(String.Format(@"[INFO ] {0}", stuff), objects);
             else
@@ -231,6 +234,9 @@ namespace PCShotTimer
         /// </param>
         public static void Error(string stuff, params object[] objects)
         {
+            if (!ConsoleManager.HasConsole)
+                return;
+
             if (objects.Length >= 1)
                 Console.Error.WriteLine(String.Format(@"[ERROR] {0}", stuff), objects);
             else
@@ -247,6 +253,9 @@ namespace PCShotTimer
         /// </param>
         public static void Debug(string stuff, params object[] objects)
         {
+            if (!ConsoleManager.HasConsole)
+                return;
+
             if (objects.Length >= 1)
                 Console.Error.WriteLine(String.Format(@"[DEBUG] {0}", stuff), objects);
             else
