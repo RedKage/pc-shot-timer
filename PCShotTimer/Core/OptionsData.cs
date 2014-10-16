@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using PropertyChanged;
@@ -13,6 +15,16 @@ namespace PCShotTimer.Core
     [ImplementPropertyChanged]
     public class OptionsData
     {
+        #region Members
+
+        /// <summary>Current selected BEEP sound file.</summary>
+        private string _soundSelectedBeepFile;
+
+        /// <summary>Current selected Ready/Standby sound files.</summary>
+        private List<string> _soundSelectedReadyStandbyFiles;
+
+        #endregion
+
         #region Properties
 
         /// <summary>Gets or sets wether the beep shall have a random delay after pressing Start.</summary>
@@ -69,11 +81,74 @@ namespace PCShotTimer.Core
 
         /// <summary>Gets or sets the selected Beep sound.</summary>
         [XmlElement("SoundSelectedBeepFile")]
-        public string SoundSelectedBeepFile { get; set; }
+        public string SoundSelectedBeepFile
+        {
+            get
+            {
+                // Check if not empty
+                if (!String.IsNullOrEmpty(_soundSelectedBeepFile))
+                    return _soundSelectedBeepFile;
+
+                // Then just grab the first one available
+                // This can happen if the config file is new or fucked up
+                var firstOrDefault = AvailableBeepSounds.FirstOrDefault();
+                _soundSelectedBeepFile =
+                    firstOrDefault != null
+                    ? firstOrDefault.FullName
+                    : null;
+                return _soundSelectedBeepFile;
+            }
+            set { _soundSelectedBeepFile = value; }
+        }
 
         /// <summary>Gets or sets the selected Ready/Standby sounds.</summary>
         [XmlElement("SoundSelectedReadyStandbyFiles")]
-        public List<string> SoundSelectedReadyStandbyFiles { get; set; }
+        public List<string> SoundSelectedReadyStandbyFiles
+        {
+            get
+            {
+                // Check if not empty
+                if (null != _soundSelectedReadyStandbyFiles && 0 != _soundSelectedReadyStandbyFiles.Count)
+                    return _soundSelectedReadyStandbyFiles;
+                
+                // Then just grab the one available and return them
+                // This can happen if the config file is new or fucked up
+                _soundSelectedReadyStandbyFiles =
+                    AvailableReadyStandbySounds
+                    .Select(sound => sound.FullName)
+                    .ToList();
+                return _soundSelectedReadyStandbyFiles;
+            }
+            set { _soundSelectedReadyStandbyFiles = value; }
+        }
+
+        /// <summary>Gets the available beep sounds from the app subfolder.</summary>
+        [XmlIgnore]
+        public IEnumerable<FileInfo> AvailableBeepSounds
+        {
+            get
+            {
+                var sounds = Directory.GetFiles(string.Format(@"{0}\{1}", App.AppDirectory, App.SoundsDirecoryName));
+                return sounds
+                    .Select(sound => new FileInfo(sound))
+                    .Where(file => file.Name.StartsWith(App.BeepSoundsPrefix))
+                    .ToList();
+            }
+        }
+
+        /// <summary>Gets the available ready/standby sounds from the app subfolder.</summary>
+        [XmlIgnore]
+        public IEnumerable<FileInfo> AvailableReadyStandbySounds
+        {
+            get
+            {
+                var sounds = Directory.GetFiles(string.Format(@"{0}\{1}", App.AppDirectory, App.SoundsDirecoryName));
+                return sounds
+                    .Select(sound => new FileInfo(sound))
+                    .Where(file => file.Name.StartsWith(App.ReadyStandbySoundsPrefix))
+                    .ToList();
+            }
+        }
 
         #endregion
 
@@ -162,7 +237,7 @@ namespace PCShotTimer.Core
         public OptionsData Update(OptionsData optionsData)
         {
             foreach (var property in GetType().GetProperties())
-                if (property.GetCustomAttributes(typeof (XmlIgnoreAttribute), false).GetLength(0) == 0)
+                if (0 == property.GetCustomAttributes(typeof (XmlIgnoreAttribute), false).GetLength(0))
                     property.SetValue(this, property.GetValue(optionsData, null), null);
 
             return optionsData;

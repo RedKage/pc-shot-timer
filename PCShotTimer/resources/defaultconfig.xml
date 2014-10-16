@@ -1,13 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version="1.0" encoding="utf-8"?>
 <Options xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <GeneralRandomDelay>true</GeneralRandomDelay>
   <GeneralRandomStartDelayMin>0.5</GeneralRandomStartDelayMin>
   <GeneralRandomStartDelayMax>4</GeneralRandomStartDelayMax>
   <GeneralLoopTimer>false</GeneralLoopTimer>
+  <InputDeviceId>0</InputDeviceId>
   <InputSampleRate>44100</InputSampleRate>
   <InputSampleBits>16</InputSampleBits>
   <InputChannels>1</InputChannels>
   <DetectorSensitivity>5</DetectorSensitivity>
+  <DetectorLoudness>90</DetectorLoudness>
   <SoundPlayReadyStandby>true</SoundPlayReadyStandby>
 </Options>
