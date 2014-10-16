@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -123,6 +122,10 @@ namespace PCShotTimer.Core
                 App.Error("Setting processor affinity failed: {0}", e.Message);
             }
 
+            // Check
+            if (String.IsNullOrEmpty(_options.SoundSelectedBeepFile))
+                throw new FileNotFoundException("No 'beep' sound available. Can't continue.");
+
             // Load the sound now so we don't waste time later
             _beepSoundPlayer.SoundLocation = _options.SoundSelectedBeepFile;
             _beepSoundPlayer.Load();
@@ -245,14 +248,18 @@ namespace PCShotTimer.Core
 
             if (_options.SoundPlayReadyStandby)
             {
-                // Select a random ready/standby sound from the selected ones
-                var readyStandbyFiles = _options.SoundSelectedReadyStandbyFiles;
-                var randomSound = _random.Next(0, readyStandbyFiles.Count);
+                // Careful
+                if (0 != _options.SoundSelectedReadyStandbyFiles.Count)
+                {
+                    // Select a random ready/standby sound from the selected ones
+                    var readyStandbyFiles = _options.SoundSelectedReadyStandbyFiles;
+                    var randomSound = _random.Next(0, readyStandbyFiles.Count);
 
-                // Play Ready sound
-                _soundPlayer.SoundLocation = readyStandbyFiles[randomSound];
-                _soundPlayer.Load();
-                _soundPlayer.PlaySync();
+                    // Play Ready sound
+                    _soundPlayer.SoundLocation = readyStandbyFiles[randomSound];
+                    _soundPlayer.Load();
+                    _soundPlayer.PlaySync();
+                }
             }
 
             BeepDelay();
