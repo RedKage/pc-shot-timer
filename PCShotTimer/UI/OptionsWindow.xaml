@@ -72,7 +72,7 @@
             <TabControl.Effect>
                 <DropShadowEffect RenderingBias="Quality" BlurRadius="10" />
             </TabControl.Effect>
-            <TabItem Header="General" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
+            <TabItem Header="General" FontFamily="/PC Shot Timer;component/fonts/Forced Square/#SquareFont"
                      IsSelected="True" FontWeight="Bold" Margin="28,-2,-29.2,1.8" Cursor="Hand">
                 <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
                     <GroupBox Header="Beep delay" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
@@ -145,7 +145,7 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Input" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
+            <TabItem Header="Input" FontFamily="/PC Shot Timer;component/fonts/Forced Square/#SquareFont"
                      FontWeight="Bold" Margin="28,-1.8,-29.2,1.6" Cursor="Hand">
                 <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
                     <GroupBox Header="Audio input" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
@@ -235,11 +235,11 @@
             </TabItem>
             <TabItem
                 Header="Sounds"
-                FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont" FontWeight="Bold"
+                FontFamily="/PC Shot Timer;component/fonts/Forced Square/#SquareFont" FontWeight="Bold"
                 Margin="28,-1.6,-29.2,2.4"
                 Cursor="Hand">
                 <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
-                    <GroupBox Header="Sound" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
+                    <GroupBox Header="Sounds" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
                             <!-- Ready/Standby sounds -->
                             <CheckBox
@@ -262,7 +262,8 @@
                                 SelectedIndex="0"
                                 DisplayMemberPath="Name"
                                 SelectionChanged="Selector_OnSelectionChanged"
-                                ItemsSource="{Binding Path=AvailableBeepSounds, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
+                                ToolTip="You have to select a BEEP sound. Without one the program won't work.&#xa;Try it, you will see... 😺"
+                                ItemsSource="{Binding Path=Options.AvailableBeepSounds, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
                                 SelectedValue="{Binding Path=Options.SoundSelectedBeepFile, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                 SelectedValuePath="FullName" />
                             <Button
@@ -281,10 +282,12 @@
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,70,0,0"
                                 Height="220" Width="402"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                ScrollViewer.VerticalScrollBarVisibility="Visible"
                                 Foreground="Black"
                                 DisplayMemberPath="Name"
                                 SelectedValuePath="FullName"
-                                ItemsSource="{Binding Path=AvailableReadyStandbySounds, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">
+                                ItemsSource="{Binding Path=Options.AvailableReadyStandbySounds, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">
                                 <ListView.Effect>
                                     <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
                                 </ListView.Effect>
@@ -299,25 +302,27 @@
                                             <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}"
                                                    TargetType="{x:Type GridViewColumnHeader}">
                                                 <Setter Property="IsHitTestVisible" Value="False" />
+                                                <Setter Property="Background" Value="#FFDDDDDD" />
                                             </Style>
                                         </GridView.ColumnHeaderContainerStyle>
                                         <GridView.Columns>
-                                            <GridViewColumn Width="30">
+                                            <GridViewColumn Width="27">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox
                                                             Loaded="ChbReadyStandby_Loaded"
                                                             Checked="ChbReadyStandby_Toggle"
                                                             Unchecked="ChbReadyStandby_Toggle"
+                                                            ToolTip="These selected sound will be randomly played."
                                                             Tag="{Binding Path=Content.(io:FileInfo.FullName), RelativeSource={RelativeSource AncestorType=ListViewItem}}" />
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
                                             <GridViewColumn
                                                 Header="Ready/Standby sounds selection"
-                                                Width="320"
+                                                Width="310"
                                                 DisplayMemberBinding="{Binding Path=Content.(io:FileInfo.Name), RelativeSource={RelativeSource AncestorType=ListViewItem}}" />
-                                            <GridViewColumn Width="40">
+                                            <GridViewColumn Width="37">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button
@@ -341,7 +346,7 @@
             </TabItem>
             <TabItem
                 Header="Detector"
-                FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont" FontWeight="Bold"
+                FontFamily="/PC Shot Timer;component/fonts/Forced Square/#SquareFont" FontWeight="Bold"
                 Margin="28,-2.4,-29.2,2.2"
                 Cursor="Hand">
                 <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
@@ -410,8 +415,8 @@
 
         <!-- Buttons -->
         <Button Content="OK" HorizontalAlignment="Right" Margin="0,0,100,20" VerticalAlignment="Bottom" Width="75"
-                Click="ButtonOk_Click" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont" />
+                Click="ButtonOk_Click" FontFamily="/PC Shot Timer;component/fonts/Forced Square/#SquareFont" />
         <Button Content="Cancel" HorizontalAlignment="Right" Margin="0,0,20,20" VerticalAlignment="Bottom" Width="75"
-                Click="ButtonCancel_Click" FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont" />
+                Click="ButtonCancel_Click" FontFamily="/PC Shot Timer;component/fonts/Forced Square/#SquareFont" />
     </Grid>
 </Window>

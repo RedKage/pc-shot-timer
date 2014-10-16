@@ -66,7 +66,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 TextBlock.Foreground="Black"
-                                TextBlock.FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
+                                TextBlock.FontFamily="/PC Shot Timer;component/fonts/Forced Square/#SquareFont"
                                 TextBlock.FontSize="22"
                                 TextBlock.FontWeight="Bold" />
                             <Border.Background>
@@ -116,7 +116,7 @@
                         <ContentPresenter
                             Name="Content"
                             Margin="5,5,5,5"
-                            TextBlock.FontFamily="/PCShotTimer;component/fonts/Forced Square/#SquareFont"
+                            TextBlock.FontFamily="/PC Shot Timer;component/fonts/Forced Square/#SquareFont"
                             TextBlock.FontSize="15"
                             TextBlock.Foreground="Black"
                             VerticalAlignment="Center"
@@ -188,7 +188,7 @@
             TextAlignment="Center"
             Foreground="Black" BorderBrush="Black"
             FontSize="72" FontWeight="Bold"
-            FontFamily="/PCShotTimer;component/fonts/LCDMonoWinTT/#LCDMono"
+            FontFamily="/PC Shot Timer;component/fonts/LCDMonoWinTT/#LCDMono"
             IsTabStop="False" IsHitTestVisible="False" Focusable="False">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
@@ -269,8 +269,9 @@
         <!-- HUD Random delay -->
         <CheckBox
             Name="HudRandomDelay"
-            Style="{StaticResource HudRandomDelay}" HorizontalAlignment="Left" Margin="10,10,0,0"
-            VerticalAlignment="Top"
+            Style="{StaticResource HudRandomDelay}"
+            HorizontalAlignment="Left" VerticalAlignment="Top"
+            Margin="10,10,0,0"
             IsChecked="{Binding Path=Options.GeneralRandomDelay, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
             Click="HudElement_Toggle"
             ToolTip="🎲 Random delay activated&#x0a;🕒 No random delay" />
@@ -282,7 +283,7 @@
             VerticalAlignment="Top"
             IsChecked="{Binding Options.SoundPlayReadyStandby, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
             Click="HudElement_Toggle"
-            ToolTip="📢 Ready/Standby speeches&#xA;🔇 Less talking, more shooting" />
+            ToolTip="📢 Ready/Standby speeches&#xa;🔇 Less talking, more shooting" />
 
     </Grid>
 </Window>
