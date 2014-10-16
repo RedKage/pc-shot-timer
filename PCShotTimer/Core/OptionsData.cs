@@ -23,6 +23,14 @@ namespace PCShotTimer.Core
         /// <summary>Current selected Ready/Standby sound files.</summary>
         private List<string> _soundSelectedReadyStandbyFiles;
 
+        /// <summary>
+        /// I need to know when I'm going inside the getters since
+        /// XmlSerializer does not call the setter for a collection.
+        /// Instead it calls the getter, and then adds items to the collection returned.
+        /// Sux donkey ballz eh?
+        /// </summary>
+        private bool _isDeserializing = true;
+
         #endregion
 
         #region Properties
@@ -86,16 +94,19 @@ namespace PCShotTimer.Core
             get
             {
                 // Check if not empty
-                if (!String.IsNullOrEmpty(_soundSelectedBeepFile))
-                    return _soundSelectedBeepFile;
+                if (!String.IsNullOrEmpty(_soundSelectedBeepFile)
+                    && File.Exists(_soundSelectedBeepFile)) // Check if exist
+                        return _soundSelectedBeepFile;
 
-                // Then just grab the first one available
-                // This can happen if the config file is new or fucked up
+                // Something went not okay above, so we just grab from the available system file.
+                // This can happen if the config file is new or fucked up.
+                App.Info("Rebuilding SoundSelectedBeepFile");
                 var firstOrDefault = AvailableBeepSounds.FirstOrDefault();
                 _soundSelectedBeepFile =
                     firstOrDefault != null
                     ? firstOrDefault.FullName
                     : null;
+
                 return _soundSelectedBeepFile;
             }
             set { _soundSelectedBeepFile = value; }
@@ -107,16 +118,34 @@ namespace PCShotTimer.Core
         {
             get
             {
-                // Check if not empty
-                if (null != _soundSelectedReadyStandbyFiles && 0 != _soundSelectedReadyStandbyFiles.Count)
+                // XmlSerializer does not call the setter for a collection.
+                // Instead it calls the getter, and then adds items to the collection returned.
+                // Sux donkey ballz eh?
+                // Which means that it will call this get here which will have a null value and then
+                // it will rebuild itself, losing all the SAVED data in the process goddamnit.
+                if (_isDeserializing)
                     return _soundSelectedReadyStandbyFiles;
-                
-                // Then just grab the one available and return them
-                // This can happen if the config file is new or fucked up
+
+                // Check if not empty
+                if (null != _soundSelectedReadyStandbyFiles)
+                {
+                    // Filter only existing files
+                    _soundSelectedReadyStandbyFiles = _soundSelectedReadyStandbyFiles
+                        .Where(File.Exists)
+                        .Distinct()
+                        .ToList();
+
+                    return _soundSelectedReadyStandbyFiles;
+                }
+
+                // Something went not okay above, so we just grab from the available system file.
+                // This can happen if the config file is new or fucked up.
+                App.Info("Rebuilding SoundSelectedReadyStandbyFiles");
                 _soundSelectedReadyStandbyFiles =
                     AvailableReadyStandbySounds
                     .Select(sound => sound.FullName)
                     .ToList();
+
                 return _soundSelectedReadyStandbyFiles;
             }
             set { _soundSelectedReadyStandbyFiles = value; }
@@ -176,7 +205,7 @@ namespace PCShotTimer.Core
         /// <param name="xmlPath">The XML file containing the options to put into that new instance.</param>
         public OptionsData(string xmlPath)
         {
-            var options = Load(xmlPath);
+            var options = Load(new StreamReader(xmlPath).BaseStream);
             Update(options);
         }
 
@@ -188,6 +217,35 @@ namespace PCShotTimer.Core
         {
             var options = Load(xmlStream);
             Update(options);
+        }
+
+        #endregion
+
+        #region Internal methods
+
+        /// <summary>
+        ///     Load options from a XML stream.
+        /// 
+        ///     Yeah it's not a static method like you'd want.
+        ///     It's because I need to know when the deserialization process occurs
+        ///     in order to protect my collection properties:
+        ///     XmlSerializer does not call the setter for a collection.
+        ///     Instead it calls the getter, and then adds items to the collection returned.
+        ///     Sux donkey ballz eh?
+        ///     
+        ///     Which means that it will call some getters that will have a null value and then
+        ///     it will rebuild itself.
+        ///     I can't let that happen right, I worked my ass off to
+        ///     create a SAVED configuation...
+        /// </summary>
+        /// <param name="xmlStream">The XML file stream containing the options to load.</param>
+        /// <returns>A OptionData object.</returns>
+        protected OptionsData Load(Stream xmlStream)
+        {
+            var serializer = new XmlSerializer(typeof (OptionsData));
+            var loadedOptionsData = (OptionsData) serializer.Deserialize(xmlStream);
+            _isDeserializing = false;
+            return loadedOptionsData;
         }
 
         #endregion
@@ -208,28 +266,6 @@ namespace PCShotTimer.Core
         }
 
         /// <summary>
-        ///     Load options from a XML file.
-        /// </summary>
-        /// <param name="xmlPath">The XML file containing the options to load.</param>
-        /// <returns>A OptionData object.</returns>
-        public static OptionsData Load(string xmlPath)
-        {
-            return Load(new StreamReader(xmlPath).BaseStream);
-        }
-
-        /// <summary>
-        ///     Load options from a XML stream.
-        /// </summary>
-        /// <param name="xmlStream">The XML file stream containing the options to load.</param>
-        /// <returns>A OptionData object.</returns>
-        public static OptionsData Load(Stream xmlStream)
-        {
-            var serializer = new XmlSerializer(typeof (OptionsData));
-            var loadedOptionsData = (OptionsData) serializer.Deserialize(xmlStream);
-            return loadedOptionsData;
-        }
-
-        /// <summary>
         ///     Update this instance with another OptionsData.
         /// </summary>
         /// <param name="optionsData">The options that will update that instance data.</param>
@@ -239,7 +275,8 @@ namespace PCShotTimer.Core
             foreach (var property in GetType().GetProperties())
                 if (0 == property.GetCustomAttributes(typeof (XmlIgnoreAttribute), false).GetLength(0))
                     property.SetValue(this, property.GetValue(optionsData, null), null);
-
+            
+            _isDeserializing = false;
             return optionsData;
         }
 
