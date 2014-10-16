@@ -34,7 +34,7 @@ namespace PCShotTimer
         public const string BeepSoundsPrefix = "Beep_";
 
         /// <summary>How the ready/standby sound files shall be named.</summary>
-        public const string ReadySTandbySoundsPrefix = "ReadyStandby_";
+        public const string ReadyStandbySoundsPrefix = "ReadyStandby_";
 
         /// <summary>The App assembly.</summary>
         private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();

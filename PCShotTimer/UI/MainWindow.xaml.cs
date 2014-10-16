@@ -107,7 +107,7 @@ namespace PCShotTimer.UI
                     // Initializes the audio input device
                     var waveIn = new WaveInEvent
                     {
-                        DeviceNumber = Options.SelectedDeviceId,
+                        DeviceNumber = Options.InputDeviceId,
                         BufferMilliseconds = 100,
                         NumberOfBuffers = 3,
                         WaveFormat = new WaveFormat(

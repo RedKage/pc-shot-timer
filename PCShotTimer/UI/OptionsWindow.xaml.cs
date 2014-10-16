@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -17,8 +18,11 @@ namespace PCShotTimer.UI
     {
         #region Members
 
-        /// <summary>A SoundPlayer object .</summary>
+        /// <summary>SoundPlayer object used to play the Beep sounds from the combobox.</summary>
         protected SoundPlayer _beepSoundPlayer = new SoundPlayer();
+
+        /// <summary>SoundPlayer object used to play the Ready/Standby soudns from the listview.</summary>
+        protected SoundPlayer _readyStandbySoundPlayer = new SoundPlayer();
 
         #endregion
 
@@ -40,6 +44,19 @@ namespace PCShotTimer.UI
             }
         }
 
+        /// <summary>Gets the available ready/standby sounds from the app subfolder.</summary>
+        public IList<FileInfo> AvailableReadyStandbySounds
+        {
+            get
+            {
+                var sounds = Directory.GetFiles(string.Format(@"{0}\{1}", App.AppDirectory, App.SoundsDirecoryName));
+                return sounds
+                    .Select(sound => new FileInfo(sound))
+                    .Where(file => file.Name.StartsWith(App.ReadyStandbySoundsPrefix))
+                    .ToList();
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -53,10 +70,6 @@ namespace PCShotTimer.UI
             Options = options;
             InitializeComponent();
         }
-
-        #endregion
-
-        #region Internal Methods
 
         #endregion
 
@@ -116,20 +129,19 @@ namespace PCShotTimer.UI
         /// <param name="e">Event</param>
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Get the Beep combo
-            var beepList = sender as ComboBox;
-            if (beepList == null)
+            // Retrieve full name 
+            var soundFile = CbxBeepSounds.SelectedItem as FileInfo;
+            if (null == soundFile)
                 return;
 
-            // Retrieve full name and load
-            var soundFile = beepList.SelectedValue.ToString();
-            _beepSoundPlayer.SoundLocation = soundFile;
+            // Load
+            _beepSoundPlayer.SoundLocation = soundFile.FullName;
             _beepSoundPlayer.LoadAsync();
             App.Info("Beep sound loading '{0}'", soundFile);
         }
 
         /// <summary>
-        /// Plays the Beep selected sound.
+        /// Plays the selected Beep sound.
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event</param>
@@ -137,6 +149,85 @@ namespace PCShotTimer.UI
         {
             if (_beepSoundPlayer.IsLoadCompleted)
                 _beepSoundPlayer.Play();
+        }
+
+        /// <summary>
+        /// Click on a play button from the ready/standby listview.
+        /// Plays the related ready/standby sound to this button's "row".
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnPlaySelectedReadyStandby_Click(object sender, RoutedEventArgs e)
+        {
+            // Retrieve the button: the full name is in its tag eheh
+            var button = e.Source as Button;
+            if (null == button)
+                return;
+
+            // Load and play
+            _readyStandbySoundPlayer.SoundLocation = button.Tag.ToString();
+            _readyStandbySoundPlayer.Load();
+            _readyStandbySoundPlayer.Play();
+        }
+
+        /// <summary>
+        /// Triggered when a checkbox is... loaded? "BECAUSE I WAS LOADED OKAYY!!!"
+        /// Here we link a checkbox to its sound fullpath which is also stored in the OptionsData.
+        /// Here we represent the checkboxes state according to the options.
+        /// TODO Maybe I am too weak ass, but I can't figure out how to do that pure XAML style with crazy bindings.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event</param>
+        private void ChbReadyStandby_Loaded(object sender, EventArgs e)
+        {
+            // Retrieve the checkbox: the full name is in its tag eheh
+            var checkbox = sender as CheckBox;
+            if (null == checkbox)
+                return;
+
+            // Get full path
+            var readyStandbyFilepath = checkbox.Tag.ToString();
+
+            // Shorten code and make a copy
+            var files = Options.SoundSelectedReadyStandbyFiles.ToArray();
+
+            // Browse the selected sounds from the options
+            foreach (var file in files)
+            {
+                if (readyStandbyFilepath.Equals(file, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    checkbox.IsChecked = true;
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Triggered when a checkbox from the Ready/Standby sound list is toggled.
+        /// Here we link a checkbox to its sound fullpath which is also stored in the OptionsData.
+        /// Here we update the data occording to the checkboxes state.
+        /// TODO Maybe I am too weak ass, but I can't figure out how to do that in pure XAML style with crazy bindings.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event</param>
+        private void ChbReadyStandby_Toggle(object sender, RoutedEventArgs e)
+        {
+            // Retrieve the checkbox: the full name is in its tag eheh
+            var checkbox = e.Source as CheckBox;
+            if (null == checkbox)
+                return;
+
+            // Get full path
+            var readyStandbyFilepath = checkbox.Tag.ToString();
+
+            // Shorten code
+            var files = Options.SoundSelectedReadyStandbyFiles;
+
+            // Checked -> add to list / Unchecked -> remove from list
+            if (checkbox.IsChecked.HasValue && checkbox.IsChecked.Value)
+                files.Add(readyStandbyFilepath);
+            else
+                files.RemoveAt(files.IndexOf(readyStandbyFilepath));
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using PropertyChanged;
@@ -29,6 +30,10 @@ namespace PCShotTimer.Core
         /// <summary>Gets or sets whether the shot timer shall loop until pressing Stop.</summary>
         [XmlElement("GeneralLoopTimer")]
         public bool GeneralLoopTimer { get; set; }
+
+        /// <summary>Gets or sets the current selected input device ID.</summary>
+        [XmlElement("InputDeviceId")]
+        public int InputDeviceId { get; set; }
 
         /// <summary>Gets or sets the default sample rate for the mic input.</summary>
         [XmlElement("InputSampleRate")]
@@ -66,8 +71,9 @@ namespace PCShotTimer.Core
         [XmlElement("SoundSelectedBeepFile")]
         public string SoundSelectedBeepFile { get; set; }
 
-        /// <summary>Gets or sets the current selected input device ID.</summary>
-        public int SelectedDeviceId { get; set; }
+        /// <summary>Gets or sets the selected Ready/Standby sounds.</summary>
+        [XmlElement("SoundSelectedReadyStandbyFiles")]
+        public List<string> SoundSelectedReadyStandbyFiles { get; set; }
 
         #endregion
 

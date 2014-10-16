@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pcShotTimer="clr-namespace:PCShotTimer"
+    xmlns:io="clr-namespace:System.IO;assembly=mscorlib"
     mc:Ignorable="d"
     Title="Options"
     Height="400"
@@ -158,7 +159,7 @@
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="98,10,0,0"
                                 Width="314"
-                                SelectedIndex="{Binding Path=Options.SelectedDeviceId, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                                SelectedIndex="{Binding Path=Options.InputDeviceId, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                 ItemsSource="{Binding Path=(pcShotTimer:App.InputDevices), Mode=OneWay, Source={x:Static Application.Current}}"
                                 SelectionChanged="CbxInputDevice_SelectionChanged" />
 
@@ -253,6 +254,7 @@
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,31,0,0" />
                             <ComboBox
+                                Name="CbxBeepSounds"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="90,33,0,0"
                                 Width="292"
@@ -273,31 +275,63 @@
                                 Click="BtnPlaySelectedBeep_Click"/>
 
                             <!-- Ready/standby sounds -->
-                            <Label
-                                Content="Ready/Standby sounds:"
-                                HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="10,60,0,0" />
                             <ListView
+                                Name="LstReadyStandbySounds"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="10,89,0,0"
-                                Height="209" Width="402">
+                                Margin="10,70,0,0"
+                                Height="220" Width="402"
+                                Foreground="Black"
+                                DisplayMemberPath="Name"
+                                SelectedValuePath="FullName"
+                                ItemsSource="{Binding Path=AvailableReadyStandbySounds, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">
                                 <ListView.Effect>
                                     <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
                                 </ListView.Effect>
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
                                     </Style>
                                 </ListView.ItemContainerStyle>
                                 <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Selected" DisplayMemberBinding="{Binding Path=Selected}" Width="30" />
-                                        <GridViewColumn Header="Sound" DisplayMemberBinding="{Binding Path=Filename}" Width="100" />
-                                        <GridViewColumn Header="Play" DisplayMemberBinding="{Binding Path=Play}" Width="100" />
+                                    <GridView AllowsColumnReorder="False">
+                                        <GridView.ColumnHeaderContainerStyle>
+                                            <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="IsHitTestVisible" Value="False"/>
+                                            </Style>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridView.Columns>
+                                            <GridViewColumn Width="30">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox
+                                                            Loaded="ChbReadyStandby_Loaded"
+                                                            Checked="ChbReadyStandby_Toggle"
+                                                            Unchecked="ChbReadyStandby_Toggle"
+                                                            Tag="{Binding Path=Content.(io:FileInfo.FullName), RelativeSource={RelativeSource AncestorType=ListViewItem}}"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn
+                                                Header="Ready/Standby sounds selection"
+                                                Width="320"
+                                                DisplayMemberBinding="{Binding Path=Content.(io:FileInfo.Name), RelativeSource={RelativeSource AncestorType=ListViewItem}}" />
+                                            <GridViewColumn Width="40">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button
+                                                            Content=" ▶"
+                                                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                            Width="25" Height="19"
+                                                            FontFamily="Calibri"
+                                                            Click="BtnPlaySelectedReadyStandby_Click"
+                                                            Tag="{Binding Path=Content.(io:FileInfo.FullName), RelativeSource={RelativeSource AncestorType=ListViewItem}}"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                        </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
                             </ListView>
-
                         </Grid>
                     </GroupBox>
                 </Grid>

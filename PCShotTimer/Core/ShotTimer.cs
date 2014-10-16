@@ -44,8 +44,8 @@ namespace PCShotTimer.Core
         protected SoundPlayer _beepSoundPlayer = new SoundPlayer();
 
         /// <summary>
-        ///     This DispatcherTimer is used to trigger PropertyChange every tick (as there is no Tick event on the Stopwatch
-        ///     object).
+        ///     This DispatcherTimer is used to trigger PropertyChange every tick
+        ///     (as there is no Tick event on the Stopwatch object).
         /// </summary>
         protected DispatcherTimer _dispatcherTimer = new DispatcherTimer();
 
@@ -55,10 +55,7 @@ namespace PCShotTimer.Core
         /// <summary>The random delay Timer.</summary>
         protected Timer _randomDelay = null;
 
-        /// <summary>Contains all the ReadyStandy sounds found from the SoundFolder.</summary>
-        protected IList<string> _readyStandySound = new List<string>();
-
-        /// <summary>A SoundPlayer object .</summary>
+        /// <summary>A SoundPlayer object.</summary>
         protected SoundPlayer _soundPlayer = new SoundPlayer();
 
         /// <summary>The SFX directory used by ShotTimer.</summary>
@@ -126,18 +123,6 @@ namespace PCShotTimer.Core
                 App.Error("Setting processor affinity failed: {0}", e.Message);
             }
 
-            // Finds all the ReadyStandy sounds
-            var sounds = Directory.GetFiles(SoundsDirectory);
-            foreach (var soundPath in sounds)
-            {
-                var soundFile = Path.GetFileName(soundPath);
-                if (null == soundFile)
-                    continue;
-
-                if (soundFile.StartsWith("ReadyStandby_"))
-                    _readyStandySound.Add(soundPath);
-            }
-
             // Load the sound now so we don't waste time later
             _beepSoundPlayer.SoundLocation = _options.SoundSelectedBeepFile;
             _beepSoundPlayer.Load();
@@ -161,7 +146,7 @@ namespace PCShotTimer.Core
             catch (MmException exception)
             {
                 throw new ApplicationException(
-                    String.Format("The device {0} cannot be openned... it seems.", _options.SelectedDeviceId), exception);
+                    String.Format("The device {0} cannot be openned... it seems.", _options.InputDeviceId), exception);
             }
         }
 
@@ -260,9 +245,12 @@ namespace PCShotTimer.Core
 
             if (_options.SoundPlayReadyStandby)
             {
+                // Select a random ready/standby sound from the selected ones
+                var readyStandbyFiles = _options.SoundSelectedReadyStandbyFiles;
+                var randomSound = _random.Next(0, readyStandbyFiles.Count);
+
                 // Play Ready sound
-                var randomSound = _random.Next(0, _readyStandySound.Count);
-                _soundPlayer.SoundLocation = _readyStandySound[randomSound];
+                _soundPlayer.SoundLocation = readyStandbyFiles[randomSound];
                 _soundPlayer.Load();
                 _soundPlayer.PlaySync();
             }
