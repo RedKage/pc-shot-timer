@@ -30,9 +30,6 @@ namespace PCShotTimer.Core
         /// <summary>Indicates how many milliseconds shall pass before PropertyChanging the TimeElapse property.</summary>
         private const int TimeElapseUpdateMs = 1;
 
-        /// <summary>Subdirectory in the app folder that contains the sound files.</summary>
-        private const string SoundsDirecoryName = "sounds";
-
         #endregion
 
         #region Members
@@ -42,9 +39,6 @@ namespace PCShotTimer.Core
 
         /// <summary>Shot detector class.</summary>
         protected readonly ShotDetector _shotDetector;
-
-        /// <summary>Contains all the Beep sounds found from the SoundFolder.</summary>
-        protected List<string> _beepSound = new List<string>();
 
         /// <summary>A SoundPlayer object only used to play the BEEP.</summary>
         protected SoundPlayer _beepSoundPlayer = new SoundPlayer();
@@ -62,7 +56,7 @@ namespace PCShotTimer.Core
         protected Timer _randomDelay = null;
 
         /// <summary>Contains all the ReadyStandy sounds found from the SoundFolder.</summary>
-        protected List<string> _readyStandySound = new List<string>();
+        protected IList<string> _readyStandySound = new List<string>();
 
         /// <summary>A SoundPlayer object .</summary>
         protected SoundPlayer _soundPlayer = new SoundPlayer();
@@ -119,7 +113,7 @@ namespace PCShotTimer.Core
         {
             _options = options;
             ShotFired = shotFiredEvent;
-            SoundsDirectory = String.Format(@"{0}\{1}", App.AppDirectory, SoundsDirecoryName);
+            SoundsDirectory = String.Format(@"{0}\{1}", App.AppDirectory, App.SoundsDirecoryName);
             TimeElapsed = DefaultTimerValue;
 
             // Uses the second Core or Processor
@@ -142,12 +136,10 @@ namespace PCShotTimer.Core
 
                 if (soundFile.StartsWith("ReadyStandby_"))
                     _readyStandySound.Add(soundPath);
-                else if (soundFile.StartsWith("Beep_"))
-                    _beepSound.Add(soundPath);
             }
 
             // Load the sound now so we don't waste time later
-            _beepSoundPlayer.SoundLocation = _beepSound[0];
+            _beepSoundPlayer.SoundLocation = _options.SoundSelectedBeepFile;
             _beepSoundPlayer.Load();
 
             // Assign ReadingAvailableAudioData for reading the audio input

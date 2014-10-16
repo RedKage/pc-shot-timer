@@ -30,35 +30,41 @@ namespace PCShotTimer.Core
         [XmlElement("GeneralLoopTimer")]
         public bool GeneralLoopTimer { get; set; }
 
-        /// <summary>Default sample rate for the mic input.</summary>
+        /// <summary>Gets or sets the default sample rate for the mic input.</summary>
         [XmlElement("InputSampleRate")]
         public int InputSampleRate { get; set; }
 
-        /// <summary>Default sample bits for the mic input.</summary>
+        /// <summary>Gets or sets the default sample bits for the mic input.</summary>
         [XmlElement("InputSampleBits")]
         public int InputSampleBits { get; set; }
 
-        /// <summary>Default channel number for the mic input (stereo/mono).</summary>
+        /// <summary>Gets or sets the default channel number for the mic input (stereo/mono).</summary>
         [XmlElement("InputChannels")]
         public int InputChannels { get; set; }
 
         /// <summary>
-        ///     This is actually the number of time (or samples) a high audio spike is detected before being counted as a 'shot'.
+        ///     Gets or sets the DetectorSensitivity which is actually the number of time (or samples)
+        ///     a high audio spike is detected before being counted as a 'shot'.
         ///     So the lower, the more sensitive it is.
         /// </summary>
         [XmlElement("DetectorSensitivity")]
         public int DetectorSensitivity { get; set; }
 
         /// <summary>
-        ///     This is value of this spike. The louder the higher the number.
+        ///     Gets or sets the value of the spike to reach.
+        ///     The louder the higher the number.
         ///     Here this is a percent value of the maximum input loudness.
         /// </summary>
         [XmlElement("DetectorLoudness")]
         public int DetectorLoudness { get; set; }
 
-        /// <summary>Defines if there should be a speech before the beep.</summary>
+        /// <summary>Gets or sets whether there should be a speech before the beep.</summary>
         [XmlElement("SoundPlayReadyStandby")]
         public bool SoundPlayReadyStandby { get; set; }
+
+        /// <summary>Gets or sets the selected Beep sound.</summary>
+        [XmlElement("SoundSelectedBeepFile")]
+        public string SoundSelectedBeepFile { get; set; }
 
         /// <summary>Gets or sets the current selected input device ID.</summary>
         public int SelectedDeviceId { get; set; }

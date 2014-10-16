@@ -27,6 +27,15 @@ namespace PCShotTimer
         /// <summary>File name for the user config saved on disk.</summary>
         public const string UserConfigFileName = "config.xml";
 
+        /// <summary>Subdirectory in the app folder that contains the sound files.</summary>
+        public const string SoundsDirecoryName = "sounds";
+
+        /// <summary>How the beep sound files shall be named.</summary>
+        public const string BeepSoundsPrefix = "Beep_";
+
+        /// <summary>How the ready/standby sound files shall be named.</summary>
+        public const string ReadySTandbySoundsPrefix = "ReadyStandby_";
+
         /// <summary>The App assembly.</summary>
         private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 

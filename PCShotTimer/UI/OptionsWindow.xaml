@@ -245,7 +245,59 @@
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,10,0,0"
                                 ToolTip="Defines whether or not the Ready/Standby sounds shall be played upon start."
-                                IsChecked="{Binding Options.SoundPlayReadyStandby, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}" />
+                                IsChecked="{Binding Path=Options.SoundPlayReadyStandby, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}" />
+
+                            <!-- BEEP sound -->
+                            <Label
+                                Content="BEEP sound"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="10,31,0,0" />
+                            <ComboBox
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="90,33,0,0"
+                                Width="292"
+                                SelectedIndex="0"
+                                DisplayMemberPath="Name"
+                                SelectionChanged="Selector_OnSelectionChanged"
+                                ItemsSource="{Binding Path=AvailableBeepSounds, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
+                                SelectedValue="{Binding Path=Options.SoundSelectedBeepFile, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                                SelectedValuePath="FullName"/>
+                            <Button
+                                Name="BtnPlaySelectedBeep"
+                                Content=" ▶"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="387,33,0,0" 
+                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                Width="25" Height="19"
+                                FontFamily="Calibri"
+                                Click="BtnPlaySelectedBeep_Click"/>
+
+                            <!-- Ready/standby sounds -->
+                            <Label
+                                Content="Ready/Standby sounds:"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="10,60,0,0" />
+                            <ListView
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="10,89,0,0"
+                                Height="209" Width="402">
+                                <ListView.Effect>
+                                    <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />
+                                </ListView.Effect>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Selected" DisplayMemberBinding="{Binding Path=Selected}" Width="30" />
+                                        <GridViewColumn Header="Sound" DisplayMemberBinding="{Binding Path=Filename}" Width="100" />
+                                        <GridViewColumn Header="Play" DisplayMemberBinding="{Binding Path=Play}" Width="100" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
                         </Grid>
                     </GroupBox>
                 </Grid>

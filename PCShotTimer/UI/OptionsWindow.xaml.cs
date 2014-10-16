@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using NAudio.CoreAudioApi;
@@ -11,10 +15,30 @@ namespace PCShotTimer.UI
     /// </summary>
     public partial class OptionsWindow
     {
+        #region Members
+
+        /// <summary>A SoundPlayer object .</summary>
+        protected SoundPlayer _beepSoundPlayer = new SoundPlayer();
+
+        #endregion
+
         #region Properties
 
         /// <summary>The options.</summary>
         public OptionsData Options { get; set; }
+
+        /// <summary>Gets the available beep sounds from the app subfolder.</summary>
+        public IList<FileInfo> AvailableBeepSounds
+        {
+            get
+            {
+                var sounds = Directory.GetFiles(string.Format(@"{0}\{1}", App.AppDirectory, App.SoundsDirecoryName));
+                return sounds
+                    .Select(sound => new FileInfo(sound))
+                    .Where(file => file.Name.StartsWith(App.BeepSoundsPrefix))
+                    .ToList();
+            }
+        }
 
         #endregion
 
@@ -82,7 +106,37 @@ namespace PCShotTimer.UI
                 return;
 
             var id = CbxInputDevice.SelectedIndex;
-            App.Info(@"New audio input device selected: {0}:{1}", id, device);
+            App.Info("New audio input device selected: {0}:{1}", id, device);
+        }
+
+        /// <summary>
+        /// Triggered when a beep sound is selected. This will load it here.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event</param>
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Get the Beep combo
+            var beepList = sender as ComboBox;
+            if (beepList == null)
+                return;
+
+            // Retrieve full name and load
+            var soundFile = beepList.SelectedValue.ToString();
+            _beepSoundPlayer.SoundLocation = soundFile;
+            _beepSoundPlayer.LoadAsync();
+            App.Info("Beep sound loading '{0}'", soundFile);
+        }
+
+        /// <summary>
+        /// Plays the Beep selected sound.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event</param>
+        private void BtnPlaySelectedBeep_Click(object sender, RoutedEventArgs e)
+        {
+            if (_beepSoundPlayer.IsLoadCompleted)
+                _beepSoundPlayer.Play();
         }
 
         #endregion
