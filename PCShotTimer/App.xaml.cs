@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Windows;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
@@ -198,7 +199,18 @@ namespace PCShotTimer
         /// <param name="exception">The exception responsible.</param>
         public static void DialogFatalError(Exception exception)
         {
-            var message = String.Format("{0}:\n{1}", exception.GetType().Name, exception.Message);
+            var m = new StringBuilder(String.Format("{0}:\n{1}", exception.GetType().Name, exception.Message));
+
+            // ReSharper disable PossibleNullReferenceException
+            if (typeof(FileNotFoundException) == exception.GetType())
+            {
+                var e = exception as FileNotFoundException;
+
+                m.AppendFormat("\n{0}", e.FileName);
+            }
+            // ReSharper restore PossibleNullReferenceException
+
+            var message = m.ToString();
             Error(message);
             Debug(message);
             MessageBox.Show(message, "Fatal error", MessageBoxButton.OK, MessageBoxImage.Stop);
