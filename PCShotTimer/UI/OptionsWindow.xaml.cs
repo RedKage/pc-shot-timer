@@ -211,7 +211,8 @@ namespace PCShotTimer.UI
             }
 
             // Check whether there are no sounds left
-            Options.SoundPlayReadyStandby = 0 != files.Count;
+            if (0 == files.Count)
+                Options.SoundPlayReadyStandby = false;
         }
 
         #endregion
