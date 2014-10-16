@@ -123,7 +123,7 @@ namespace PCShotTimer.UI
         }
 
         /// <summary>
-        /// Triggered when a beep sound is selected. This will load it here.
+        ///     Triggered when a beep sound is selected. This will load it here.
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event</param>
@@ -141,7 +141,7 @@ namespace PCShotTimer.UI
         }
 
         /// <summary>
-        /// Plays the selected Beep sound.
+        ///     Plays the selected Beep sound.
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event</param>
@@ -152,8 +152,8 @@ namespace PCShotTimer.UI
         }
 
         /// <summary>
-        /// Click on a play button from the ready/standby listview.
-        /// Plays the related ready/standby sound to this button's "row".
+        ///     Click on a play button from the ready/standby listview.
+        ///     Plays the related ready/standby sound to this button's "row".
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -171,10 +171,10 @@ namespace PCShotTimer.UI
         }
 
         /// <summary>
-        /// Triggered when a checkbox is... loaded? "BECAUSE I WAS LOADED OKAYY!!!"
-        /// Here we link a checkbox to its sound fullpath which is also stored in the OptionsData.
-        /// Here we represent the checkboxes state according to the options.
-        /// TODO Maybe I am too weak ass, but I can't figure out how to do that pure XAML style with crazy bindings.
+        ///     Triggered when a checkbox is... loaded? "BECAUSE I WAS LOADED OKAYY!!!"
+        ///     Here we link a checkbox to its sound fullpath which is also stored in the OptionsData.
+        ///     Here we represent the checkboxes state according to the options.
+        ///     TODO Maybe I am too weak ass, but I can't figure out how to do that pure XAML style with crazy bindings.
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event</param>
@@ -203,10 +203,10 @@ namespace PCShotTimer.UI
         }
 
         /// <summary>
-        /// Triggered when a checkbox from the Ready/Standby sound list is toggled.
-        /// Here we link a checkbox to its sound fullpath which is also stored in the OptionsData.
-        /// Here we update the data occording to the checkboxes state.
-        /// TODO Maybe I am too weak ass, but I can't figure out how to do that in pure XAML style with crazy bindings.
+        ///     Triggered when a checkbox from the Ready/Standby sound list is toggled.
+        ///     Here we link a checkbox to its sound fullpath which is also stored in the OptionsData.
+        ///     Here we update the data occording to the checkboxes state.
+        ///     TODO Maybe I am too weak ass, but I can't figure out how to do that in pure XAML style with crazy bindings.
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event</param>

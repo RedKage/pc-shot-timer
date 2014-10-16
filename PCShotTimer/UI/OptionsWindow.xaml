@@ -88,10 +88,10 @@
                             <!-- Minimum delay -->
                             <Label
                                 Name="LblRandomDelayMin"
-                                Content="Minimum delay" 
+                                Content="Minimum delay"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,30,0,0"
-                                ToolTip="This minimum delay (in secs) will be used when the random delay is deactivated."/>
+                                ToolTip="This minimum delay (in secs) will be used when the random delay is deactivated." />
                             <Slider
                                 Name="SldRandomDelayMin"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -119,9 +119,9 @@
                                 Content="Maximum delay"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,58,0,0"
-                                ToolTip="This maximum delay (in secs) will only be used when the random delay is activated."/>
+                                ToolTip="This maximum delay (in secs) will only be used when the random delay is activated." />
                             <Slider
-                                Name="SldRandomDelayMax" 
+                                Name="SldRandomDelayMax"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="109,55,0,0"
                                 Width="255"
@@ -130,7 +130,8 @@
                                 IsSnapToTickEnabled="True"
                                 Ticks="0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10"
                                 ToolTip="{Binding ElementName=LblRandomDelayMax, Path=ToolTip}"
-                                Value="{Binding Path=Options.GeneralRandomStartDelayMax, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Foreground="#FF999999" />
+                                Value="{Binding Path=Options.GeneralRandomStartDelayMax, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                                Foreground="#FF999999" />
                             <TextBox
                                 Name="TxbRandomDelayMax"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -154,7 +155,7 @@
                                 Content="Device"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,10,0,0" />
-                            <ComboBox 
+                            <ComboBox
                                 Name="CbxInputDevice"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="98,10,0,0"
@@ -192,7 +193,7 @@
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,62,0,0" />
                             <ComboBox
-                                HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="98,64,0,0"
                                 Width="104"
                                 ToolTip="Currently, only 16bit samples are supported by the sound detector."
@@ -263,16 +264,16 @@
                                 SelectionChanged="Selector_OnSelectionChanged"
                                 ItemsSource="{Binding Path=AvailableBeepSounds, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
                                 SelectedValue="{Binding Path=Options.SoundSelectedBeepFile, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
-                                SelectedValuePath="FullName"/>
+                                SelectedValuePath="FullName" />
                             <Button
                                 Name="BtnPlaySelectedBeep"
                                 Content=" ▶"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="387,33,0,0" 
+                                Margin="387,33,0,0"
                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                 Width="25" Height="19"
                                 FontFamily="Calibri"
-                                Click="BtnPlaySelectedBeep_Click"/>
+                                Click="BtnPlaySelectedBeep_Click" />
 
                             <!-- Ready/standby sounds -->
                             <ListView
@@ -295,8 +296,9 @@
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
                                         <GridView.ColumnHeaderContainerStyle>
-                                            <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
-                                                <Setter Property="IsHitTestVisible" Value="False"/>
+                                            <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}"
+                                                   TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="IsHitTestVisible" Value="False" />
                                             </Style>
                                         </GridView.ColumnHeaderContainerStyle>
                                         <GridView.Columns>
@@ -307,7 +309,7 @@
                                                             Loaded="ChbReadyStandby_Loaded"
                                                             Checked="ChbReadyStandby_Toggle"
                                                             Unchecked="ChbReadyStandby_Toggle"
-                                                            Tag="{Binding Path=Content.(io:FileInfo.FullName), RelativeSource={RelativeSource AncestorType=ListViewItem}}"/>
+                                                            Tag="{Binding Path=Content.(io:FileInfo.FullName), RelativeSource={RelativeSource AncestorType=ListViewItem}}" />
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
@@ -320,11 +322,12 @@
                                                     <DataTemplate>
                                                         <Button
                                                             Content=" ▶"
-                                                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                            HorizontalContentAlignment="Center"
+                                                            VerticalContentAlignment="Center"
                                                             Width="25" Height="19"
                                                             FontFamily="Calibri"
                                                             Click="BtnPlaySelectedReadyStandby_Click"
-                                                            Tag="{Binding Path=Content.(io:FileInfo.FullName), RelativeSource={RelativeSource AncestorType=ListViewItem}}"/>
+                                                            Tag="{Binding Path=Content.(io:FileInfo.FullName), RelativeSource={RelativeSource AncestorType=ListViewItem}}" />
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
@@ -348,7 +351,7 @@
                             <Label
                                 Name="LblDetectorSensitivity"
                                 Content="Sensitivity"
-                                HorizontalAlignment="Left"  VerticalAlignment="Top"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,11,0,0"
                                 ToolTip="This defines the duration of the loud spike.&#xA;Here we want the number of consecutive sample spikes required to consider a gunshot has occured.&#xA;So, the lower the more sensitive." />
                             <Slider
@@ -368,36 +371,37 @@
                                 Margin="381,11,0,0"
                                 Width="30" Height="25"
                                 TextAlignment="Center"
-                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"                               
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                 ToolTip="{Binding ToolTip, ElementName=LblDetectorSensitivity}"
                                 Text="{Binding Value, ElementName=SldDetectorSensitivity, StringFormat={}{0:0}}" />
 
                             <!-- Detector sensitivity loudness -->
                             <Label
-                                Name ="LblDetectorLoudness"
-                            	Content="Loudness"
-                            	HorizontalAlignment="Left" VerticalAlignment="Top"
-                            	Margin="10,40,0,0"
+                                Name="LblDetectorLoudness"
+                                Content="Loudness"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="10,40,0,0"
                                 ToolTip="This defines the loudness spike value, in percent.&#xA;The higher, the louder it will have to be in order to be detected." />
                             <Slider
-                            	x:Name="SldDetectorLoudness"
-                            	HorizontalAlignment="Left" VerticalAlignment="Top"
-                            	Margin="89,36,0,0"
-                            	Width="287"
+                                x:Name="SldDetectorLoudness"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="89,36,0,0"
+                                Width="287"
                                 Cursor="Hand"
                                 Foreground="#FF999999"
-                            	IsSnapToTickEnabled="True" TickPlacement="Both"
+                                IsSnapToTickEnabled="True" TickPlacement="Both"
                                 ToolTip="{Binding ToolTip, ElementName=LblDetectorLoudness}"
-                                Value="{Binding Options.DetectorLoudness, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}" Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5" />
+                                Value="{Binding Options.DetectorLoudness, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
+                                Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5" />
                             <TextBox
-                            	Name="TxbDetectorLoudness"
+                                Name="TxbDetectorLoudness"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="381,39,0,0"
-                            	Width="30" Height="25"
-                            	TextAlignment="Center"
+                                Width="30" Height="25"
+                                TextAlignment="Center"
                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                 ToolTip="{Binding ToolTip, ElementName=LblDetectorLoudness}"
-                            	Text="{Binding Value, ElementName=SldDetectorLoudness, StringFormat=\{0:0\}}" />
+                                Text="{Binding Value, ElementName=SldDetectorLoudness, StringFormat=\{0:0\}}" />
                         </Grid>
                     </GroupBox>
                 </Grid>

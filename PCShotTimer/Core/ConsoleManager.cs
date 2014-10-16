@@ -51,7 +51,7 @@ namespace PCShotTimer.Core
         {
             if (HasConsole)
                 return;
-            
+
             AllocConsole();
             InvalidateOutAndError();
         }

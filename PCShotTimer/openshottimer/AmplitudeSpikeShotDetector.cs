@@ -35,8 +35,8 @@ namespace PCShotTimer.openshottimer
         #region members
 
         /// <summary>
-        /// Number of consecutive sample spikes required to consider a gunshot has occured.
-        /// The lower the more sensitive.
+        ///     Number of consecutive sample spikes required to consider a gunshot has occured.
+        ///     The lower the more sensitive.
         /// </summary>
         private readonly int _samplesAboveThresholdRequired;
 
@@ -64,10 +64,11 @@ namespace PCShotTimer.openshottimer
         ///     This is the previous param's threshold value:
         ///     pretty much how loud it should be. Here it's a percent.
         /// </param>
-        public AmplitudeSpikeShotDetector(int sampleRate, int sampleSizeInBits, int samplesAboveThresholdRequired, int shotDetectionLoudness)
+        public AmplitudeSpikeShotDetector(int sampleRate, int sampleSizeInBits, int samplesAboveThresholdRequired,
+            int shotDetectionLoudness)
             : base(sampleRate, sampleSizeInBits)
         {
-            _shotDetectionThreshold = Convert.ToInt16(shotDetectionLoudness * short.MaxValue / 100);
+            _shotDetectionThreshold = Convert.ToInt16(shotDetectionLoudness*short.MaxValue/100);
             _samplesAboveThresholdRequired = samplesAboveThresholdRequired + 1;
             if (sampleSizeInBits != 16)
                 throw new ArgumentException("Only support 16 bit samples");
