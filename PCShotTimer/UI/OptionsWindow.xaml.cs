@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Media;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,32 +28,6 @@ namespace PCShotTimer.UI
 
         /// <summary>The options.</summary>
         public OptionsData Options { get; set; }
-
-        /// <summary>Gets the available beep sounds from the app subfolder.</summary>
-        public IList<FileInfo> AvailableBeepSounds
-        {
-            get
-            {
-                var sounds = Directory.GetFiles(string.Format(@"{0}\{1}", App.AppDirectory, App.SoundsDirecoryName));
-                return sounds
-                    .Select(sound => new FileInfo(sound))
-                    .Where(file => file.Name.StartsWith(App.BeepSoundsPrefix))
-                    .ToList();
-            }
-        }
-
-        /// <summary>Gets the available ready/standby sounds from the app subfolder.</summary>
-        public IList<FileInfo> AvailableReadyStandbySounds
-        {
-            get
-            {
-                var sounds = Directory.GetFiles(string.Format(@"{0}\{1}", App.AppDirectory, App.SoundsDirecoryName));
-                return sounds
-                    .Select(sound => new FileInfo(sound))
-                    .Where(file => file.Name.StartsWith(App.ReadyStandbySoundsPrefix))
-                    .ToList();
-            }
-        }
 
         #endregion
 
@@ -95,6 +67,7 @@ namespace PCShotTimer.UI
         private void ButtonOk_Click(object sender, RoutedEventArgs e)
         {
             Hide();
+            //App.Debug("Options window: Button Okay");
         }
 
         /// <summary>
@@ -105,6 +78,7 @@ namespace PCShotTimer.UI
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+            //App.Debug("Options window: Button Cancel");
         }
 
         /// <summary>
@@ -137,7 +111,7 @@ namespace PCShotTimer.UI
             // Load
             _beepSoundPlayer.SoundLocation = soundFile.FullName;
             _beepSoundPlayer.LoadAsync();
-            App.Info("Beep sound loading '{0}'", soundFile);
+            //App.Debug("Beep sound selected: {0}", soundFile.Name);
         }
 
         /// <summary>
@@ -197,6 +171,7 @@ namespace PCShotTimer.UI
                 if (readyStandbyFilepath.Equals(file, StringComparison.InvariantCultureIgnoreCase))
                 {
                     checkbox.IsChecked = true;
+                    //App.Debug("Selecting RUReady sound: {0}", Path.GetFileName(file));
                     break;
                 }
             }
@@ -218,16 +193,25 @@ namespace PCShotTimer.UI
                 return;
 
             // Get full path
-            var readyStandbyFilepath = checkbox.Tag.ToString();
+            var readyStandbyFilePath = checkbox.Tag.ToString();
 
             // Shorten code
             var files = Options.SoundSelectedReadyStandbyFiles;
 
             // Checked -> add to list / Unchecked -> remove from list
             if (checkbox.IsChecked.HasValue && checkbox.IsChecked.Value)
-                files.Add(readyStandbyFilepath);
+            {
+                files.Add(readyStandbyFilePath);
+                //App.Debug("Adding RUReady sound: {0}", Path.GetFileName(readyStandbyFilePath));
+            }
             else
-                files.RemoveAt(files.IndexOf(readyStandbyFilepath));
+            {
+                files.RemoveAll(file => file.Equals(readyStandbyFilePath, StringComparison.InvariantCultureIgnoreCase));
+                //App.Debug("Removing RUReady sound: {0}", Path.GetFileName(readyStandbyFilePath));
+            }
+
+            // Check whether there are no sounds left
+            Options.SoundPlayReadyStandby = 0 != files.Count;
         }
 
         #endregion
