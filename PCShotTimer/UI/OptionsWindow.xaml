@@ -243,6 +243,7 @@
                         <Grid>
                             <!-- Ready/Standby sounds -->
                             <CheckBox
+                                Name="ChkPlayReadyStandbySounds"
                                 Content="Play Ready/Standy sounds"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,10,0,0"

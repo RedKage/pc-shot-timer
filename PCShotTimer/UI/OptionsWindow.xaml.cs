@@ -212,7 +212,14 @@ namespace PCShotTimer.UI
 
             // Check whether there are no sounds left
             if (0 == files.Count)
+            {
                 Options.SoundPlayReadyStandby = false;
+                ChkPlayReadyStandbySounds.IsEnabled = false;
+            }
+            else
+            {
+                ChkPlayReadyStandbySounds.IsEnabled = true;
+            }
         }
 
         #endregion
