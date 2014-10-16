@@ -46,16 +46,22 @@ namespace PCShotTimer
 
         #region Properties
 
-        /// <summary>Gets the available audio input devices.</summary>
-        public IList<MMDevice> InputDevices
+        /// <summary>Gets the application name with its version.</summary>
+        public static string AppTitle
         {
-            get { return GetAudioInputDevices(); }
+            get { return string.Format("{0} {1}", _assembly.GetName().Name, _assembly.GetName().Version); }
         }
 
         /// <summary>Gets the default config of this app from the app embedded resources.</summary>
         public static Stream DefaultConfig
         {
             get { return GetResource(DefaultConfigResourceName); }
+        }
+
+        /// <summary>Gets the available audio input devices.</summary>
+        public IList<MMDevice> InputDevices
+        {
+            get { return GetAudioInputDevices(); }
         }
 
         #endregion
@@ -73,7 +79,7 @@ namespace PCShotTimer
             ConsoleManager.Attach();
 #endif
             Console.Out.WriteLine();
-            Info("Started");
+            Info(AppTitle);
 
             try
             {
