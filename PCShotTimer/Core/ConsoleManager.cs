@@ -45,18 +45,27 @@ namespace PCShotTimer.Core
         }
 
         /// <summary>
-        ///     Attache the console to the parent one, if it exists.
-        ///     If not, creates a new console instance if the process is not attached to a console already.
+        ///     Creates a new console instance if the process is not attached to a console already.
         /// </summary>
-        public static void Show()
+        public static void Create()
+        {
+            if (HasConsole)
+                return;
+            
+            AllocConsole();
+            InvalidateOutAndError();
+        }
+
+        /// <summary>
+        ///     Attach the console to the parent one, if it exists.
+        /// </summary>
+        public static void Attach()
         {
             if (HasConsole)
                 return;
 
             // Try to attach to the parent console
-            if (!AttachConsole(-1))
-                AllocConsole(); // If that doesn't work, create a new one
-
+            AttachConsole(-1);
             InvalidateOutAndError();
         }
 
@@ -84,7 +93,7 @@ namespace PCShotTimer.Core
             }
             else
             {
-                Show();
+                Create();
             }
         }
 

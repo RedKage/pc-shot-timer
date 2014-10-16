@@ -59,10 +59,11 @@ namespace PCShotTimer
         public App()
         {
 #if DEBUG
-            ConsoleManager.Show();
-            Console.Out.WriteLine();
+            ConsoleManager.Create();
+#else
+            ConsoleManager.Attach();
 #endif
-
+            Console.Out.WriteLine();
             Info("Started");
 
             try
