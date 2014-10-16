@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,17 +63,23 @@ namespace PCShotTimer.UI
         {
             InitializeComponent();
 
+            var userConfig = String.Format(@"{0}\{1}", App.AppDirectory, App.UserConfigFileName);
+
             try
             {
                 // Load the user config
-                Options = new OptionsData(String.Format(@"{0}\{1}", App.AppDirectory, App.UserConfigFileName));
+                Options = new OptionsData(userConfig);
+            }
+            catch (FileNotFoundException)
+            {
+                // Load the defaults params
+                App.Info("User config not found '{0}'", userConfig);
+                Options = new OptionsData(App.DefaultConfig);
+                App.Info("Default embedded config used");
             }
             catch (Exception e)
             {
-                App.DialogContinue(e.Message);
-
-                // Load the defaults params         
-                Options = new OptionsData(App.DefaultConfig);
+                App.DialogFatalError(e);
             }
 
             // Save the (big ass) timer binding. We will have to clear it when we stop and restore it on start.
@@ -96,13 +103,12 @@ namespace PCShotTimer.UI
             {
                 try
                 {
+                    App.Info("Initializing...");
                     Clear();
 
                     // Check input devices
-                    if (WaveInEvent.DeviceCount == 0)
-                    {
+                    if (0 == WaveInEvent.DeviceCount)
                         throw new Exception("No input device found. Can't continue.");
-                    }
 
                     // Initializes the audio input device
                     var waveIn = new WaveInEvent
