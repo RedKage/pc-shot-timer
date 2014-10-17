@@ -265,6 +265,7 @@ namespace PCShotTimer
         /// </param>
         public static void Debug(string stuff, params object[] objects)
         {
+#if DEBUG
             if (!ConsoleManager.HasConsole)
                 return;
 
@@ -272,6 +273,7 @@ namespace PCShotTimer
                 Console.Error.WriteLine(String.Format(@"[DEBUG] {0}", stuff), objects);
             else
                 Console.Error.WriteLine(@"[DEBUG] {0}", stuff);
+#endif
         }
 
         #endregion
