@@ -19,9 +19,6 @@ namespace PCShotTimer
     {
         #region Members
 
-        /// <summary>Resources folder name.</summary>
-        private const string DefaultResourcesFolderName = "resources";
-
         /// <summary>Resource file name for the default embedded config.</summary>
         private const string DefaultConfigResourceName = "defaultconfig.xml";
 
@@ -162,10 +159,13 @@ namespace PCShotTimer
         /// <returns>A stream on the wanted resource.</returns>
         public static Stream GetResource(string resourceName)
         {
-            var resourceFullName = String.Format("{0}.{1}.{2}", Assembly.GetName().Name, DefaultResourcesFolderName,
-                resourceName);
-            var resourceStream = Assembly.GetManifestResourceStream(resourceFullName);
-            return resourceStream;
+            var names = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            foreach (var name in names)
+            {
+                if(name.EndsWith(resourceName, StringComparison.InvariantCultureIgnoreCase))
+                    return Assembly.GetManifestResourceStream(name);
+            }
+            return null;
         }
 
         /// <summary>
