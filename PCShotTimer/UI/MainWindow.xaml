@@ -8,7 +8,7 @@
     xmlns:pcShotTimer="clr-namespace:PCShotTimer"
     mc:Ignorable="d"
     Title="{Binding Path=(pcShotTimer:App.AppTitle)}"
-    Height="470" Width="710"
+    Height="475" Width="710"
     ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
     Icon="/resources/Icon.ico"
     Closing="WinMainWindow_Closing"

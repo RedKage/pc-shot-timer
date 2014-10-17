@@ -1,5 +1,5 @@
-﻿using System;
-using PCShotTimer.openshottimer;
+﻿using PCShotTimer.openshottimer;
+using System;
 
 namespace PCShotTimer.Core
 {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NAudio.Wave;
+using PCShotTimer.Core;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -8,8 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using NAudio.Wave;
-using PCShotTimer.Core;
 
 namespace PCShotTimer.UI
 {

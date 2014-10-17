@@ -1,14 +1,14 @@
-﻿using System;
+﻿using NAudio.CoreAudioApi;
+using NAudio.Wave;
+using PCShotTimer.Core;
+using PCShotTimer.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
-using NAudio.CoreAudioApi;
-using NAudio.Wave;
-using PCShotTimer.Core;
-using PCShotTimer.UI;
 
 namespace PCShotTimer
 {
@@ -202,7 +202,7 @@ namespace PCShotTimer
             var m = new StringBuilder(String.Format("{0}:\n{1}", exception.GetType().Name, exception.Message));
 
             // ReSharper disable PossibleNullReferenceException
-            if (typeof(FileNotFoundException) == exception.GetType())
+            if (typeof (FileNotFoundException) == exception.GetType())
             {
                 var e = exception as FileNotFoundException;
 

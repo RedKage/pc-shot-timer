@@ -1,10 +1,10 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using PropertyChanged;
 
 namespace PCShotTimer.Core
 {
@@ -17,19 +17,19 @@ namespace PCShotTimer.Core
     {
         #region Members
 
+        /// <summary>
+        ///     I need to know when I'm going inside the getters since
+        ///     XmlSerializer does not call the setter for a collection.
+        ///     Instead it calls the getter, and then adds items to the collection returned.
+        ///     Sux donkey ballz eh?
+        /// </summary>
+        private bool _isDeserializing = true;
+
         /// <summary>Current selected BEEP sound file.</summary>
         private string _soundSelectedBeepFile;
 
         /// <summary>Current selected Ready/Standby sound files.</summary>
         private List<string> _soundSelectedReadyStandbyFiles;
-
-        /// <summary>
-        /// I need to know when I'm going inside the getters since
-        /// XmlSerializer does not call the setter for a collection.
-        /// Instead it calls the getter, and then adds items to the collection returned.
-        /// Sux donkey ballz eh?
-        /// </summary>
-        private bool _isDeserializing = true;
 
         #endregion
 
@@ -96,7 +96,7 @@ namespace PCShotTimer.Core
                 // Check if not empty
                 if (!String.IsNullOrEmpty(_soundSelectedBeepFile)
                     && File.Exists(_soundSelectedBeepFile)) // Check if exist
-                        return _soundSelectedBeepFile;
+                    return _soundSelectedBeepFile;
 
                 // Something went not okay above, so we just grab from the available system file.
                 // This can happen if the config file is new or fucked up.
@@ -104,8 +104,8 @@ namespace PCShotTimer.Core
                 var firstOrDefault = AvailableBeepSounds.FirstOrDefault();
                 _soundSelectedBeepFile =
                     firstOrDefault != null
-                    ? firstOrDefault.FullName
-                    : null;
+                        ? firstOrDefault.FullName
+                        : null;
 
                 return _soundSelectedBeepFile;
             }
@@ -143,8 +143,8 @@ namespace PCShotTimer.Core
                 App.Info("Rebuilding SoundSelectedReadyStandbyFiles");
                 _soundSelectedReadyStandbyFiles =
                     AvailableReadyStandbySounds
-                    .Select(sound => sound.FullName)
-                    .ToList();
+                        .Select(sound => sound.FullName)
+                        .ToList();
 
                 return _soundSelectedReadyStandbyFiles;
             }
@@ -225,14 +225,12 @@ namespace PCShotTimer.Core
 
         /// <summary>
         ///     Load options from a XML stream.
-        /// 
         ///     Yeah it's not a static method like you'd want.
         ///     It's because I need to know when the deserialization process occurs
         ///     in order to protect my collection properties:
         ///     XmlSerializer does not call the setter for a collection.
         ///     Instead it calls the getter, and then adds items to the collection returned.
         ///     Sux donkey ballz eh?
-        ///     
         ///     Which means that it will call some getters that will have a null value and then
         ///     it will rebuild itself.
         ///     I can't let that happen right, I worked my ass off to
@@ -275,7 +273,7 @@ namespace PCShotTimer.Core
             foreach (var property in GetType().GetProperties())
                 if (0 == property.GetCustomAttributes(typeof (XmlIgnoreAttribute), false).GetLength(0))
                     property.SetValue(this, property.GetValue(optionsData, null), null);
-            
+
             _isDeserializing = false;
             return optionsData;
         }

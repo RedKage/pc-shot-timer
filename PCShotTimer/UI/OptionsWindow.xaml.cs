@@ -1,11 +1,11 @@
-﻿using System;
+﻿using NAudio.CoreAudioApi;
+using PCShotTimer.Core;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Media;
 using System.Windows;
 using System.Windows.Controls;
-using NAudio.CoreAudioApi;
-using PCShotTimer.Core;
 
 namespace PCShotTimer.UI
 {

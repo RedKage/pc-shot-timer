@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NAudio;
+using NAudio.Wave;
+using PCShotTimer.openshottimer;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -6,9 +9,6 @@ using System.Media;
 using System.Threading;
 using System.Timers;
 using System.Windows.Threading;
-using NAudio;
-using NAudio.Wave;
-using PCShotTimer.openshottimer;
 using Timer = System.Timers.Timer;
 
 namespace PCShotTimer.Core
