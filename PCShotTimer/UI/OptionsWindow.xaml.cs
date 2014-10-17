@@ -216,10 +216,6 @@ namespace PCShotTimer.UI
                 Options.SoundPlayReadyStandby = false;
                 ChkPlayReadyStandbySounds.IsChecked = false;
             }
-            else
-            {
-                ChkPlayReadyStandbySounds.IsChecked = true;
-            }
         }
 
         #endregion
