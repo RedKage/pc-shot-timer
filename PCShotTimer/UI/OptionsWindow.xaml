@@ -288,6 +288,7 @@
                                 Foreground="Black"
                                 DisplayMemberPath="Name"
                                 SelectedValuePath="FullName"
+                                IsEnabled="{Binding IsChecked, ElementName=ChkPlayReadyStandbySounds}"
                                 ItemsSource="{Binding Path=Options.AvailableReadyStandbySounds, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">
                                 <ListView.Effect>
                                     <DropShadowEffect BlurRadius="10" RenderingBias="Quality" />

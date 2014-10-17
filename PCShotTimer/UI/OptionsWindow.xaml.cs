@@ -67,7 +67,7 @@ namespace PCShotTimer.UI
         private void ButtonOk_Click(object sender, RoutedEventArgs e)
         {
             Hide();
-            //App.Debug("Options window: Button Okay");
+            App.Debug("Options window: Button Okay");
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace PCShotTimer.UI
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
-            //App.Debug("Options window: Button Cancel");
+            App.Debug("Options window: Button Cancel");
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace PCShotTimer.UI
             // Load
             _beepSoundPlayer.SoundLocation = soundFile.FullName;
             _beepSoundPlayer.LoadAsync();
-            //App.Debug("Beep sound selected: {0}", soundFile.Name);
+            App.Debug("Beep sound selected: {0}", soundFile.Name);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace PCShotTimer.UI
                 if (readyStandbyFilepath.Equals(file, StringComparison.InvariantCultureIgnoreCase))
                 {
                     checkbox.IsChecked = true;
-                    //App.Debug("Selecting RUReady sound: {0}", Path.GetFileName(file));
+                    App.Debug("Selecting RUReady sound: {0}", Path.GetFileName(file));
                     break;
                 }
             }
@@ -202,23 +202,23 @@ namespace PCShotTimer.UI
             if (checkbox.IsChecked.HasValue && checkbox.IsChecked.Value)
             {
                 files.Add(readyStandbyFilePath);
-                //App.Debug("Adding RUReady sound: {0}", Path.GetFileName(readyStandbyFilePath));
+                App.Debug("Adding RUReady sound: {0}", Path.GetFileName(readyStandbyFilePath));
             }
             else
             {
                 files.RemoveAll(file => file.Equals(readyStandbyFilePath, StringComparison.InvariantCultureIgnoreCase));
-                //App.Debug("Removing RUReady sound: {0}", Path.GetFileName(readyStandbyFilePath));
+                App.Debug("Removing RUReady sound: {0}", Path.GetFileName(readyStandbyFilePath));
             }
 
             // Check whether there are no sounds left
             if (0 == files.Count)
             {
                 Options.SoundPlayReadyStandby = false;
-                ChkPlayReadyStandbySounds.IsEnabled = false;
+                ChkPlayReadyStandbySounds.IsChecked = false;
             }
             else
             {
-                ChkPlayReadyStandbySounds.IsEnabled = true;
+                ChkPlayReadyStandbySounds.IsChecked = true;
             }
         }
 
