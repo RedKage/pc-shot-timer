@@ -1,10 +1,10 @@
-﻿using PropertyChanged;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using PropertyChanged;
 
 namespace PCShotTimer.Core
 {
@@ -69,21 +69,11 @@ namespace PCShotTimer.Core
         [XmlElement("SoundPlayReadyStandby")]
         public bool SoundPlayReadyStandby { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the selected Beep sound.
-        ///     If the sounds doesn't exist, or is null or empty, a new one will be
-        ///     picked from the sound folder (the 1st one available)
-        /// </summary>
+        /// <summary>Gets or sets the selected Beep sound.</summary>
         [XmlElement("SoundSelectedBeepFile")]
         public string SoundSelectedBeepFile { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the selected Ready/Standby sounds.
-        ///     During deserialization will return a reference on a null collection.
-        ///     It's to prevent the deserialization process to access the GET behavior fully.
-        ///     Which is to select all the available sounds when something goes wrong,
-        ///     like the collection is null, and cleaning up non-existing files.
-        /// </summary>
+        /// <summary>Gets or sets the selected Ready/Standby sounds.</summary>
         [XmlElement("SoundSelectedReadyStandbyFiles")]
         public List<string> SoundSelectedReadyStandbyFiles { get; set; }
 
@@ -158,6 +148,18 @@ namespace PCShotTimer.Core
 
         #region Internal methods
 
+        /// <summary>
+        ///     Checks properties validity according to other related properties.
+        ///     Like you wanna have that ready/standby speech but no sound file is available.
+        ///     So in that case we will set the ready/standby speech option to false to
+        ///     reflect the other data related to it.
+        ///     This awesome method is the result of pretty much 24hours of struggling with
+        ///     deserializing, and at the same time trying to fix invalid options data like
+        ///     non-existing path, empty collection, etc.
+        ///     The thing is: never put logic in the getter and setters. It's all shit.
+        ///     So I moved all of the logic here, and it is called after the object is created.
+        ///     So now it's all good.
+        /// </summary>
         protected void CheckDataConsistency()
         {
             // No beep sound or file doesnt'exist
@@ -185,10 +187,10 @@ namespace PCShotTimer.Core
             // Cleanup the non-existing files from the ready/standby list
             SoundSelectedReadyStandbyFiles =
                 SoundSelectedReadyStandbyFiles
-                .Where(File.Exists)
-                .Distinct()
-                .ToList();
-        
+                    .Where(File.Exists)
+                    .Distinct()
+                    .ToList();
+
             // If after all of that there is still no ready/standby sounds
             // We don't want to play no speech
             if (0 == SoundSelectedReadyStandbyFiles.Count)
