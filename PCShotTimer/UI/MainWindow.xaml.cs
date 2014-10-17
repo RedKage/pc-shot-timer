@@ -75,6 +75,7 @@ namespace PCShotTimer.UI
                 // Load the defaults params
                 App.Info("User config not found '{0}'", userConfig);
                 Options = new OptionsData(App.DefaultConfig);
+                Options.Save(userConfig);
                 App.Info("Default embedded config used");
             }
             catch (Exception e)
