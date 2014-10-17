@@ -5,6 +5,8 @@
     /// </summary>
     public class ShotTimeRow
     {
+        #region Properties
+
         /// <summary>Gets or sets that shot ID (0.0).</summary>
         public string Id { get; set; }
 
@@ -13,5 +15,7 @@
 
         /// <summary>Gets or sets that shot split time (00:00:000)</summary>
         public string Split { get; set; }
+
+        #endregion
     }
 }

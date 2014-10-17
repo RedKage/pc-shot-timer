@@ -25,13 +25,13 @@ namespace PCShotTimer.Core
         /// </summary>
         private bool _isDeserializing = true;
 
+        private bool _soundPlayReadyStandby;
+
         /// <summary>Current selected BEEP sound file.</summary>
         private string _soundSelectedBeepFile;
 
         /// <summary>Current selected Ready/Standby sound files.</summary>
         private List<string> _soundSelectedReadyStandbyFiles;
-
-        private bool _soundPlayReadyStandby;
 
         #endregion
 
@@ -106,9 +106,9 @@ namespace PCShotTimer.Core
         }
 
         /// <summary>
-        /// Gets or sets the selected Beep sound.
-        /// If the sounds doesn't exist, or is null or empty, a new one will be
-        /// picked from the sound folder (the 1st one available)
+        ///     Gets or sets the selected Beep sound.
+        ///     If the sounds doesn't exist, or is null or empty, a new one will be
+        ///     picked from the sound folder (the 1st one available)
         /// </summary>
         [XmlElement("SoundSelectedBeepFile")]
         public string SoundSelectedBeepFile
@@ -135,11 +135,11 @@ namespace PCShotTimer.Core
         }
 
         /// <summary>
-        /// Gets or sets the selected Ready/Standby sounds.
-        /// During deserialization will return a reference on a null collection.
-        /// It's to prevent the deserialization process to access the GET behavior fully.
-        /// Which is to select all the available sounds when something goes wrong,
-        /// like the collection is null, and cleaning up non-existing files.
+        ///     Gets or sets the selected Ready/Standby sounds.
+        ///     During deserialization will return a reference on a null collection.
+        ///     It's to prevent the deserialization process to access the GET behavior fully.
+        ///     Which is to select all the available sounds when something goes wrong,
+        ///     like the collection is null, and cleaning up non-existing files.
         /// </summary>
         [XmlElement("SoundSelectedReadyStandbyFiles")]
         public List<string> SoundSelectedReadyStandbyFiles
@@ -271,8 +271,8 @@ namespace PCShotTimer.Core
         }
 
         /// <summary>
-        /// This adds to the SoundSelectedReadyStandbyFiles properties all the
-        /// available sounds file for the Ready/Standby speeches.
+        ///     This adds to the SoundSelectedReadyStandbyFiles properties all the
+        ///     available sounds file for the Ready/Standby speeches.
         /// </summary>
         protected void RebuildingSoundSelectedReadyStandbyFiles()
         {

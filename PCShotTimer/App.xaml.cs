@@ -162,7 +162,7 @@ namespace PCShotTimer
             var names = Assembly.GetExecutingAssembly().GetManifestResourceNames();
             foreach (var name in names)
             {
-                if(name.EndsWith(resourceName, StringComparison.InvariantCultureIgnoreCase))
+                if (name.EndsWith(resourceName, StringComparison.InvariantCultureIgnoreCase))
                     return Assembly.GetManifestResourceStream(name);
             }
             return null;

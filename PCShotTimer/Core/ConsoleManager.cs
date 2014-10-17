@@ -8,7 +8,7 @@ using System.Security;
 namespace PCShotTimer.Core
 {
     /// <summary>
-    ///     Enables real console output while being a GUI win app.
+    ///     Enables real console output while still being a GUI win app.
     ///     Improved a little bit the version from
     ///     http://stackoverflow.com/questions/160587/no-output-to-console-from-a-wpf-application
     /// </summary>

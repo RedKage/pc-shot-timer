@@ -30,6 +30,24 @@ namespace PCShotTimer.openshottimer
     /// </summary>
     public class ShotEvent : EventArgs
     {
+        #region Properties
+
+        /// <summary>Gets or sets the number/Id of this shot in the timeline.</summary>
+        public int ShotNum { get; protected set; }
+
+        /// <summary>Gets or sets the shot time that occured in milliseconds since the beginning of the timeline.</summary>
+        public TimeSpan Time { get; protected set; }
+
+        /// <summary>
+        ///     Gets or sets the time between this shot and the last shot (or the beginning of the timeline for the first shot).
+        ///     Also in milliseconds
+        /// </summary>
+        public TimeSpan Split { get; protected set; }
+
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         ///     Initializes a new instance of ShotEvent.
         /// </summary>
@@ -52,17 +70,7 @@ namespace PCShotTimer.openshottimer
             : this(shotNum, time, TimeSpan.Zero)
         {
         }
-
-        /// <summary>Gets or sets the number/Id of this shot in the timeline.</summary>
-        public int ShotNum { get; protected set; }
-
-        /// <summary>Gets or sets the shot time that occured in milliseconds since the beginning of the timeline.</summary>
-        public TimeSpan Time { get; protected set; }
-
-        /// <summary>
-        ///     Gets or sets the time between this shot and the last shot (or the beginning of the timeline for the first shot).
-        ///     Also in milliseconds
-        /// </summary>
-        public TimeSpan Split { get; protected set; }
+        
+        #endregion
     }
 }
