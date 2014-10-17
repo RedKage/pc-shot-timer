@@ -31,7 +31,7 @@ namespace PCShotTimer.Core
         private string _soundSelectedBeepFile;
 
         /// <summary>Current selected Ready/Standby sound files.</summary>
-        private List<string> _soundSelectedReadyStandbyFiles;
+        private List<string> _soundSelectedReadyStandbyFiles = new List<string>();
 
         #endregion
 
@@ -96,6 +96,13 @@ namespace PCShotTimer.Core
                 if (!_soundPlayReadyStandby)
                     return;
 
+                // Yeah that was a tough one:
+                // Querying the collection triggers the GET which will return null since it doesn't fully exist yet.
+                // So will rebuilding the stuff which fucks up the deserialization process I guess,
+                // as the deserialization dude is building that property at the same time or something.
+                if (_isDeserializing)
+                    return;
+                
                 // If activated we check we have some sounds selected
                 if (null == SoundSelectedReadyStandbyFiles || 0 == SoundSelectedReadyStandbyFiles.Count)
                 {
@@ -276,7 +283,7 @@ namespace PCShotTimer.Core
         /// </summary>
         protected void RebuildingSoundSelectedReadyStandbyFiles()
         {
-            App.Info("Rebuilding SoundSelectedReadyStandbyFiles");
+            App.Debug("Rebuilding SoundSelectedReadyStandbyFiles");
             _soundSelectedReadyStandbyFiles =
                 AvailableReadyStandbySounds
                     .Select(sound => sound.FullName)
@@ -321,8 +328,7 @@ namespace PCShotTimer.Core
         /// <returns>A new OptionsData instance containing the same stuff.</returns>
         public OptionsData Clone()
         {
-            var optionsCopy = new OptionsData();
-            optionsCopy.Update(this);
+            var optionsCopy = new OptionsData(this);
             return optionsCopy;
         }
 
