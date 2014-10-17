@@ -162,11 +162,8 @@ namespace PCShotTimer.UI
             // Get full path
             var readyStandbyFilepath = checkbox.Tag.ToString();
 
-            // Shorten code and make a copy
-            var files = Options.SoundSelectedReadyStandbyFiles.ToArray();
-
             // Browse the selected sounds from the options
-            foreach (var file in files)
+            foreach (var file in Options.SoundSelectedReadyStandbyFiles.ToArray())
             {
                 if (readyStandbyFilepath.Equals(file, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -201,8 +198,11 @@ namespace PCShotTimer.UI
             // Checked -> add to list / Unchecked -> remove from list
             if (checkbox.IsChecked.HasValue && checkbox.IsChecked.Value)
             {
-                files.Add(readyStandbyFilePath);
-                App.Debug("Adding RUReady sound: {0}", Path.GetFileName(readyStandbyFilePath));
+                if (!files.Contains(readyStandbyFilePath))
+                {
+                    files.Add(readyStandbyFilePath);
+                    App.Debug("Adding RUReady sound: {0}", Path.GetFileName(readyStandbyFilePath));
+                }
             }
             else
             {
