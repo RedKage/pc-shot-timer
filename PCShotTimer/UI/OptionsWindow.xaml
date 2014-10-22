@@ -354,18 +354,41 @@
                 <Grid Background="#FFE5E5E5" Width="450" HorizontalAlignment="Right" Cursor="Arrow">
                     <GroupBox Header="Shot detector" Margin="10,5,5,5" FontSize="12" FontWeight="Normal">
                         <Grid>
+
+                            <!-- 1 -->
+                            <Border
+                                BorderBrush="#FFAAAAAA"
+                                BorderThickness="1"
+                                Margin="10,24,0,0"
+                                HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                Height="78" Width="402" IsHitTestVisible="False"
+                                CornerRadius="5">
+                            </Border>
+                            <TextBox
+                                Text="1"
+                                BorderBrush="#FFAAAAAA"
+                                Background="White"
+                                BorderThickness="1"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Margin="40,12,0,0"
+                                Height="23" Width="120"
+                                TextWrapping="Wrap">
+                            </TextBox>
+                            <RadioButton Name="DetectorConfig1"  GroupName="DetectorConfig" Margin="20,18.2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True"/>
                             <!-- Detector sensitivity Sample -->
                             <Label
+                                IsEnabled="{Binding ElementName=DetectorConfig1, Path=IsChecked}"
                                 Name="LblDetectorDuration"
                                 Content="Duration"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="10,11,0,0"
+                                Margin="11,40,0,0"
                                 ToolTip="This defines the duration of the loud spike.&#xA;Here we want the number of consecutive sample spikes required to consider a gunshot has occured.&#xA;So, the lower the more sensitive." />
                             <Slider
+                                IsEnabled="{Binding ElementName=DetectorConfig1, Path=IsChecked}"
                                 Name="SldDetectorSensitivity"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="89,10,0,0"
-                                Width="287"
+                                Margin="85,40,0,0"
+                                Width="283"
                                 Cursor="Hand"
                                 Foreground="#FF999999"
                                 TickPlacement="Both" Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5"
@@ -374,9 +397,10 @@
                                 ToolTip="{Binding ToolTip, ElementName=LblDetectorDuration}"
                                 Value="{Binding Path=Options.DetectorDuration, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
                             <TextBox
+                                IsEnabled="{Binding ElementName=DetectorConfig1, Path=IsChecked}"
                                 Name="TxbDetectorSensitivity"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="381,11,0,0"
+                                Margin="373,39,0,0"
                                 Width="30" Height="25"
                                 TextAlignment="Center"
                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
@@ -385,16 +409,18 @@
 
                             <!-- Detector sensitivity loudness -->
                             <Label
+                                IsEnabled="{Binding ElementName=DetectorConfig1, Path=IsChecked}"
                                 Name="LblDetectorLoudness"
                                 Content="Loudness"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="10,40,0,0"
+                                Margin="11,69,0,0"
                                 ToolTip="This defines the loudness spike value, in percent.&#xA;The higher, the louder it will have to be in order to be detected." />
                             <Slider
+                                IsEnabled="{Binding ElementName=DetectorConfig1, Path=IsChecked}"
                                 x:Name="SldDetectorLoudness"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="89,36,0,0"
-                                Width="287"
+                                Margin="85,65,0,0"
+                                Width="283"
                                 Cursor="Hand"
                                 Foreground="#FF999999"
                                 IsSnapToTickEnabled="True" TickPlacement="Both"
@@ -403,14 +429,145 @@
                                 Value="{Binding Options.DetectorLoudness, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
                                 Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5" />
                             <TextBox
+                                IsEnabled="{Binding ElementName=DetectorConfig1, Path=IsChecked}"
                                 Name="TxbDetectorLoudness"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Margin="381,39,0,0"
+                                Margin="373,64,0,0"
                                 Width="30" Height="25"
                                 TextAlignment="Center"
                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                 ToolTip="{Binding ToolTip, ElementName=LblDetectorLoudness}"
                                 Text="{Binding Value, ElementName=SldDetectorLoudness, StringFormat=\{0:0\}}" />
+
+                            <!-- 2nd config -->
+                            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="78" Margin="9,120,0,0" VerticalAlignment="Top" Width="403" IsHitTestVisible="False"/>
+                            <TextBox HorizontalAlignment="Left" Height="23" Margin="40,107,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="120"/>
+                            <RadioButton Name="DetectorConfig2" GroupName="DetectorConfig" Margin="20,114.3,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <Label
+                                IsEnabled="{Binding ElementName=DetectorConfig2, Path=IsChecked}"
+                            	x:Name="LblDetectorDuration_Copy"
+                            	Content="Duration"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="10,136,0,0"
+                            	ToolTip="This defines the duration of the loud spike.&#xA;Here we want the number of consecutive sample spikes required to consider a gunshot has occured.&#xA;So, the lower the more sensitive." />
+                            <Slider
+                                IsEnabled="{Binding ElementName=DetectorConfig2, Path=IsChecked}"
+                            	x:Name="SldDetectorSensitivity_Copy"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="85,135,0,0"
+                            	Width="283"
+                            	Cursor="Hand"
+                            	Foreground="#FF999999"
+                            	TickPlacement="Both" Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5"
+                            	IsSnapToTickEnabled="True"
+                            	Ticks="1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100"
+                            	ToolTip="{Binding ToolTip, ElementName=LblDetectorDuration}"
+                            	Value="{Binding Options.DetectorDuration, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" />
+                            <TextBox
+                                IsEnabled="{Binding ElementName=DetectorConfig2, Path=IsChecked}"
+                            	x:Name="TxbDetectorSensitivity_Copy"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="373,136,0,0"
+                            	Width="30" Height="25"
+                            	TextAlignment="Center"
+                            	VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                            	ToolTip="{Binding ToolTip, ElementName=LblDetectorDuration}"
+                            	Text="{Binding Value, ElementName=SldDetectorSensitivity, StringFormat=\{0:0\}}" />
+                            <Label
+                                IsEnabled="{Binding ElementName=DetectorConfig2, Path=IsChecked}"
+                            	x:Name="LblDetectorLoudness_Copy"
+                            	Content="Loudness"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="10,165,0,0"
+                            	ToolTip="This defines the loudness spike value, in percent.&#xA;The higher, the louder it will have to be in order to be detected." />
+                            <Slider
+                                IsEnabled="{Binding ElementName=DetectorConfig2, Path=IsChecked}"
+                            	x:Name="SldDetectorLoudness_Copy"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="85,160,0,0"
+                            	Width="283"
+                            	Cursor="Hand"
+                            	Foreground="#FF999999"
+                            	IsSnapToTickEnabled="True" TickPlacement="Both"
+                            	Ticks="1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100"
+                            	ToolTip="{Binding ToolTip, ElementName=LblDetectorLoudness}"
+                            	Value="{Binding Options.DetectorLoudness, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                            	Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5" />
+                            <TextBox
+                                IsEnabled="{Binding ElementName=DetectorConfig2, Path=IsChecked}"
+                            	x:Name="TxbDetectorLoudness_Copy"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="373,161,0,0"
+                            	Width="30" Height="25"
+                            	TextAlignment="Center"
+                            	VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                            	ToolTip="{Binding ToolTip, ElementName=LblDetectorLoudness}"
+                            	Text="{Binding Value, ElementName=SldDetectorLoudness, StringFormat=\{0:0\}}" />
+
+                            <!-- 3 -->
+                            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="78" Margin="6,216,0,0" VerticalAlignment="Top" Width="406" IsHitTestVisible="False"/>
+                            <TextBox HorizontalAlignment="Left" Height="23" Margin="40,204,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="120"/>
+                            <RadioButton Name="DetectorConfig3" GroupName="DetectorConfig" Margin="20,210,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <Label
+                                IsEnabled="{Binding ElementName=DetectorConfig3, Path=IsChecked}"
+                            	x:Name="LblDetectorDuration_Copy1"
+                            	Content="Duration"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="11,233,0,0"
+                            	ToolTip="This defines the duration of the loud spike.&#xA;Here we want the number of consecutive sample spikes required to consider a gunshot has occured.&#xA;So, the lower the more sensitive." />
+                            <Slider
+                                IsEnabled="{Binding ElementName=DetectorConfig3, Path=IsChecked}"
+                            	x:Name="SldDetectorSensitivity_Copy1"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="85,233,0,0"
+                            	Width="283"
+                            	Cursor="Hand"
+                            	Foreground="#FF999999"
+                            	TickPlacement="Both" Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5"
+                            	IsSnapToTickEnabled="True"
+                            	Ticks="1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100"
+                            	ToolTip="{Binding ToolTip, ElementName=LblDetectorDuration}"
+                            	Value="{Binding Options.DetectorDuration, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" />
+                            <TextBox
+                                IsEnabled="{Binding ElementName=DetectorConfig3, Path=IsChecked}"
+                            	x:Name="TxbDetectorSensitivity_Copy1"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="373,233,0,0"
+                            	Width="30" Height="25"
+                            	TextAlignment="Center"
+                            	VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                            	ToolTip="{Binding ToolTip, ElementName=LblDetectorDuration}"
+                            	Text="{Binding Value, ElementName=SldDetectorSensitivity, StringFormat=\{0:0\}}" />
+                            <Label
+                                IsEnabled="{Binding ElementName=DetectorConfig3, Path=IsChecked}"
+                            	x:Name="LblDetectorLoudness_Copy1"
+                            	Content="Loudness"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="11,262,0,0"
+                            	ToolTip="This defines the loudness spike value, in percent.&#xA;The higher, the louder it will have to be in order to be detected." />
+                            <Slider
+                                IsEnabled="{Binding ElementName=DetectorConfig3, Path=IsChecked}"
+                            	x:Name="SldDetectorLoudness_Copy1"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="85,257,0,0"
+                            	Width="283"
+                            	Cursor="Hand"
+                            	Foreground="#FF999999"
+                            	IsSnapToTickEnabled="True" TickPlacement="Both"
+                            	Ticks="1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100"
+                            	ToolTip="{Binding ToolTip, ElementName=LblDetectorLoudness}"
+                            	Value="{Binding Options.DetectorLoudness, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                            	Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5" />
+                            <TextBox
+                                IsEnabled="{Binding ElementName=DetectorConfig3, Path=IsChecked}"
+                            	x:Name="TxbDetectorLoudness_Copy1"
+                            	HorizontalAlignment="Left" VerticalAlignment="Top"
+                            	Margin="373,258,0,0"
+                            	Width="30" Height="25"
+                            	TextAlignment="Center"
+                            	VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                            	ToolTip="{Binding ToolTip, ElementName=LblDetectorLoudness}"
+                            	Text="{Binding Value, ElementName=SldDetectorLoudness, StringFormat=\{0:0\}}" />
                         </Grid>
                     </GroupBox>
                 </Grid>
