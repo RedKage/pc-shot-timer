@@ -138,7 +138,7 @@ namespace PCShotTimer.Core
             _shotDetector = new AmplitudeSpikeShotDetector(
                 _options.InputSampleRate,
                 _options.InputSampleBits,
-                _options.DetectorSensitivity,
+                _options.DetectorDuration,
                 _options.DetectorLoudness);
 
             // Capture the audio in

@@ -356,8 +356,8 @@
                         <Grid>
                             <!-- Detector sensitivity Sample -->
                             <Label
-                                Name="LblDetectorSensitivity"
-                                Content="Sensitivity"
+                                Name="LblDetectorDuration"
+                                Content="Duration"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Margin="10,11,0,0"
                                 ToolTip="This defines the duration of the loud spike.&#xA;Here we want the number of consecutive sample spikes required to consider a gunshot has occured.&#xA;So, the lower the more sensitive." />
@@ -370,8 +370,9 @@
                                 Foreground="#FF999999"
                                 TickPlacement="Both" Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5"
                                 IsSnapToTickEnabled="True"
-                                ToolTip="{Binding ToolTip, ElementName=LblDetectorSensitivity}"
-                                Value="{Binding Path=Options.DetectorSensitivity, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                                Ticks="1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100"
+                                ToolTip="{Binding ToolTip, ElementName=LblDetectorDuration}"
+                                Value="{Binding Path=Options.DetectorDuration, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
                             <TextBox
                                 Name="TxbDetectorSensitivity"
                                 HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -379,7 +380,7 @@
                                 Width="30" Height="25"
                                 TextAlignment="Center"
                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                                ToolTip="{Binding ToolTip, ElementName=LblDetectorSensitivity}"
+                                ToolTip="{Binding ToolTip, ElementName=LblDetectorDuration}"
                                 Text="{Binding Value, ElementName=SldDetectorSensitivity, StringFormat={}{0:0}}" />
 
                             <!-- Detector sensitivity loudness -->
@@ -397,6 +398,7 @@
                                 Cursor="Hand"
                                 Foreground="#FF999999"
                                 IsSnapToTickEnabled="True" TickPlacement="Both"
+                                Ticks="1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100"
                                 ToolTip="{Binding ToolTip, ElementName=LblDetectorLoudness}"
                                 Value="{Binding Options.DetectorLoudness, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
                                 Minimum="1" Maximum="100" SmallChange="1" TickFrequency="5" />

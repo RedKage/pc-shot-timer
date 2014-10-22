@@ -32,7 +32,11 @@ namespace PCShotTimer.openshottimer
     /// </summary>
     public class AmplitudeSpikeShotDetector : ShotDetector
     {
-        #region members
+        // TODO
+        private const short MinLoudness = 5500;
+        private const short MaxLoundness = short.MaxValue - 1; // 32766
+
+        #region Members
 
         /// <summary>
         ///     Number of consecutive sample spikes required to consider a gunshot has occured.
@@ -60,15 +64,18 @@ namespace PCShotTimer.openshottimer
         ///     Number of samples with a spike required to consider a gunshot has occured.
         ///     The lower the more sensitive.
         /// </param>
-        /// <param name="shotDetectionLoudness">
+        /// <param name="shotDetectionLoudnessPercent">
         ///     This is the previous param's threshold value:
         ///     pretty much how loud it should be. Here it's a percent.
         /// </param>
         public AmplitudeSpikeShotDetector(int sampleRate, int sampleSizeInBits, int samplesAboveThresholdRequired,
-            int shotDetectionLoudness)
+            int shotDetectionLoudnessPercent)
             : base(sampleRate, sampleSizeInBits)
         {
-            _shotDetectionThreshold = Convert.ToInt16(shotDetectionLoudness*short.MaxValue/100);
+            var shotDetectionLoudness = ((shotDetectionLoudnessPercent/100.0)*(MaxLoundness-MinLoudness))+MinLoudness;
+            _shotDetectionThreshold = Convert.ToInt16(shotDetectionLoudness);
+            App.Debug("Loudness: {0}% --> {1}", shotDetectionLoudnessPercent, _shotDetectionThreshold);
+
             _samplesAboveThresholdRequired = samplesAboveThresholdRequired + 1;
             if (sampleSizeInBits != 16)
                 throw new ArgumentException("Only support 16 bit samples");

@@ -50,12 +50,12 @@ namespace PCShotTimer.Core
         public int InputChannels { get; set; }
 
         /// <summary>
-        ///     Gets or sets the DetectorSensitivity which is actually the number of time (or samples)
+        ///     Gets or sets the DetectorDuration which is actually the number of time (or samples)
         ///     a high audio spike is detected before being counted as a 'shot'.
         ///     So the lower, the more sensitive it is.
         /// </summary>
-        [XmlElement("DetectorSensitivity")]
-        public int DetectorSensitivity { get; set; }
+        [XmlElement("DetectorDuration")]
+        public int DetectorDuration { get; set; }
 
         /// <summary>
         ///     Gets or sets the value of the spike to reach.
@@ -195,6 +195,19 @@ namespace PCShotTimer.Core
             // We don't want to play no speech
             if (0 == SoundSelectedReadyStandbyFiles.Count)
                 SoundPlayReadyStandby = false;
+
+            // Zero percent loudness is possible but it makes no sense.
+            // That would be like disabling loudness altogether
+            if (0 >= DetectorLoudness)
+                DetectorLoudness = 1;
+            else if (100 < DetectorLoudness)
+                DetectorLoudness = 100;
+
+            // Check the duration
+            if (0 >= DetectorDuration)
+                DetectorDuration = 1;
+            else if (100 < DetectorDuration)
+                DetectorDuration = 100;
         }
 
         #endregion
@@ -266,7 +279,7 @@ namespace PCShotTimer.Core
                 ? " / Ready-standby: yes"
                 : " / Ready-standby: no");
 
-            rc.AppendFormat(" / Spikes: {0} / Loudness {1}%", DetectorSensitivity, DetectorLoudness);
+            rc.AppendFormat(" / Spikes: {0} / Loudness {1}%", DetectorDuration, DetectorLoudness);
             return rc.ToString();
         }
 

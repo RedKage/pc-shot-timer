@@ -9,7 +9,7 @@
   <InputSampleRate>44100</InputSampleRate>
   <InputSampleBits>16</InputSampleBits>
   <InputChannels>1</InputChannels>
-  <DetectorSensitivity>5</DetectorSensitivity>
-  <DetectorLoudness>90</DetectorLoudness>
+  <DetectorDuration>15</DetectorDuration>
+  <DetectorLoudness>100</DetectorLoudness>
   <SoundPlayReadyStandby>true</SoundPlayReadyStandby>
 </Options>
