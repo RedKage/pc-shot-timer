@@ -109,7 +109,7 @@ Oh well.
 ---
 
 ## How do I talk to you? ##
-Go [there](http://tacticalfreak.blogspot.fr/p/pc-shot-timer.html) and post a comment.
+Go [there](http://tacticalfreak.blogspot.com/p/pc-shot-timer.html) and post a comment.
 
 
 ---
